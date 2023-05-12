@@ -4,14 +4,8 @@ $INITIAL_DIR = $HOME
 
 $DOWNLOADS = "\\ed5depinfo\Logiciels\Android\scripts\cache"
 
-$STUDIO_URL = 'https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.3.1.17/android-studio-2021.3.1.17-windows.zip'
-$CMD_LINE_TOOLS_URL = 'https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip'
 $FLUTTER_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=231428'
 $DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=233333'
-$FLUTTER_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=231426'
-$DART_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=229981'
-$CURRENT_SDK_VERSION = "33"
-$CURRENT_BUILD_TOOLS_VERSION = "33.0.0"
 
 function Get-Env-Contains([string]$name, [string]$value) {
     return [System.Environment]::GetEnvironmentVariable($name, "User") -like "*$value*"

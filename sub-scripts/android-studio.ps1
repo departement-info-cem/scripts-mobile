@@ -3,9 +3,6 @@
 $CACHE = "\\ed5depinfo\Logiciels\Android\scripts\cache"
 
 $STUDIO_URL = 'https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.3.1.17/android-studio-2021.3.1.17-windows.zip'
-$CMD_LINE_TOOLS_URL = 'https://dl.google.com/android/repository/commandlinetools-win-8512546_latest.zip'
-$FLUTTER_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=231428'
-$DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=233333'
 $FLUTTER_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=231426'
 $DART_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=229981'
 $CURRENT_SDK_VERSION = "30"
@@ -53,39 +50,6 @@ function Add-Env([string]$name, [string]$value) {
     }
 }
 
-function Invoke-Download {
-    Param(
-        [parameter(Mandatory = $true)]
-        [String]
-        $Name,
-        [parameter(Mandatory = $true)]
-        [String]
-        $Url,
-        [parameter(Mandatory = $true)]
-        [String]
-        $ZipName
-    )
-    if ( -Not ( Test-Path $CACHE\$ZipName.zip)) {
-        Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
-        Set-Location $CACHE
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest $Url -OutFile "$ZipName.zip"
-        $ProgressPreference = 'Continue'
-                
-        if (Test-Path $CACHE/$ZipName.zip ) {
-            Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
-        }
-        else {
-            Set-Location $INITIAL_DIR
-            Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
-            exit
-        }
-    }
-    else {
-        Write-Host '    ✔️ '$Name' est déjà téléchargé.' -ForegroundColor Green
-    }
-}
-
 function Invoke-Install() {
     Param(
         [parameter(Mandatory = $true)]
@@ -124,7 +88,6 @@ Invoke-Env-Reload
 Write-Host '🤖  Android Studio' -ForegroundColor Blue
 
 if (-Not ( Test-Path $HOME\android-studio )) {
-    Invoke-Download "Android Studio" $STUDIO_URL "android-studio"
     Invoke-Install "Android Studio" "$HOME" "android-studio\bin" "android-studio"
 }
 else {
@@ -135,7 +98,6 @@ Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
 Add-Env "Path" "$HOME\android-studio\bin"
 
 if (-Not(Test-Path $HOME\android-studio\plugins\flutter-intellij)) {
-    Invoke-Download "plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio"
     Invoke-Install "plugin Flutter" "$HOME\android-studio\plugins" "flutter-intellij" "plugin-flutter-android-studio"
 }
 else {
@@ -143,7 +105,6 @@ else {
 }
 
 if (-Not(Test-Path $HOME\android-studio\plugins\dart)) {
-    Invoke-Download "plugin Dart" $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio"
     Invoke-Install "plugin Dart" "$HOME\android-studio\plugins" "dart" "plugin-dart-android-studio"
 }
 else {

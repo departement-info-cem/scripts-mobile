@@ -1,8 +1,5 @@
 ﻿$CACHE = "\\ed5depinfo\Logiciels\Android\scripts\cache"
 
-$CURRENT_SDK_VERSION = "30"
-$CURRENT_BUILD_TOOLS_VERSION = "30.0.2"
-
 function Get-Env-Contains([string]$name, [string]$value) {
     return [System.Environment]::GetEnvironmentVariable($name, "User") -like "*$value*"
 }
@@ -86,10 +83,10 @@ function Invoke-Install() {
         $ZipName
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
-    $ZIP_LOCATION = Get-ChildItem $CACHE\"$ZipName.zip"
-    Copy-Item  $ZIP_LOCATION -Destination "$HOME\$ZipName.zip"
+    $ZIP_LOCATION = Get-ChildItem $CACHE\"$ZipName.7z"
+    Copy-Item  $ZIP_LOCATION -Destination "$HOME\$ZipName.7z"
     $ProgressPreference = 'SilentlyContinue'
-    & ${env:ProgramFiles}\7-Zip\7z.exe x "$HOME\$ZipName.zip" "-o$($InstallLocation)" -y 
+    & ${env:ProgramFiles}\7-Zip\7z.exe x "$HOME\$ZipName.7z" "-o$($InstallLocation)" -y 
     $ProgressPreference = 'Continue'
 }
 
@@ -118,9 +115,10 @@ Write-Host '    👍 Installation démarrée.' -ForegroundColor Blue
 
 # sdkmanager 'platform-tools' "platforms;android-$CURRENT_SDK_VERSION" "system-images;android-$CURRENT_SDK_VERSION;google_apis;x86_64" "build-tools;$CURRENT_BUILD_TOOLS_VERSION" "cmdline-tools;latest"
 
-Start-Process powershell -argument ".\android-emulator.ps1"
+Start-Process powershell -argument "\\ed5depinfo\Logiciels\Android\scripts\sub-scripts\android-emulator.ps1"
 
 Write-Host '    ✔️  Outils installé' -ForegroundColor Green
+
 sdkmanager --list_installed
 
 $User = Read-Host -Prompt 'Installation du SDK Android terminée vous devriez pouvoir partir Android Studio et fermer cette fenetre'

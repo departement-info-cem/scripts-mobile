@@ -6,3 +6,4 @@
 
 Start-Process powershell -argument ".\sub-scripts\android-sdk.ps1"
 Start-Process powershell -argument ".\sub-scripts\android-studio.ps1"
+Start-Process powershell -argument ".\sub-scripts\idea.ps1"
