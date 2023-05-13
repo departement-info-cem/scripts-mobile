@@ -7,6 +7,8 @@ function Prout() {
 
 
 function Get-Env-Contains([string]$name, [string]$value) {
+    Write-Host "looking for $value in $name"
+    Write-Host [System.Environment]::GetEnvironmentVariable($name, "User")
     return [System.Environment]::GetEnvironmentVariable($name, "User") -like "*$value*"
 }
 
@@ -15,6 +17,34 @@ function Invoke-Env-Reload() {
     $env:ANDROID_SDK_ROOT = [System.Environment]::GetEnvironmentVariable("ANDROID_SDK_ROOT", "User")
     $env:ANDROID_HOME = [System.Environment]::GetEnvironmentVariable("ANDROID_HOME", "User")
 }
+
+
+
+function Append-Env([string]$name, [string]$value) {
+    Write-Host "Ajout de $value a $name"
+    if (-Not (Get-Env-Contains $name $value) ) {
+        Write-Host '    👍 Ajout de'$value' à'$name'.' -ForegroundColor Blue
+        $new_value = [Environment]::GetEnvironmentVariable("$name", "User")
+        if (-Not ($new_value -eq $null)) {
+            $new_value += [IO.Path]::PathSeparator
+        }
+        $new_value += $value + ";"
+        Write-Host "nouvelle valeur $new_value"
+        [Environment]::SetEnvironmentVariable( "$name", $new_value, "User" )
+        if (Get-Env-Contains $name $new_value) {
+            Invoke-Env-Reload
+            Write-Host '    ✔️  '$value' ajouté à '$name'.'  -ForegroundColor Green
+        }
+        else {
+            Write-Host '    ❌ '$value' n''a pas été ajouté à '$name'.' -ForegroundColor Red
+            exit
+        }
+    }
+    else {
+        Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
+    }
+}
+
 
 function Invoke-Install() {
     Param(
@@ -33,13 +63,13 @@ function Invoke-Install() {
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
     $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName.zip"
-    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}\$ZipName.zip"
+    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName.zip"
     $ProgressPreference = 'SilentlyContinue'
     # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)){
         # pas de 7zip, c'Est plus lent
-        Expand-Archive "${env:scripty.localTempPath}\$ZipName.zip" -DestinationPath $InstallLocation
+        Expand-Archive "${env:scripty.localTempPath}$ZipName.zip" -DestinationPath $InstallLocation
         $ProgressPreference = 'Continue'
     }
     else 

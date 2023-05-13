@@ -10,36 +10,13 @@ function Remove-Env([string]$name, [string]$value) {
     )
     # Remove unwanted elements
     $path = ($path.Split(';') | Where-Object { $_ -ne '$value' }) -join ';'
+    Write-Host $path
     # Set it
     [System.Environment]::SetEnvironmentVariable(
         "$name",
         $path,
         'User'
     )
-}
-
-function Add-Env([string]$name, [string]$value) {
-    if (-Not (Get-Env-Contains $name $value) ) {
-        Write-Host '    👍 Ajout de'$value' à'$name'.' -ForegroundColor Blue
-        $new_value = [Environment]::GetEnvironmentVariable("$name", "User")
-        if (-Not ($new_value -eq $null)) {
-            $new_value += [IO.Path]::PathSeparator
-        }
-        $new_value = $value + $new_value
-        [Environment]::SetEnvironmentVariable( "$name", $new_value, "User" )
-        if (Get-Env-Contains $name $new_value) {
-            Invoke-Env-Reload
-            Write-Host '    ✔️  '$value' ajouté à '$name'.'  -ForegroundColor Green
-        }
-        else {
-            Set-Location $INITIAL_DIR
-            Write-Host '    ❌ '$value' n''a pas été ajouté à '$name'.' -ForegroundColor Red
-            exit
-        }
-    }
-    else {
-        Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
-    }
 }
 
 
@@ -59,8 +36,14 @@ function Install-Flutter() {
     else {
         Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
     }
+    Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
     Remove-Env "Path" "C:\Flutter\bin"
-    Add-Env "Path" "$HOME\flutter\bin"
+    Append-Env "Path" "$HOME\flutter\bin"
+}
+
+# https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
+function Install-Npm() {
+
 }
 
 function Update-Npm() { 
@@ -79,8 +62,27 @@ function Install-FlutterFire-Cli(){
 }
 
 Install-Flutter
-Update-Npm
-Install-Firebase-Cli
-Install-FlutterFire-Cli
+[void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
+[void](flutter config --android-studio-dir="$HOME\android-studio")
+Write-Host '    👍 Mise à jour' -ForegroundColor Blue
+[void](flutter upgrade)
+Write-Host '    👍 Accepter les licenses.' -ForegroundColor Blue
+flutter doctor --android-licenses
+    
+Set-Location $HOME
+Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️'`n -ForegroundColor Green
+flutter doctor
+Write-Host '    👍 Création de projet fake pour first run.' -ForegroundColor Blue
+Set-Location $HOME
+flutter create fake_start
+Write-Host '    👍 Premier démarrage.' -ForegroundColor Blue
+Set-Location $HOME\fake_start
+flutter run
+$User = Read-Host -Prompt 'La mise à jour de Flutter est faite, il faut attendre la fin de installation Android vous pouvez fermer cette fenetre'
+
+
+#Update-Npm
+#Install-Firebase-Cli
+#Install-FlutterFire-Cli
 
  $User = Read-Host -Prompt 'Installation de Flutter est faite, vous pouvez fermer cette fenetre'
