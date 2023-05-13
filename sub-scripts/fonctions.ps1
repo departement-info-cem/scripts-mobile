@@ -1,7 +1,6 @@
 ﻿
 
 function Prout() {
-    
     Write-Host '    coucou prout depuis fonctions.ps1' -ForegroundColor Blue
 }
 
@@ -144,8 +143,3 @@ function Invoke-Download {
         Write-Host '    ✔️ '$Name' est déjà téléchargé.' -ForegroundColor Green
     }
 }
-
-
-
-# TODO fonction pour cloner le repo de script localement
-# utiliser la commande git si presente sinon aller chercher module powershell Install-Module posh-git -Scope CurrentUser -Force

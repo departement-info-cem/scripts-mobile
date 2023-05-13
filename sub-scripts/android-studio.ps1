@@ -24,7 +24,7 @@ Add-Env "ANDROID_SDK_ROOT" "$HOME\androidsdk"
 Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
 
 if (-Not(Test-Path $HOME\android-studio\plugins\flutter-intellij)) {
-Invoke-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio"
+    Invoke-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio"
     Invoke-Install "plugin Flutter" "$HOME\android-studio\plugins" "plugin-flutter-android-studio"
 }
 else {
