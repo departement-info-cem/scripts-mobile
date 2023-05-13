@@ -56,9 +56,6 @@ function Invoke-Install() {
         $InstallLocation,
         [parameter(Mandatory = $true)]
         [String]
-        $FinalDir,
-        [parameter(Mandatory = $true)]
-        [String]
         $ZipName
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue

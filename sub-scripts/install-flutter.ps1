@@ -30,7 +30,7 @@ function Install-Flutter() {
 
     if (-Not ( Test-Path $HOME\flutter )) {
         Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
-        Invoke-Install "Flutter" "$HOME" "." "flutter"
+        Invoke-Install "Flutter" "$HOME" "flutter"
        
     }
     else {
@@ -85,4 +85,4 @@ $User = Read-Host -Prompt 'La mise à jour de Flutter est faite, il faut attendr
 #Install-Firebase-Cli
 #Install-FlutterFire-Cli
 
- $User = Read-Host -Prompt 'Installation de Flutter est faite, vous pouvez fermer cette fenetre'
+ $User = Read-Host -Prompt 'Installation de Flutter est faite dans $HOME\flutter, vous pouvez fermer cette fenetre'

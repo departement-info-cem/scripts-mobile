@@ -22,7 +22,6 @@ Write-Host " Je vais également télécharger des fichiers ZIP depuis ${env:scri
 # download le repo sur la machine cible
 Invoke-WebRequest "https://github.com/departement-info-cem/scripts-mobile/archive/refs/heads/$branche.zip" -OutFile "${env:scripty.localTempPath}scripts.zip" 
 Expand-Archive "${env:scripty.localTempPath}scripts.zip" -DestinationPath ${env:scripty.localTempPath} -Force
-Set-Location ${env:scripty.localTempPath}scripts-mobile-$branche
 
 if ($args[0] -eq "H4X0R_M0D") {
     for (($i = 0); $i -lt 7; $i++) {
@@ -30,15 +29,16 @@ if ($args[0] -eq "H4X0R_M0D") {
     }
 }
 
-$scriptPath = ".\sub-scripts"
-#$scriptPath = "${env:scripty.localTempPath}scripts-mobile-$branche"
+${env:scripty.scriptPath} = ".\sub-scripts"
+#${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche"
 
 
-#Start-Process powershell -argument "$scriptPath\android-studio.ps1"
-#Start-Process powershell -argument "$scriptPath\idea.ps1"
-Start-Process powershell -argument "$scriptPath\install-flutter.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
+#Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
+#Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
+
 
 
 # Start-Process powershell -argument ".\firebase-flutterfire.ps1"
 
-$User = Read-Host -Prompt 'Bloquant script install'
+$User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
