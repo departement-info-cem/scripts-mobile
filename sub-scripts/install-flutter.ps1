@@ -28,17 +28,23 @@ Write-Host '🕰️  Mise à jour des variables d''environnement' -ForegroundCol
 function Install-Flutter() {
      Write-Host '🧠  Flutter SDK' -ForegroundColor Blue
 
-    if (-Not ( Test-Path $HOME\flutter )) {
-        Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
-        Invoke-Install "Flutter" "$HOME" "flutter"
-       
-    }
-    else {
-        Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
-    }
-    Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
-    Remove-Env "Path" "C:\Flutter\bin"
-    Append-Env "Path" "$HOME\flutter\bin"
+     if (-Not ( Test-Path $HOME\flutter )) {
+         Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
+         Invoke-Install "Flutter" "$HOME" "flutter"
+
+     }
+     else {
+         Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
+     }
+     Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
+     Remove-Env "Path" "C:\Flutter\bin"
+     Append-Env "Path" "$HOME\flutter\bin"
+     [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
+     [void](flutter config --android-studio-dir="$HOME\android-studio")
+     Write-Host '    👍 Mise à jour' -ForegroundColor Blue
+     [void](flutter upgrade)
+     Write-Host '    👍 Accepter les licenses.' -ForegroundColor Blue
+     flutter doctor --android-licenses
 }
 
 # https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
