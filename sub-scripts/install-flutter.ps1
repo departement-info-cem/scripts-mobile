@@ -1,30 +1,7 @@
-﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
-
-$INITIAL_DIR = $HOME
-
-$DOWNLOADS = "\\ed5depinfo\Logiciels\Android\scripts\cache"
+﻿. "$PSScriptRoot\urls-et-versions.ps1"
+. "$PSScriptRoot\fonctions.ps1"
 
 
-$FLUTTER_SDK = 'https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.3.9-stable.zip'
-
-
-function Get-Env-Contains([string]$name, [string]$value) {
-    return [System.Environment]::GetEnvironmentVariable($name, "User") -like "*$value*"
-}
-
-function Invoke-Env-Reload() {
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")
-    $env:ANDROID_SDK_ROOT = [System.Environment]::GetEnvironmentVariable("ANDROID_SDK_ROOT", "User")
-    $env:ANDROID_HOME = [System.Environment]::GetEnvironmentVariable("ANDROID_HOME", "User")
-}
-
-# Source : https://stackoverflow.com/a/9701907
-function Add-Shortcut([string]$source_exe, [string]$name) {
-    $WshShell = New-Object -ComObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
-    $Shortcut.TargetPath = $source_exe
-    $Shortcut.Save()
-}
 # TODO cannot remove existing flutter PATH as it is defined in the Machine part of the PATH
 function Remove-Env([string]$name, [string]$value) {
     $path = [System.Environment]::GetEnvironmentVariable(
@@ -33,6 +10,7 @@ function Remove-Env([string]$name, [string]$value) {
     )
     # Remove unwanted elements
     $path = ($path.Split(';') | Where-Object { $_ -ne '$value' }) -join ';'
+    Write-Host $path
     # Set it
     [System.Environment]::SetEnvironmentVariable(
         "$name",
@@ -41,89 +19,6 @@ function Remove-Env([string]$name, [string]$value) {
     )
 }
 
-function Add-Env([string]$name, [string]$value) {
-    if (-Not (Get-Env-Contains $name $value) ) {
-        Write-Host '    👍 Ajout de'$value' à'$name'.' -ForegroundColor Blue
-        $new_value = [Environment]::GetEnvironmentVariable("$name", "User")
-        if (-Not ($new_value -eq $null)) {
-            $new_value += [IO.Path]::PathSeparator
-        }
-        $new_value = $value + $new_value
-        [Environment]::SetEnvironmentVariable( "$name", $new_value, "User" )
-        if (Get-Env-Contains $name $new_value) {
-            Invoke-Env-Reload
-            Write-Host '    ✔️  '$value' ajouté à '$name'.'  -ForegroundColor Green
-        }
-        else {
-            Set-Location $INITIAL_DIR
-            Write-Host '    ❌ '$value' n''a pas été ajouté à '$name'.' -ForegroundColor Red
-            exit
-        }
-    }
-    else {
-        Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
-    }
-}
-
-function Invoke-Download {
-    Param(
-        [parameter(Mandatory = $true)]
-        [String]
-        $Name,
-        [parameter(Mandatory = $true)]
-        [String]
-        $Url,
-        [parameter(Mandatory = $true)]
-        [String]
-        $ZipName
-    )
-    if ( -Not ( Test-Path $DOWNLOADS\$ZipName.zip)) {
-        Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
-        Set-Location $DOWNLOADS
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest $Url -OutFile "$ZipName.zip"
-        $ProgressPreference = 'Continue'
-                
-        if (Test-Path $DOWNLOADS/$ZipName.zip ) {
-            Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
-        }
-        else {
-            Set-Location $INITIAL_DIR
-            Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
-            exit
-        }
-    }
-    else {
-        Write-Host '    ✔️ '$Name' est déjà téléchargé.' -ForegroundColor Green
-    }
-}
-
-function Invoke-Install() {
-    Param(
-        [parameter(Mandatory = $true)]
-        [String]
-        $Name,
-        [parameter(Mandatory = $true)]
-        [String]
-        $InstallLocation,
-        [parameter(Mandatory = $true)]
-        [String]
-        $FinalDir,
-        [parameter(Mandatory = $true)]
-        [String]
-        $ZipName
-    )
-    Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
-    $ZIP_LOCATION = Get-ChildItem $DOWNLOADS\"$ZipName.zip"
-    Copy-Item  $ZIP_LOCATION -Destination "$HOME\$ZipName.zip"
-    $ProgressPreference = 'SilentlyContinue'
-    & ${env:ProgramFiles}\7-Zip\7z.exe x "$HOME\$ZipName.zip" "-o$($InstallLocation)" -y
-    # Expand-7Zip -ArchiveFileName "$HOME\$ZipName.zip" -TargetPath $InstallLocation
-    #Expand-Archive "$HOME\$ZipName.zip" 
-    $ProgressPreference = 'Continue'
-}
-
-[void](New-Item -type directory -Path "$DOWNLOADS" -Force)
 
 Invoke-Env-Reload
 
@@ -133,16 +28,28 @@ Write-Host '🕰️  Mise à jour des variables d''environnement' -ForegroundCol
 function Install-Flutter() {
      Write-Host '🧠  Flutter SDK' -ForegroundColor Blue
 
-    if (-Not ( Test-Path $HOME\flutter )) {
-        Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
-        Invoke-Install "Flutter" "$HOME" "." "flutter"
-       
-    }
-    else {
-        Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
-    }
-    Remove-Env "Path" "C:\Flutter\bin"
-    Add-Env "Path" "$HOME\flutter\bin"
+     if (-Not ( Test-Path $HOME\flutter )) {
+         Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
+         Invoke-Install "Flutter" "$HOME" "flutter"
+
+     }
+     else {
+         Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
+     }
+     Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
+     Remove-Env "Path" "C:\Flutter\bin"
+     Append-Env "Path" "$HOME\flutter\bin"
+     [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
+     [void](flutter config --android-studio-dir="$HOME\android-studio")
+     Write-Host '    👍 Mise à jour' -ForegroundColor Blue
+     [void](flutter upgrade)
+     Write-Host '    👍 Accepter les licenses.' -ForegroundColor Blue
+     flutter doctor --android-licenses
+}
+
+# https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
+function Install-Npm() {
+
 }
 
 function Update-Npm() { 
@@ -161,8 +68,27 @@ function Install-FlutterFire-Cli(){
 }
 
 Install-Flutter
-Update-Npm
-Install-Firebase-Cli
-Install-FlutterFire-Cli
+[void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
+[void](flutter config --android-studio-dir="$HOME\android-studio")
+Write-Host '    👍 Mise à jour' -ForegroundColor Blue
+[void](flutter upgrade)
+Write-Host '    👍 Accepter les licenses.' -ForegroundColor Blue
+flutter doctor --android-licenses
+    
+Set-Location $HOME
+Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️'`n -ForegroundColor Green
+flutter doctor
+Write-Host '    👍 Création de projet fake pour first run.' -ForegroundColor Blue
+Set-Location $HOME
+flutter create fake_start
+Write-Host '    👍 Premier démarrage.' -ForegroundColor Blue
+Set-Location $HOME\fake_start
+flutter run
+$User = Read-Host -Prompt 'La mise à jour de Flutter est faite, il faut attendre la fin de installation Android vous pouvez fermer cette fenetre'
 
- $User = Read-Host -Prompt 'Installation de Flutter est faite, vous pouvez fermer cette fenetre'
+
+#Update-Npm
+#Install-Firebase-Cli
+#Install-FlutterFire-Cli
+
+ $User = Read-Host -Prompt 'Installation de Flutter est faite dans $HOME\flutter, vous pouvez fermer cette fenetre'
