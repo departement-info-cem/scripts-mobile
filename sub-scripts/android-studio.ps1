@@ -15,13 +15,8 @@ else {
 }
 
 Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
-Add-Env "Path" "$HOME\android-studio\bin"
+Append-Env "Path" "$HOME\android-studio\bin"
 
-Add-Env "JAVA_HOME" "$HOME\android-studio\jre"
-Append-Env "Path" "$HOME\android-studio\jre\bin"
-
-Add-Env "ANDROID_SDK_ROOT" "$HOME\androidsdk"
-Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
 
 if (-Not(Test-Path $HOME\android-studio\plugins\flutter-intellij)) {
     Invoke-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio"

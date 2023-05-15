@@ -1,9 +1,16 @@
 ﻿
-
-function Prout() {
-    Write-Host '    coucou prout depuis fonctions.ps1' -ForegroundColor Blue
-}
-
+# per https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
+function Test-CommandExists([string]$name){
+ $oldPreference = $ErrorActionPreference
+ $ErrorActionPreference = ‘stop’
+ try {
+    if(Get-Command $name){return $true}
+ }
+ Catch {
+    return $false
+ }
+ Finally {$ErrorActionPreference=$oldPreference}
+} 
 
 function Get-Env-Contains([string]$name, [string]$value) {
     Write-Host "looking for $value in $name"
@@ -80,26 +87,15 @@ function Invoke-Install() {
 
 
 function Add-Env([string]$name, [string]$value) {
-    if (-Not (Get-Env-Contains $name $value) ) {
-        Write-Host '    👍 Ajout de'$value' à'$name'.' -ForegroundColor Blue
-        $new_value = [Environment]::GetEnvironmentVariable("$name", "User")
-        if (-Not ($new_value -eq $null)) {
-            $new_value += [IO.Path]::PathSeparator
-        }
-        $new_value += $value
-        [Environment]::SetEnvironmentVariable( "$name", $new_value, "User" )
-        if (Get-Env-Contains $name $new_value) {
-            Invoke-Env-Reload
-            Write-Host '    ✔️  '$value' ajouté à '$name'.'  -ForegroundColor Green
-        }
-        else {
-            Set-Location $HOME
-            Write-Host '    ❌ '$value' n''a pas été ajouté à '$name'.' -ForegroundColor Red
-            exit
-        }
+    if (-not [Environment]::GetEnvironmentVariable("$name", "User")) {
+        $env:FOO = 'bar' 
+        [Environment]::SetEnvironmentVariable($name, $value, 'User')
+        Write-Host '    ✔️ '$value' dans '$name'.'  -ForegroundColor Green
     }
+    
     else {
-        Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
+        $existing = [Environment]::GetEnvironmentVariable("$name", "User")
+        Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
     }
 }
 

@@ -5,6 +5,18 @@
 Write-Host 'Mise en place du SDK Android' -ForegroundColor Blue
 
 
+if (Test-CommandExists "javac") {
+	Write-Host "On a un JDK ici ${env:JAVA_HOME}"
+} else {
+	# nécessite Java
+	Write-Host "On a pas ouch un JDK"
+	Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk"
+	Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk"
+    Add-Env "JAVA_HOME" "$HOME\jdk\jdk17.0.7_7"
+    Append-Env "Path" "$HOME\jdk\jdk17.0.7_7\bin"
+    
+}
+
 
 
 
@@ -19,16 +31,39 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
 
 
     
-    #Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "androidsdk"
-    #Invoke-Install "Android SDK manager" "$HOME\androidsdk" "bin" "androidsdk"
+    Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "sdk-manager"
+    Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager"
+
+    #Invoke-Download "Android Platform Tools" $ANDROID_PLATFORM_TOOLS "sdk-tools"
+    #Invoke-Install "Android Platform Tools" "$HOME\sdk-tools" "sdk-tools"
 
     # Merci a https://stackoverflow.com/questions/65262340/cmdline-tools-could-not-determine-sdk-root
 
-    #[void](New-Item -type directory -Path "$HOME\androidsdk\cmdline-tools\zzz" -Force)
-    #Copy-Item "$HOME\androidsdk\cmdline-tools\*" -Destination "$HOME\androidsdk\cmdline-tools\zzz" -Recurse
-    #[void](New-Item -type directory -Path "$HOME\androidsdk\cmdline-tools\latest" -Force)
-    #Copy-Item "$HOME\androidsdk\cmdline-tools\zzz\*" -Destination "$HOME\androidsdk\cmdline-tools\latest\" -Recurse
+    Remove-Item -LiteralPath "$HOME\AppData\Local\Android" -Force -Recurse
+    [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
+    [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\cmdline-tools\latest\" -Force)
 
+    Move-Item "$HOME\sdk-manager\cmdline-tools\*" -Destination "$HOME\AppData\Local\Android\cmdline-tools\latest\" -Force #-Recurse
+    #Move-Item "$HOME\sdk-tools\platform-tools" -Destination "$HOME\AppData\Local\Android\Sdk" -Force #-Recurse
+
+
+    Add-Env "ANDROID_SDK_ROOT" "$HOME\AppData\Local\Android"
+    Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
+    Append-Env "Path" "$HOME\AppData\Local\Android\cmdline-tools\latest\bin"
+    
+    Write-Host '    a' -ForegroundColor Green
+    (1..10 | ForEach-Object {"y"; Start-Sleep -Milliseconds 100 }) | sdkmanager "cmdline-tools;latest"
+    Write-Host '    b' -ForegroundColor Green
+    sdkmanager  'platform-tools' "build-tools;33.0.2" "platforms;android-33" 
+    Write-Host '    b' -ForegroundColor Green
+    sdkmanager "system-images;android-33;google_apis_playstore;x86_64"
+    Write-Host '    c' -ForegroundColor Green
+    sdkmanager emulator
+    Write-Host '    d' -ForegroundColor Green
+    (1..10 | ForEach-Object {"y"; Start-Sleep -Milliseconds 100 }) | sdkmanager --licenses
+    sdkmanager --update
+    #Append-Env "Path" "$HOME\AppData\Local\Android\Sdk\emulator"
+    & ${env:ProgramFiles}\7-Zip\7z.exe a -tzip D:\cache\Android.zip -mx0 $HOME\AppData\Local\Android  -y 
 
     # 7z u compressed.7z -u!update.7z -mx0 *.zip  to zip the produced sdk without compression
 
@@ -51,12 +86,9 @@ else {
 
 
 
-Add-Env "ANDROID_SDK_ROOT" "$HOME\AppData\Local\Android"
-Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
-Add-Env "Path" "$env:ANDROID_SDK_ROOT\cmdline-tools\bin"
-Add-Env "Path" "$env:ANDROID_SDK_ROOT\Sdk\emulator"
 
-#sdkmanager  'platform-tools' "build-tools" "cmdline-tools;latest" "emulator"
+
+#sdkmanager  'platform-tools' "build-tools;33.0.2" "cmdline-tools;latest" "emulator"
 
 #Write-Host '🕹️  INSTALLATION SDK ANDROID Command Line Tools' -ForegroundColor Blue
 

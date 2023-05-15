@@ -8,7 +8,10 @@ $CURRENT_BUILD_TOOLS_VERSION = "30.0.2"
 
 # android sdk et sdkmanager
 
+$CORRETTO_URL = "https://corretto.aws/downloads/latest/amazon-corretto-17-x64-windows-jdk.zip"
+
 $ANDROID_SDK_MANAGER = "https://dl.google.com/android/repository/commandlinetools-win-9477386_latest.zip"
+$ANDROID_PLATFORM_TOOLS = "https://dl.google.com/android/repository/platform-tools-latest-windows.zip"
 
 # intellij
 
