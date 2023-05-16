@@ -24,3 +24,4 @@ $DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&
 # flutter sdk
 
 $FLUTTER_SDK = 'https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.10.0-stable.zip'
+$NODE_URL = "https://nodejs.org/dist/v18.16.0/node-v18.16.0-win-x64.zip"
