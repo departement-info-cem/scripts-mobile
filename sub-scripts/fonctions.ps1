@@ -1,9 +1,9 @@
 ﻿
 
 function Check-Or-Install-Java() {
-   if (Test-CommandExists "javac") {
-    Write-Host "On a un JDK ici ${env:JAVA_HOME}"
-   } else {
+   #if (Test-CommandExists "javac") {
+   # Write-Host "On a un JDK ici ${env:JAVA_HOME}"
+   #} else {
     # nécessite Java
     Write-Host "On a pas ouch un JDK"
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk"
@@ -11,7 +11,7 @@ function Check-Or-Install-Java() {
     Add-Env "JAVA_HOME" "$HOME\jdk\jdk17.0.7_7"
     Append-Env "Path" "$HOME\jdk\jdk17.0.7_7\bin"
 
-   }
+   #}
 }
 
 
