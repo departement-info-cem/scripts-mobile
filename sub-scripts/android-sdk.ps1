@@ -47,7 +47,7 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
     (1..10 | ForEach-Object {"y"; Start-Sleep -Milliseconds 100 }) | sdkmanager --licenses
     sdkmanager --update
     #Append-Env "Path" "$HOME\AppData\Local\Android\Sdk\emulator"
-    & ${env:ProgramFiles}\7-Zip\7z.exe a -tzip D:\cache\Android.zip -mx0 $HOME\AppData\Local\Android  -y 
+    & ${env:ProgramFiles}\7-Zip\7z.exe a -tzip ${env:scripty.cachePath}\Android.zip -mx0 $HOME\AppData\Local\Android  -y 
 
     # 7z u compressed.7z -u!update.7z -mx0 *.zip  to zip the produced sdk without compression
 
