@@ -125,6 +125,7 @@ function Invoke-Download {
         $ProgressPreference = 'SilentlyContinue'
         $done = $false
         try { 
+           # tester optimisation performance avec  Start-BitsTransfer -Source $url -Destination $dest 
            $response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
            $StatusCode = $Response.StatusCode
            $done = $true
