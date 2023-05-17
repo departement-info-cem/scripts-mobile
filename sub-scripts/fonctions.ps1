@@ -123,7 +123,15 @@ function Invoke-Download {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest $Url -OutFile "$ZipName.zip"
+        $done = $false
+        try { 
+           $response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
+           $done = $true
+        } 
+        catch {
+           $_.Exception.Response.StatusCode.Value__
+        }
+        Write-Host "ca a marché $done"
         $ProgressPreference = 'Continue'
                 
         if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
