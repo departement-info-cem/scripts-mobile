@@ -2,7 +2,7 @@
 $branche = "main"
 
 # config du chemin pour la cache des GROS zips
-${env:scripty.cachePath} = 'D:\cache'
+${env:scripty.cachePath} = 'C:\cache'
 #${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cache"
 
 # config du chemin de téléchargement de base pour les sous-scripts
@@ -30,8 +30,8 @@ if ($args[0] -eq "H4X0R_M0D") {
     }
 }
 
-${env:scripty.scriptPath} = ".\sub-scripts"
-#${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche"
+#${env:scripty.scriptPath} = ".\sub-scripts"
+${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche"
 
 
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
