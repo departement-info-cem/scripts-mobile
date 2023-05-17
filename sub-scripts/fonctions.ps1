@@ -122,7 +122,7 @@ function Invoke-Download {
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip)) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
-        #$ProgressPreference = 'SilentlyContinue'
+        $ProgressPreference = 'SilentlyContinue'
         $done = $false
         try { 
            $response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
@@ -134,7 +134,7 @@ function Invoke-Download {
            Write-Host "Erreur avec $StatusCode"
         }
         Write-Host "ca a marché $done  ou pas $StatusCode"
-        #$ProgressPreference = 'Continue'
+        $ProgressPreference = 'Continue'
                 
         if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
             Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
