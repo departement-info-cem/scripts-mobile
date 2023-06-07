@@ -1,4 +1,6 @@
 ﻿
+#$scope = "User"
+$scope = "Machine"
 
 function Check-Or-Install-Java() {
    #if (Test-CommandExists "javac") {
@@ -30,29 +32,42 @@ function Test-CommandExists([string]$name){
 
 function Get-Env-Contains([string]$name, [string]$value) {
     Write-Host "looking for $value in $name"
-    Write-Host [System.Environment]::GetEnvironmentVariable($name, "User")
-    return [System.Environment]::GetEnvironmentVariable($name, "User") -like "*$value*"
+    Write-Host [System.Environment]::GetEnvironmentVariable($name, $scope)
+    return [System.Environment]::GetEnvironmentVariable($name, $scope) -like "*$value*"
 }
 
 function Invoke-Env-Reload() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-    $env:ANDROID_SDK_ROOT = [System.Environment]::GetEnvironmentVariable("ANDROID_SDK_ROOT", "User")
-    $env:ANDROID_HOME = [System.Environment]::GetEnvironmentVariable("ANDROID_HOME", "User")
+    $env:ANDROID_SDK_ROOT = [System.Environment]::GetEnvironmentVariable("ANDROID_SDK_ROOT", $scope)
+    $env:ANDROID_HOME = [System.Environment]::GetEnvironmentVariable("ANDROID_HOME", $scope)
 }
 
+# ajoute la variable d'environnement si elle n'existe pas
+function Add-Env([string]$name, [string]$value) {
+    if (-not [Environment]::GetEnvironmentVariable("$name", $scope)) {
+        $env:FOO = 'bar'
+        [Environment]::SetEnvironmentVariable($name, $value, $scope)
+        Write-Host '    ✔️ '$value' dans '$name'.'  -ForegroundColor Green
+    }
 
+    else {
+        $existing = [Environment]::GetEnvironmentVariable("$name", $scope)
+        Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
+    }
+}
 
+# ajoute a la suite de la variable (en général path) qui contient une liste
 function Append-Env([string]$name, [string]$value) {
     Write-Host "Ajout de $value a $name"
     if (-Not (Get-Env-Contains $name $value) ) {
         Write-Host '    👍 Ajout de'$value' à'$name'.' -ForegroundColor Blue
-        $new_value = [Environment]::GetEnvironmentVariable("$name", "User")
+        $new_value = [Environment]::GetEnvironmentVariable("$name", $scope)
         if (-Not ($new_value -eq $null)) {
             $new_value += [IO.Path]::PathSeparator
         }
         $new_value += $value + ";"
         Write-Host "nouvelle valeur $new_value"
-        [Environment]::SetEnvironmentVariable( "$name", $new_value, "User" )
+        [Environment]::SetEnvironmentVariable( "$name", $new_value, $scope )
         if (Get-Env-Contains $name $new_value) {
             Invoke-Env-Reload
             Write-Host '    ✔️  '$value' ajouté à '$name'.'  -ForegroundColor Green
@@ -66,7 +81,6 @@ function Append-Env([string]$name, [string]$value) {
         Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
     }
 }
-
 
 function Invoke-Install() {
     Param(
@@ -98,21 +112,6 @@ function Invoke-Install() {
     }
     
     
-}
-
-
-
-function Add-Env([string]$name, [string]$value) {
-    if (-not [Environment]::GetEnvironmentVariable("$name", "User")) {
-        $env:FOO = 'bar' 
-        [Environment]::SetEnvironmentVariable($name, $value, 'User')
-        Write-Host '    ✔️ '$value' dans '$name'.'  -ForegroundColor Green
-    }
-    
-    else {
-        $existing = [Environment]::GetEnvironmentVariable("$name", "User")
-        Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
-    }
 }
 
 # Source : https://stackoverflow.com/a/9701907
