@@ -1,8 +1,12 @@
-﻿
+﻿# TODO voir si on peut trouver une fonction plus rapide pour télécharger mais ça arrive pas souvent
+# TODO comment on gère le path et un potentiel conflit sur le path pour java et flutter
+# Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
+# Piste pour le PATH ? comment embarquer avec notre Java à nous
+
 $branche = "main"
 
 # config du chemin pour la cache des GROS zips
-#${env:scripty.cachePath} = 'C:\cache'
+#${env:scripty.cachePath} = 'D:\cache'
 ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheA23"
 
 # config du chemin de téléchargement de base pour les sous-scripts

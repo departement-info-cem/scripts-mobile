@@ -1,6 +1,6 @@
 ﻿
-#$scope = "User"
-$scope = "Machine"
+$scope = "User"
+#$scope = "Machine"
 
 function Check-Or-Install-Java() {
    #if (Test-CommandExists "javac") {
@@ -12,7 +12,6 @@ function Check-Or-Install-Java() {
     Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk"
     Add-Env "JAVA_HOME" "$HOME\jdk\jdk17.0.7_7"
     Append-Env "Path" "$HOME\jdk\jdk17.0.7_7\bin"
-
    #}
 }
 
@@ -110,8 +109,6 @@ function Invoke-Install() {
         & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName.zip" "-o$($InstallLocation)" -y 
         $ProgressPreference = 'Continue'
     }
-    
-    
 }
 
 # Source : https://stackoverflow.com/a/9701907
@@ -137,19 +134,22 @@ function Invoke-Download {
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip)) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
-        $ProgressPreference = 'SilentlyContinue'
+        $ProgressPreference = 'Continue'
         $done = $false
         try { 
            # tester optimisation performance avec  Start-BitsTransfer -Source $url -Destination $dest 
-           $response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
-           $StatusCode = $Response.StatusCode
-           $done = $true
+           Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" 
+           #$wc = New-Object net.webclient
+           #$wc.Downloadfile($Url, "${env:scripty.cachePath}\$ZipName.zip")
+           #$response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
+           #$StatusCode = $Response.StatusCode
+           #$done = $true
         } 
         catch {
-           $StatusCode = $_.Exception.Response.StatusCode.value__
-           Write-Host "Erreur avec $StatusCode"
+           #$StatusCode = $_.Exception.Response.StatusCode.value__
+           #Write-Host "Erreur avec $StatusCode"
         }
-        Write-Host "ca a marché $done  ou pas $StatusCode"
+        #Write-Host "ca a marché $done  ou pas $StatusCode"
         $ProgressPreference = 'Continue'
                 
         if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
