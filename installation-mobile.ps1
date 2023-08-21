@@ -7,7 +7,7 @@ $branche = "main"
 
 # config du chemin pour la cache des GROS zips
 #${env:scripty.cachePath} = 'D:\cache'
-${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheA23"
+${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cache"
 
 # config du chemin de téléchargement de base pour les sous-scripts
 ${env:scripty.rawRepoPath} = "https://github.com/departement-info-cem/scripts-mobile/archive/refs/heads/$branche.zip"

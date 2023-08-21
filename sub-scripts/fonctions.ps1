@@ -10,7 +10,7 @@ function Check-Or-Install-Java() {
     Write-Host "On a pas ouch un JDK"
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk"
     Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk"
-    $jdkVersion = (Get-ChildItem | Select-Object -First 1).Name
+    $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
     Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
    #}
