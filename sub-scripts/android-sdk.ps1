@@ -1,14 +1,13 @@
 ﻿. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-
 Write-Host 'Mise en place du SDK Android' -ForegroundColor Blue
 
 Check-Or-Install-Java
 
 # Detecter si un SDK sur l'ordinateur
 
-if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
+if (-Not ( Test-Path "${env:scripty.cachePath}\Sdk.7z" )) {
     Write-Host '    Pas de SDK trouvé en cache. Il va falloir construire' -ForegroundColor Green
     [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
     Write-Host '    TODO installer cmd-tools tout configurer, faire update puis zipper et poser dans le cache' -ForegroundColor Green
@@ -16,10 +15,10 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
 
     
     Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "sdk-manager"
-    Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager"
+    Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager.zip"
 
     #Invoke-Download "Android Platform Tools" $ANDROID_PLATFORM_TOOLS "sdk-tools"
-    #Invoke-Install "Android Platform Tools" "$HOME\sdk-tools" "sdk-tools"
+    #Invoke-Install "Android Platform Tools" "$HOME\sdk-tools" "sdk-tools.zip"
 
     # Merci a https://stackoverflow.com/questions/65262340/cmdline-tools-could-not-determine-sdk-root
 
@@ -55,22 +54,14 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
 else {
     Write-Host '    Cache contient un SDK. On va le copier et installer' -ForegroundColor Green
     # Detecter si un SDK est présent sur la cache
-    if (-Not ( Test-Path "$HOME\AppData\Local\Android" )) {
+    if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
         [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
-        Invoke-Install "Android SDK" "$HOME\AppData\Local" "Android"
+        Invoke-Install "Android SDK" "$HOME\AppData\Local\Android" "Sdk.7z"
     }
     else {
-        Write-Host '    ✔️  Android SDK déjà copié et déjà installé. Mettre a jour????' -ForegroundColor Green
+        Write-Host '    ✔️  Android SDK déjà copié et déjà installé.' -ForegroundColor Green
     }
-
-    Write-Host '    ✔️  Android SDK déjà copié est déjà installé.' -ForegroundColor Green
 }
-
-
-
-
-
-
 
 #sdkmanager  'platform-tools' "build-tools;33.0.2" "cmdline-tools;latest" "emulator"
 
@@ -82,7 +73,7 @@ else {
 
 # sdkmanager 'platform-tools' "platforms;android-$CURRENT_SDK_VERSION" "system-images;android-$CURRENT_SDK_VERSION;google_apis;x86_64" "build-tools;$CURRENT_BUILD_TOOLS_VERSION" "cmdline-tools;latest"
 
-Start-Process powershell -argument "\\ed5depinfo\Logiciels\Android\scripts\sub-scripts\android-emulator.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.ps1"
 
 #Write-Host '    ✔️  Outils installé' -ForegroundColor Green
 
