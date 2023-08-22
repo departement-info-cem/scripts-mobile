@@ -60,17 +60,9 @@ else {
         Invoke-Install "Android SDK" "$HOME\AppData\Local\Android" "Sdk.7z"
     }
     else {
-        Write-Host '    ✔️  Android SDK déjà copié et déjà installé. Mettre a jour????' -ForegroundColor Green
+        Write-Host '    ✔️  Android SDK déjà copié et déjà installé.' -ForegroundColor Green
     }
-
-    Write-Host '    ✔️  Android SDK déjà copié est déjà installé.' -ForegroundColor Green
 }
-
-
-
-
-
-
 
 #sdkmanager  'platform-tools' "build-tools;33.0.2" "cmdline-tools;latest" "emulator"
 
@@ -82,7 +74,7 @@ else {
 
 # sdkmanager 'platform-tools' "platforms;android-$CURRENT_SDK_VERSION" "system-images;android-$CURRENT_SDK_VERSION;google_apis;x86_64" "build-tools;$CURRENT_BUILD_TOOLS_VERSION" "cmdline-tools;latest"
 
-Start-Process powershell -argument "\\ed5depinfo\Logiciels\Android\scripts\sub-scripts\android-emulator.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.ps1"
 
 #Write-Host '    ✔️  Outils installé' -ForegroundColor Green
 

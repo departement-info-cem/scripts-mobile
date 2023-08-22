@@ -49,11 +49,11 @@ function Add-Env([string]$name, [string]$value) {
         [Environment]::SetEnvironmentVariable($name, $value, $scope)
         Write-Host '    ✔️ '$value' dans '$name'.'  -ForegroundColor Green
     }
-
     else {
         $existing = [Environment]::GetEnvironmentVariable("$name", $scope)
         Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
     }
+    Invoke-Env-Reload
 }
 
 # ajoute a la suite de la variable (en général path) qui contient une liste
@@ -74,11 +74,13 @@ function Append-Env([string]$name, [string]$value) {
         }
         else {
             Write-Host '    ❌ '$value' n''a pas été ajouté à '$name'.' -ForegroundColor Red
+            Invoke-Env-Reload
             exit
         }
     }
     else {
         Write-Host '    ✔️ '$value' déjà ajouté à '$name'.'  -ForegroundColor Green
+        Invoke-Env-Reload
     }
 }
 

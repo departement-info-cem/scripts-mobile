@@ -7,12 +7,12 @@ Set-Location $HOME
 Add-Env "ANDROID_SDK_ROOT" "$HOME\AppData\Local\Android\Sdk"
 Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
 Append-Env "Path" $HOME\AppData\Local\Android\cmdline-tools\latest\bin
-Append-Env "Path" $HOME"\AppData\Local\Android\Sdk\emulator"
+Append-Env "Path" $HOME\AppData\Local\Android\Sdk\emulator
 
 Write-Host '👾  Création de la machine virtuelle' -ForegroundColor Blue
 
-avdmanager -s create avd -n pixel --device "pixel_6" -k "system-images;android-34;google_apis;x86_64"
-   
+avdmanager -s create avd -n pixel --device "pixel_5" -k "system-images;android-34;google_apis;x86_64"
+
 Write-Host '👾  Activation du clavier sur émulateur' -ForegroundColor Blue
    
 replaceInFile $HOME"\.android\avd\pixel.avd\config.ini" "hw.keyboard=no" "hw.keyboard=yes"
