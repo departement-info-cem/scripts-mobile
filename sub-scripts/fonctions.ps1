@@ -175,3 +175,19 @@ function replaceInFile([string] $filePath, [string] $toReplace, [string] $replac
     # Save the replace line in a file  
     Set-Content -Path $filePath -Value $modifiedContent
 }
+
+function Invoke-Zip() {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Name,
+        [parameter(Mandatory = $true)]
+        [String]
+        $SrcDir
+    )
+    Write-Host '    👍 Compression de'$Name' débuté.' -ForegroundColor Blue
+
+    $ProgressPreference = 'SilentlyContinue'
+    & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y
+    $ProgressPreference = 'Continue'
+}

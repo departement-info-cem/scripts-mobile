@@ -1,7 +1,6 @@
 ﻿. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-
 Write-Host 'Mise en place du SDK Android' -ForegroundColor Blue
 
 Check-Or-Install-Java

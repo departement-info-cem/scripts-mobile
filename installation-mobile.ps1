@@ -34,8 +34,8 @@ if ($args[0] -eq "H4X0R_M0D") {
     }
 }
 
-#${env:scripty.scriptPath} = ".\sub-scripts"
-${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche\sub-scripts"
+${env:scripty.scriptPath} = ".\sub-scripts"
+# ${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche\sub-scripts"
 
 
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
