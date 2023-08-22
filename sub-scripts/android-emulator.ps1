@@ -6,7 +6,7 @@ Write-Host '🕰️  ANDROID EMULATOR Mise à jour des variables d''environnemen
 Set-Location $HOME
 Add-Env "ANDROID_SDK_ROOT" "$HOME\AppData\Local\Android\Sdk"
 Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
-Append-Env "Path" $HOME\AppData\Local\Android\Sdk\cmdline-tools\version\bin
+Append-Env "Path" $HOME\AppData\Local\Android\Sdk\cmdline-tools\latest\bin
 Append-Env "Path" $HOME\AppData\Local\Android\Sdk\emulator
 
 Write-Host '👾  Création de la machine virtuelle' -ForegroundColor Blue
