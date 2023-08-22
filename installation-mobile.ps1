@@ -15,7 +15,6 @@ ${env:scripty.rawRepoPath} = "https://github.com/departement-info-cem/scripts-mo
 # config du chemin local pour le stockage des GROS zips avant dézippage
 ${env:scripty.localTempPath} = "$HOME\temp\"
 
-
 Write-Host "Bienvenue sur l'installeur pour les cours de Mobile"
 Write-Host " Je vais télécharger des scripts d'installation depuis ${env:scripty.rawRepoPath}"
 Write-Host " Je vais également télécharger des fichiers ZIP depuis ${env:scripty.cachePath} vers ${env:scripty.localTempPath}"
@@ -41,8 +40,6 @@ ${env:scripty.scriptPath} = ".\sub-scripts"
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
-
-
 
 # Start-Process powershell -argument ".\firebase-flutterfire.ps1"
 

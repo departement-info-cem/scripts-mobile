@@ -8,7 +8,7 @@ function Check-Or-Install-Java() {
     #} else {
     # nécessite Java
     Write-Host "On a pas ouch un JDK"
-    Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk"
+    Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
     Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
@@ -131,9 +131,12 @@ function Invoke-Download {
         $Url,
         [parameter(Mandatory = $true)]
         [String]
-        $ZipName
+        $ZipName,
+        [parameter(Mandatory = $true)]
+        [bool]
+        $ForceRedownload
     )
-    if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip)) {
+    if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
         $ProgressPreference = 'Continue'

@@ -13,7 +13,7 @@ function Install-Idea(){
 
     if (-Not ( Test-Path $HOME\idea )) {
         #Invoke-Download "IntelliJ" "https://data.services.jetbrains.com/products/download?platform=windowsZip&code=IIU" "idea"
-        Invoke-Download "IntelliJ Idea" "$IDEA_URL" "idea"
+        Invoke-Download "IntelliJ Idea" "$IDEA_URL" "idea" $false
         Invoke-Install "IntelliJ Idea" "$HOME\idea"  "idea.zip"
        
     }
@@ -25,7 +25,7 @@ function Install-Idea(){
     Add-Env "Path" "$HOME\idea\bin"
 
     if (-Not(Test-Path $HOME\idea\plugins\flutter-intellij)) {
-        Invoke-Download "plugin Flutter" $FLUTTER_PLUGIN_URL_IDEA "plugin-flutter-idea"
+        Invoke-Download "plugin Flutter" $FLUTTER_PLUGIN_URL_IDEA "plugin-flutter-idea" $false
         Invoke-Install "plugin Flutter" "$HOME\idea\plugins" "plugin-flutter-idea.zip"
     }
     else {
@@ -33,7 +33,7 @@ function Install-Idea(){
     }
 
     if (-Not(Test-Path $HOME\idea\plugins\dart)) {
-        Invoke-Download "plugin Dart" $DART_PLUGIN_URL_IDEA "plugin-dart-idea"
+        Invoke-Download "plugin Dart" $DART_PLUGIN_URL_IDEA "plugin-dart-idea" $false
         Invoke-Install "plugin Dart" "$HOME\idea\plugins" "plugin-dart-idea.zip"
     }
     else {

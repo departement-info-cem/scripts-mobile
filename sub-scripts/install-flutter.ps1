@@ -29,7 +29,7 @@ function Install-Flutter() {
      Write-Host '🧠  Flutter SDK' -ForegroundColor Blue
 
      if (-Not ( Test-Path $HOME\flutter )) {
-         Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
+         Invoke-Download "Flutter" $FLUTTER_SDK "flutter" $false
          Invoke-Install "Flutter" "$HOME" "flutter.zip"
 
      }
