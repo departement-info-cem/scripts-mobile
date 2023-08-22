@@ -9,7 +9,7 @@ function Check-Or-Install-Java() {
     # nécessite Java
     Write-Host "On a pas ouch un JDK"
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk"
-    Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk"
+    Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
     Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
@@ -95,19 +95,19 @@ function Invoke-Install() {
         $ZipName
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
-    $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName.zip"
-    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName.zip"
+    $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
+    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
     $ProgressPreference = 'SilentlyContinue'
     # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)){
         # pas de 7zip, c'Est plus lent
-        Expand-Archive "${env:scripty.localTempPath}$ZipName.zip" -DestinationPath $InstallLocation
+        Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $InstallLocation
         $ProgressPreference = 'Continue'
     }
     else 
     {
-        & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName.zip" "-o$($InstallLocation)" -y 
+        & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y 
         $ProgressPreference = 'Continue'
     }
 }

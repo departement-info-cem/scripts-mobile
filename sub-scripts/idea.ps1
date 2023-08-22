@@ -14,7 +14,7 @@ function Install-Idea(){
     if (-Not ( Test-Path $HOME\idea )) {
         #Invoke-Download "IntelliJ" "https://data.services.jetbrains.com/products/download?platform=windowsZip&code=IIU" "idea"
         Invoke-Download "IntelliJ Idea" "$IDEA_URL" "idea"
-        Invoke-Install "IntelliJ Idea" "$HOME\idea"  "idea"
+        Invoke-Install "IntelliJ Idea" "$HOME\idea"  "idea.zip"
        
     }
     else {
@@ -26,7 +26,7 @@ function Install-Idea(){
 
     if (-Not(Test-Path $HOME\idea\plugins\flutter-intellij)) {
         Invoke-Download "plugin Flutter" $FLUTTER_PLUGIN_URL_IDEA "plugin-flutter-idea"
-        Invoke-Install "plugin Flutter" "$HOME\idea\plugins" "plugin-flutter-idea"
+        Invoke-Install "plugin Flutter" "$HOME\idea\plugins" "plugin-flutter-idea.zip"
     }
     else {
         Write-Host '    ✔️  Le plugin Flutter est déjà installé.'  -ForegroundColor Green
@@ -34,7 +34,7 @@ function Install-Idea(){
 
     if (-Not(Test-Path $HOME\idea\plugins\dart)) {
         Invoke-Download "plugin Dart" $DART_PLUGIN_URL_IDEA "plugin-dart-idea"
-        Invoke-Install "plugin Dart" "$HOME\idea\plugins" "plugin-dart-idea"
+        Invoke-Install "plugin Dart" "$HOME\idea\plugins" "plugin-dart-idea.zip"
     }
     else {
         Write-Host '    ✔️  Le plugin Dart est déjà installé.'  -ForegroundColor Green

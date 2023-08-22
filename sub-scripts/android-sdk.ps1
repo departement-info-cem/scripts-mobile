@@ -8,7 +8,7 @@ Check-Or-Install-Java
 
 # Detecter si un SDK sur l'ordinateur
 
-if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
+if (-Not ( Test-Path "${env:scripty.cachePath}\Sdk.7z" )) {
     Write-Host '    Pas de SDK trouvé en cache. Il va falloir construire' -ForegroundColor Green
     [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
     Write-Host '    TODO installer cmd-tools tout configurer, faire update puis zipper et poser dans le cache' -ForegroundColor Green
@@ -16,10 +16,10 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
 
     
     Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "sdk-manager"
-    Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager"
+    Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager.zip"
 
     #Invoke-Download "Android Platform Tools" $ANDROID_PLATFORM_TOOLS "sdk-tools"
-    #Invoke-Install "Android Platform Tools" "$HOME\sdk-tools" "sdk-tools"
+    #Invoke-Install "Android Platform Tools" "$HOME\sdk-tools" "sdk-tools.zip"
 
     # Merci a https://stackoverflow.com/questions/65262340/cmdline-tools-could-not-determine-sdk-root
 
@@ -55,9 +55,9 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Android.zip" )) {
 else {
     Write-Host '    Cache contient un SDK. On va le copier et installer' -ForegroundColor Green
     # Detecter si un SDK est présent sur la cache
-    if (-Not ( Test-Path "$HOME\AppData\Local\Android" )) {
+    if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
         [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
-        Invoke-Install "Android SDK" "$HOME\AppData\Local" "Android"
+        Invoke-Install "Android SDK" "$HOME\AppData\Local\Android" "Sdk.7z"
     }
     else {
         Write-Host '    ✔️  Android SDK déjà copié et déjà installé. Mettre a jour????' -ForegroundColor Green

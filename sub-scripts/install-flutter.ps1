@@ -30,7 +30,7 @@ function Install-Flutter() {
 
      if (-Not ( Test-Path $HOME\flutter )) {
          Invoke-Download "Flutter" $FLUTTER_SDK "flutter"
-         Invoke-Install "Flutter" "$HOME" "flutter"
+         Invoke-Install "Flutter" "$HOME" "flutter.zip"
 
      }
      else {

@@ -3,11 +3,11 @@
 # Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
 # Piste pour le PATH ? comment embarquer avec notre Java à nous
 
-$branche = "main"
+$branche = "dev"
 
 # config du chemin pour la cache des GROS zips
 #${env:scripty.cachePath} = 'D:\cache'
-${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cache"
+${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheDev"
 
 # config du chemin de téléchargement de base pour les sous-scripts
 ${env:scripty.rawRepoPath} = "https://github.com/departement-info-cem/scripts-mobile/archive/refs/heads/$branche.zip"
