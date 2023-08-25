@@ -97,23 +97,58 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
+    Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
+    Invoke-Unzip $Name ${env:scripty.localTempPath}\$ZipName $InstallLocation
+}
+
+function Invoke-Copy() {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Name,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Source,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Destination
+    )
+    Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
+    
+    Copy-Item  $Source -Destination $Destination
+
+    if(Test-Path $Destination) {
+        Write-Host '    ✔️ '$Name' copié.' -ForegroundColor Green
+    } else {
+        Write-Host '    ❌ '$Name' n''a pas pu être copié.' -ForegroundColor Red
+    }
+}
+
+function Invoke-Unzip() {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Name,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Source,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Destination
+    )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
-    $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
-    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
-    # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
-        Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $InstallLocation
+        Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $Destination
     }
     else {
         if (${env:scripty.debug} -eq $true) {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y
         }
         else {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y -bso0 -bsp0
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
-        
     }
 }
 

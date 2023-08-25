@@ -13,13 +13,11 @@ If (${env:scripty.dev} -eq $true) {
     $branche = "dev"
     ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheDev"
     ${env:scripty.scriptPath} = ".\sub-scripts"
-    ${env:scripty.verbose} = $true
 }
 Else {
     $branche = "main"
     ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cache"
     ${env:scripty.scriptPath} = "${env:scripty.localTempPath}scripts-mobile-$branche\sub-scripts"
-    ${env:scripty.verbose} = $false
 }
 
 # config du chemin de téléchargement de base pour les sous-scripts
