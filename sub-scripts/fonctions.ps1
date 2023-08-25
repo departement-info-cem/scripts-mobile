@@ -52,7 +52,7 @@ function Add-Env([string]$name, [string]$value) {
     }
     else {
         $existing = [Environment]::GetEnvironmentVariable("$name", $scope)
-        Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
+        Write-Host '    ✔️ '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
     }
     Invoke-Env-Reload
 }
