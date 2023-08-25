@@ -100,17 +100,20 @@ function Invoke-Install() {
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
     $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
     Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
-    $ProgressPreference = 'SilentlyContinue'
     # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
         Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $InstallLocation
-        $ProgressPreference = 'Continue'
     }
     else {
-        & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y 
-        $ProgressPreference = 'Continue'
+        if (${env:scripty.debug} -eq $true) {
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y
+        }
+        else {
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y -bso0 -bsp0
+        }
+        
     }
 }
 
@@ -139,25 +142,10 @@ function Invoke-Download {
     )
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
+
         Set-Location ${env:scripty.cachePath}
-        $ProgressPreference = 'Continue'
-        $done = $false
-        try { 
-            # tester optimisation performance avec  Start-BitsTransfer -Source $url -Destination $dest 
-            Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" 
-            #$wc = New-Object net.webclient
-            #$wc.Downloadfile($Url, "${env:scripty.cachePath}\$ZipName.zip")
-            #$response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
-            #$StatusCode = $Response.StatusCode
-            #$done = $true
-        } 
-        catch {
-            #$StatusCode = $_.Exception.Response.StatusCode.value__
-            #Write-Host "Erreur avec $StatusCode"
-        }
-        #Write-Host "ca a marché $done  ou pas $StatusCode"
-        $ProgressPreference = 'Continue'
-                
+        Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" 
+
         if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
             Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
         }
@@ -191,7 +179,19 @@ function Invoke-Zip() {
     )
     Write-Host '    👍 Compression de'$Name' débuté.' -ForegroundColor Blue
 
-    $ProgressPreference = 'SilentlyContinue'
-    & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y
-    $ProgressPreference = 'Continue'
+    if (${env:scripty.debug} -eq $true) {
+        & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y
+    }
+    else {
+        & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y -bso0 -bsp0
+    }
+
+    $parent = Split-Path -Path $SrcDir -Parent
+    $dirName = Split-Path -Path $SrcDir -Leaf
+
+    if(Test-Path $parent\$dirname.7z) {
+        Write-Host '    ✔️ '$Name' compressé.' -ForegroundColor Green
+    } else {
+        Write-Host '    ❌ '$Name' n''a pas pu être compressé.' -ForegroundColor Red
+    }
 }
