@@ -32,7 +32,7 @@ Write-Host " Je vais également télécharger des fichiers ZIP depuis ${env:scri
 [void](New-Item -type directory -Path ${env:scripty.cachePath} -Force)
 
 # download le repo sur la machine cible
-Invoke-WebRequest ${env:scripty.rawRepoPath} -OutFile "${env:scripty.localTempPath}scripts.zip" -DisplayName "    " -Description " "
+Invoke-WebRequest ${env:scripty.rawRepoPath} -OutFile "${env:scripty.localTempPath}scripts.zip"
 Expand-Archive "${env:scripty.localTempPath}scripts.zip" -DestinationPath ${env:scripty.localTempPath} -Force
 
 if ($args[0] -eq "H4X0R_M0D") {
