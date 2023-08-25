@@ -3,8 +3,8 @@
 # Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
 # Piste pour le PATH ? comment embarquer avec notre Java à nous
 
-${env:scripty.dev} = $true
-${env:scripty.debug} = $true
+${env:scripty.dev} = $false
+${env:scripty.debug} = $false
 
 # config du chemin local pour le stockage des GROS zips avant dézippage
 ${env:scripty.localTempPath} = "$HOME\temp\"
