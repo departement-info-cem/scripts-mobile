@@ -3,12 +3,13 @@
 # Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
 # Piste pour le PATH ? comment embarquer avec notre Java à nous
 
-$devMode = $false
+${env:scripty.dev} = $true
+${env:scripty.debug} = $true
 
 # config du chemin local pour le stockage des GROS zips avant dézippage
 ${env:scripty.localTempPath} = "$HOME\temp\"
 
-If ($devMode -eq $true) {
+If (${env:scripty.dev} -eq $true) {
     $branche = "dev"
     ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheDev"
     ${env:scripty.scriptPath} = ".\sub-scripts"
