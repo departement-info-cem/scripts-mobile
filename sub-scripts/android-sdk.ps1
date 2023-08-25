@@ -14,7 +14,7 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Sdk.7z" )) {
 
 
     
-    Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "sdk-manager"
+    Invoke-Download "Android SDK manager" $CMD_LINE_TOOLS_URL "sdk-manager"
     Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager.zip"
 
     #Invoke-Download "Android Platform Tools" $ANDROID_PLATFORM_TOOLS "sdk-tools"

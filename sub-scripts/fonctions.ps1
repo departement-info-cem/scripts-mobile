@@ -178,14 +178,12 @@ function Invoke-Download {
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
 
-        Set-Location ${env:scripty.cachePath}
-        Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" 
+        Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" -DisplayName "    " -Description " "
 
         if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
             Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
         }
         else {
-            Set-Location $HOME
             Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
             exit
         }
