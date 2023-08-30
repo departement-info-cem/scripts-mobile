@@ -21,12 +21,15 @@ flowchart LR
     androidstudio["Install Android Studio"]
     androidsdk["Install Android SDK"]
     flutter["Install Flutter"]
+    projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
     clone --> flutter
     clone --> idea
     clone --> androidstudio
     androidstudio --> androidsdk
     androidsdk --> emulator
+    emulator --> projetflutter
+    flutter --> projetflutter
 ```
 
 ## Pour les profs pour changer les versions
