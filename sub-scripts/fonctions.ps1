@@ -96,11 +96,13 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
-    Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
+    Write-Host ' Installation de'$Name' débuté.' -ForegroundColor Blue
     $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
+    Write-Host '    > Copie de'$ZIP_LOCATION' débuté vers '${env:scripty.localTempPath}$ZipName'.' -ForegroundColor Blue
     Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
     $ProgressPreference = 'SilentlyContinue'
     # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
+    Write-Host '    > Extraction de'${env:scripty.localTempPath}$ZipName' vers '$InstallLocation'.' -ForegroundColor Blue
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
@@ -111,6 +113,8 @@ function Invoke-Install() {
         & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y 
         $ProgressPreference = 'Continue'
     }
+    Write-Host '    > Extraction terminée.' -ForegroundColor Blue
+
 }
 
 # Source : https://stackoverflow.com/a/9701907
@@ -136,6 +140,7 @@ function Invoke-Download {
         [bool]
         $ForceRedownload
     )
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName.zip"
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
@@ -143,7 +148,7 @@ function Invoke-Download {
         $done = $false
         try { 
             # tester optimisation performance avec  Start-BitsTransfer -Source $url -Destination $dest 
-            Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" 
+            Start-BitsTransfer -Source $Url -Destination $cacheLocation
             #$wc = New-Object net.webclient
             #$wc.Downloadfile($Url, "${env:scripty.cachePath}\$ZipName.zip")
             #$response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
@@ -157,7 +162,7 @@ function Invoke-Download {
         #Write-Host "ca a marché $done  ou pas $StatusCode"
         $ProgressPreference = 'Continue'
                 
-        if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
+        if (Test-Path $cacheLocation ) {
             Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
         }
         else {
@@ -167,7 +172,7 @@ function Invoke-Download {
         }
     }
     else {
-        Write-Host '    ✔️ '$Name' est déjà téléchargé.' -ForegroundColor Green
+        Write-Host '    ✔️ '$Name' est déjà présent dans '$cacheLocation'.' -ForegroundColor Green
     }
 }
 

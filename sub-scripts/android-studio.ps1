@@ -33,6 +33,6 @@ else {
     Write-Host '    ✔️  Le plugin Dart est déjà installé.'  -ForegroundColor Green
 }
 
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
+#Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
 
 $User = Read-Host -Prompt 'Installation de Android Studio complétée, tu peux fermer cette fenetre'

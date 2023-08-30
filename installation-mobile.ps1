@@ -3,7 +3,7 @@
 # Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
 # Piste pour le PATH ? comment embarquer avec notre Java à nous
 
-$devMode = $false
+$devMode = $true
 
 # config du chemin local pour le stockage des GROS zips avant dézippage
 ${env:scripty.localTempPath} = "$HOME\temp\"
@@ -43,6 +43,7 @@ if ($args[0] -eq "H4X0R_M0D") {
 }
 
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
 
