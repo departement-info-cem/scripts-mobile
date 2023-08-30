@@ -19,6 +19,7 @@ flowchart LR
     clone["Clone repo"]
     idea["Install Intellij"]
     androidstudio["Install Android Studio"]
+    startandroidstudio["Partir Android Studio"]
     androidsdk["Install Android SDK"]
     flutter["Install Flutter"]
     projetflutter["Première run Flutter"]
@@ -26,7 +27,9 @@ flowchart LR
     clone --> flutter
     clone --> idea
     clone --> androidstudio
-    androidstudio --> androidsdk
+    androidsdk --> startandroidstudio;
+    androidstudio --> startandroidstudio;
+    clone --> androidsdk
     androidsdk --> emulator
     emulator --> projetflutter
     flutter --> projetflutter
