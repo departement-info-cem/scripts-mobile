@@ -35,4 +35,4 @@ else {
 
 #Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
 
-$User = Read-Host -Prompt 'Installation de Android Studio complétée, tu peux fermer cette fenetre'
+#$User = Read-Host -Prompt 'Installation de Android Studio complétée, tu peux fermer cette fenetre'
