@@ -39,6 +39,7 @@ function Get-Env-Contains([string]$name, [string]$value) {
 function Invoke-Env-Reload() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
     $env:ANDROID_SDK_ROOT = [System.Environment]::GetEnvironmentVariable("ANDROID_SDK_ROOT", $scope)
+    $env:JAVA_HOME = [System.Environment]::GetEnvironmentVariable("JAVA_HOME", $scope)
     $env:ANDROID_HOME = [System.Environment]::GetEnvironmentVariable("ANDROID_HOME", $scope)
 }
 
