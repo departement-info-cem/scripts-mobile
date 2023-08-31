@@ -39,7 +39,8 @@ function Install-Idea(){
     else {
         Write-Host '    ✔️  Le plugin Dart est déjà installé.'  -ForegroundColor Green
     }
-    $User = Read-Host -Prompt 'Installation de Intellij et de ses plugins terminées, vous pouvez fermer CETTE fenetre'
+    #$User = Read-Host -Prompt 'Installation de Intellij et de ses plugins terminées, vous pouvez fermer CETTE fenetre'
 }
 
 Install-Idea
+Start-Process -FilePath C:\Users\joris.deguet\idea\bin\idea64.exe
