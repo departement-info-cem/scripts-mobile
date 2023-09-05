@@ -79,7 +79,7 @@ Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.p
 
 #sdkmanager --list_installed
 
-$studiopath = "$HOME\android-studio\bin\studio64.exe"  C:\Users\joris.deguet\android-studio\bin
+$studiopath = "$HOME\android-studio\bin\studio64.exe"
 Wait-Until-File-Exists($studiopath)
 Start-Process -FilePath $studiopath
 
