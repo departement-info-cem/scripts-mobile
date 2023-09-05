@@ -78,6 +78,9 @@ Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.p
 #Write-Host '    ✔️  Outils installé' -ForegroundColor Green
 
 #sdkmanager --list_installed
-Start-Process -FilePath C:\Users\joris.deguet\android-studio\bin\studio64.exe
+
+$studiopath = "$HOME\bin\studio64.exe"
+Wait-Until-File-Exists($studiopath)
+Start-Process -FilePath $studiopath
 
 #$User = Read-Host -Prompt 'Installation du SDK Android terminée vous devriez pouvoir partir Android Studio et fermer cette fenetre'
