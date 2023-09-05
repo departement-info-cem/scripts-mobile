@@ -67,6 +67,8 @@ function Install-FlutterFire-Cli(){
     dart pub global activate flutterfire_cli
 }
 
+# TODO wait until a certain file in SDK exists 
+
 Install-Flutter
 [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
 [void](flutter config --android-studio-dir="$HOME\android-studio")
@@ -78,17 +80,10 @@ flutter doctor --android-licenses
 Set-Location $HOME
 Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️'`n -ForegroundColor Green
 flutter doctor
-Write-Host '    👍 Création de projet fake pour first run.' -ForegroundColor Blue
-Set-Location $HOME
-flutter create fake_start
-Write-Host '    👍 Premier démarrage.' -ForegroundColor Blue
-Set-Location $HOME\fake_start
-flutter run
-$User = Read-Host -Prompt 'La mise à jour de Flutter est faite, il faut attendre la fin de installation Android vous pouvez fermer cette fenetre'
+flutter precache
 
 
+Start-Process powershell -argument "${env:scripty.scriptPath}\start-flutter.ps1"
 #Update-Npm
 #Install-Firebase-Cli
 #Install-FlutterFire-Cli
-
- $User = Read-Host -Prompt 'Installation de Flutter est faite dans $HOME\flutter, vous pouvez fermer cette fenetre'
