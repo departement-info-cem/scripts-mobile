@@ -16,6 +16,19 @@ function Check-Or-Install-Java() {
     #}
 }
 
+    
+ Function Wait-Until-File-Exists
+ {
+    Param ($file)
+    While (!(Test-Path $file  -ErrorAction SilentlyContinue))
+    {
+        Write-Host '   Attend que le fichier '$file' existe'
+        Start-Sleep -s 2
+    }
+    Write-Host '   Trouve que le fichier '$file' existe'
+ }
+
+ #Wait-Until-File-Exists('C:\prout.txt')
 
 # per https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists([string]$name) {
