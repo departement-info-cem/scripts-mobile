@@ -44,7 +44,7 @@ function Test-CommandExists([string]$name) {
 } 
 
 function Get-Env-Contains([string]$name, [string]$value) {
-    Write-Host "looking for $value in $name"
+    #Write-Host "looking for $value in $name"
     Write-Host [System.Environment]::GetEnvironmentVariable($name, $scope)
     return [System.Environment]::GetEnvironmentVariable($name, $scope) -like "*$value*"
 }
@@ -80,7 +80,7 @@ function Append-Env([string]$name, [string]$value) {
             $new_value += [IO.Path]::PathSeparator
         }
         $new_value += $value + ";"
-        Write-Host "nouvelle valeur $new_value"
+        #Write-Host "nouvelle valeur $new_value"
         [Environment]::SetEnvironmentVariable( "$name", $new_value, $scope )
         if (Get-Env-Contains $name $new_value) {
             Invoke-Env-Reload
