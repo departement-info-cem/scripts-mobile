@@ -42,7 +42,7 @@ if ($args[0] -eq "H4X0R_M0D") {
     }
 }
 
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
+Start-Process powershell -ArgumentList "-noexit", "-command [console]::windowwidth=200; [console]::windowtop=50; [console]::windowleft=50; [console]::windowheight=200;","${env:scripty.scriptPath}\android-studio.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
