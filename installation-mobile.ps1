@@ -40,12 +40,13 @@ Expand-Archive "${env:scripty.localTempPath}scripts.zip" -DestinationPath ${env:
 #        Start-Process powershell -argument "${env:scripty.scriptPath}\cmatrix.ps1"
 #    }
 #}
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
+
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
-Start-Process powershell -argument "${env:scripty.scriptPath}\install-JDK.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\install-jdk.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
 
-Start-Process powershell -ArgumentList "-command [console]::windowwidth=80; [console]::windowtop=10; [console]::windowleft=10; [console]::windowheight=50;","${env:scripty.scriptPath}\status.ps1"
+Start-Process powershell -ArgumentList "-command [console]::windowtop=10; [console]::windowleft=10; ","${env:scripty.scriptPath}\status.ps1"
 
 #$User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
