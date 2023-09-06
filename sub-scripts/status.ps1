@@ -25,7 +25,7 @@ Do {
     Write-Host '    Flutter SDK nope.' -ForegroundColor Red
   }
   else {
-    Write-Host '    Flutter JDK  installé.' -ForegroundColor Green
+    Write-Host '    Flutter JDK ok.' -ForegroundColor Green
   }
   if (-Not ( Test-Path "$HOME\android-studio" )) {
     Write-Host '    Android Studio nope.'  -ForegroundColor Red

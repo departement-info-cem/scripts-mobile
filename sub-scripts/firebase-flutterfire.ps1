@@ -24,7 +24,7 @@ function Install-FlutterFire-Cli(){
 }
 
 
-Update-Npm
+#Update-Npm
 Install-Firebase-Cli
 Install-FlutterFire-Cli
 

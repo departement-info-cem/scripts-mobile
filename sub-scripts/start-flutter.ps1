@@ -2,8 +2,8 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-#TODO wait on emulator to exist
-Wait-Until-File-Exists("$HOME\flutter")
+#wait on flutter to exist
+Wait-Until-File-Exists("$HOME\flutter\bin\flutter")
 
 Write-Host 'Démarrage Flutter.' -ForegroundColor Blue
 Set-Location $HOME
