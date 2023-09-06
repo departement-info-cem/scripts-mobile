@@ -9,7 +9,7 @@ Do {
   $date = Get-Date
   Write-Host "status des installations @ $date" -ForegroundColor Blue
 
-  if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
+  if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk\fini.txt" )) {
     Write-Host '    Android SDK pas là.' -ForegroundColor Red
   }
   else {
@@ -24,7 +24,7 @@ Do {
     Write-Host '    ✔️  Java JDK  installé.' -ForegroundColor Green
   }
 
-  if (-Not ( Test-Path $HOME\flutter )) {
+  if (-Not ( Test-Path "$HOME\flutter\fini.txt" )) {
     Write-Host '    Flutter SDK pas là.' -ForegroundColor Red
   }
   else {
