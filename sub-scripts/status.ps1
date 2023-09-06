@@ -15,39 +15,29 @@ Do {
   else {
     Write-Host '    ✔️  Android SDK déjà copié et déjà installé.' -ForegroundColor Green
   }
-
-
-  if (-Not ( Test-CommandExists('java') )) {
+  if (-Not ( Test-Path "$HOME\jdk\fini.txt" )) {
     Write-Host '    Java JDK pas là.' -ForegroundColor Red
   }
   else {
     Write-Host '    ✔️  Java JDK  installé.' -ForegroundColor Green
   }
-
   if (-Not ( Test-Path "$HOME\flutter\fini.txt" )) {
     Write-Host '    Flutter SDK pas là.' -ForegroundColor Red
   }
   else {
     Write-Host '    ✔️  Flutter JDK  installé.' -ForegroundColor Green
   }
-
-
-
-  if (-Not ( Test-Path $HOME\android-studio )) {
+  if (-Not ( Test-Path "$HOME\android-studio" )) {
     Write-Host '    Android Studio pas là.'  -ForegroundColor Red
   }
   else {
     Write-Host '    ✔️  Android Studio est déjà installé.'  -ForegroundColor Green
   }
-
-
-  if (-Not ( Test-Path $HOME\idea )) {
+  if (-Not ( Test-Path "$HOME\idea\fini.txt" )) {
     Write-Host '    Intellij pas là.'  -ForegroundColor Red
   }
   else {
     Write-Host '    ✔️  Intellij est déjà installé.'  -ForegroundColor Green
   }
-
   Start-Sleep -s 10  # attend 10 seecondes avant de regarder
-
 } While ($true)

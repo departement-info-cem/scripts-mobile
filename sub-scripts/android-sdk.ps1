@@ -62,7 +62,7 @@ else {
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.ps1"
 
 
-$finipath = "$HOME\android-studio\fini.txt"
+$finipath = "$HOME\android-studio"
 $studiopath = "$HOME\android-studio\bin\studio64.exe"
 Wait-Until-File-Exists($finipath)
 Start-Sleep -s 30
