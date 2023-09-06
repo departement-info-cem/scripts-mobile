@@ -7,7 +7,7 @@ function Check-Or-Install-Java() {
     # Write-Host "On a un JDK ici ${env:JAVA_HOME}"
     #} else {
     # nécessite Java
-    Write-Host "On a pas ouch un JDK"
+    Write-Host "JDK non installé ..."
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
     Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
@@ -16,6 +16,17 @@ function Check-Or-Install-Java() {
     #}
 }
 
+    
+ Function Wait-Until-File-Exists
+ {
+    Param ($file)
+    While (!(Test-Path $file  -ErrorAction SilentlyContinue))
+    {
+        Write-Host '   Attend que le fichier '$file' existe'
+        Start-Sleep -s 2
+    }
+    Write-Host '   Trouve que le fichier '$file' existe'
+ }
 
 # per https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists([string]$name) {
@@ -31,7 +42,7 @@ function Test-CommandExists([string]$name) {
 } 
 
 function Get-Env-Contains([string]$name, [string]$value) {
-    Write-Host "looking for $value in $name"
+    #Write-Host "looking for $value in $name"
     Write-Host [System.Environment]::GetEnvironmentVariable($name, $scope)
     return [System.Environment]::GetEnvironmentVariable($name, $scope) -like "*$value*"
 }
@@ -67,7 +78,7 @@ function Append-Env([string]$name, [string]$value) {
             $new_value += [IO.Path]::PathSeparator
         }
         $new_value += $value + ";"
-        Write-Host "nouvelle valeur $new_value"
+        #Write-Host "nouvelle valeur $new_value"
         [Environment]::SetEnvironmentVariable( "$name", $new_value, $scope )
         if (Get-Env-Contains $name $new_value) {
             Invoke-Env-Reload
@@ -150,6 +161,10 @@ function Invoke-Unzip() {
             & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
+    Out-File -FilePath "$InstallLocation\fini.txt"
+    #New-Item -Name  -ItemType File
+    Write-Host '    > Extraction terminée.' -ForegroundColor Blue
+
 }
 
 # Source : https://stackoverflow.com/a/9701907
@@ -175,21 +190,26 @@ function Invoke-Download {
         [bool]
         $ForceRedownload
     )
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName.zip"
     if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
-
-        Start-BitsTransfer -Source $Url -Destination "${env:scripty.cachePath}\$ZipName.zip" -DisplayName "    " -Description " "
-
-        if (Test-Path ${env:scripty.cachePath}/$ZipName.zip ) {
+        Set-Location ${env:scripty.cachePath}
+        $ProgressPreference = 'Continue'
+        $done = $false
+        Start-BitsTransfer -Source $Url -Destination $cacheLocation
+        $ProgressPreference = 'Continue'
+                
+        if (Test-Path $cacheLocation ) {
             Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
         }
         else {
+            Set-Location $HOME
             Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
             exit
         }
     }
     else {
-        Write-Host '    ✔️ '$Name' est déjà téléchargé.' -ForegroundColor Green
+        Write-Host '    ✔️ '$Name' est déjà présent dans '$cacheLocation'.' -ForegroundColor Green
     }
 }
 

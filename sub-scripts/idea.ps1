@@ -1,12 +1,11 @@
-﻿. "$PSScriptRoot\urls-et-versions.ps1"
+$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
 Invoke-Env-Reload
 
-Write-Host '🕰️  Mise à jour des variables d''environnement' -ForegroundColor Blue
-
 function Install-Idea(){
-    Write-Host '🧠  IntelliJ' -ForegroundColor Blue
+    Write-Host 'IntelliJ' -ForegroundColor Blue
 
     if (-Not ( Test-Path $HOME\idea )) {
         #Invoke-Download "IntelliJ" "https://data.services.jetbrains.com/products/download?platform=windowsZip&code=IIU" "idea"
@@ -36,7 +35,8 @@ function Install-Idea(){
     else {
         Write-Host '    ✔️  Le plugin Dart est déjà installé.'  -ForegroundColor Green
     }
-    $User = Read-Host -Prompt 'Installation de Intellij et de ses plugins terminées, vous pouvez fermer CETTE fenetre'
+    #$User = Read-Host -Prompt 'Installation de Intellij et de ses plugins terminées, vous pouvez fermer CETTE fenetre'
 }
 
 Install-Idea
+Start-Process -FilePath C:\Users\joris.deguet\idea\bin\idea64.exe

@@ -1,9 +1,10 @@
-﻿. "$PSScriptRoot\urls-et-versions.ps1"
+﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
 Invoke-Env-Reload
 
-Write-Host '🤖  Android Studio' -ForegroundColor Blue
+Write-Host 'Android Studio' -ForegroundColor Blue
 
 if (-Not ( Test-Path $HOME\android-studio )) {
     Invoke-Download "Android Studio" $STUDIO_URL "android-studio" $false
@@ -32,7 +33,3 @@ if (-Not(Test-Path $HOME\android-studio\plugins\dart)) {
 else {
     Write-Host '    ✔️  Le plugin Dart est déjà installé.'  -ForegroundColor Green
 }
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
-
-$User = Read-Host -Prompt 'Installation de Android Studio complétée, tu peux fermer cette fenetre'

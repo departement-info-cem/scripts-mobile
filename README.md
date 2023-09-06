@@ -8,11 +8,32 @@ Les scripts suivants permettent d'installer:
 
 ## Procédure
 
-1. télécharger le script suivant : [script PowerShell](https://raw.githubusercontent.com/departement-info-cem/scripts-mobile/main/installation-mobile.ps1 "download")
-2. si le fichier s'ouvre dans le navigateur, faire CTRL+S pour l'enregistrer
-3. cliquer droit sur le fichier téléchargé
-4. choisir "Exécuter avec PowerShell"
+1. Télécharger le script suivant : [script PowerShell](https://raw.githubusercontent.com/departement-info-cem/scripts-mobile/main/installation-mobile.ps1 "download")
+2. Si le fichier s'ouvre dans le navigateur, faire CTRL+S pour l'enregistrer, ou cliquer droit sur le lien et faire "Enregistrer sous"
+3. Cliquer droit sur le fichier téléchargé
+4. Choisir "Exécuter avec PowerShell"
 
+## Diagramme
+```mermaid
+flowchart LR
+    clone["Clone repo"]
+    idea["Install Intellij"]
+    androidstudio["Install Android Studio"]
+    startandroidstudio["Partir Android Studio"]
+    androidsdk["Install Android SDK"]
+    flutter["Install Flutter"]
+    projetflutter["Première run Flutter"]
+    emulator["Lancer émulateur"]
+    clone --> flutter
+    clone --> idea
+    clone --> androidstudio
+    androidsdk --> startandroidstudio;
+    androidstudio --> startandroidstudio;
+    clone --> androidsdk
+    androidsdk --> emulator
+    emulator --> projetflutter
+    flutter --> projetflutter
+```
 
 ## Pour les profs pour changer les versions
 1. Ouvrir et modifier https://github.com/departement-info-cem/scripts-mobile/blob/main/sub-scripts/urls-et-versions.ps1
