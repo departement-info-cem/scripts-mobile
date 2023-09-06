@@ -1,7 +1,8 @@
-﻿. "$PSScriptRoot\urls-et-versions.ps1"
+﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-Write-Host 'Mise en place du SDK Android' -ForegroundColor Blue
+Write-Host 'Installe le SDK Android' -ForegroundColor Blue
 
 Check-Or-Install-Java
 

@@ -1,4 +1,11 @@
 ﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+. "$PSScriptRoot\urls-et-versions.ps1"
+. "$PSScriptRoot\fonctions.ps1"
+
+# https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
+function Install-Npm() {
+
+}
 
 
 function Update-Npm() { 
@@ -21,4 +28,4 @@ Update-Npm
 Install-Firebase-Cli
 Install-FlutterFire-Cli
 
- $User = Read-Host -Prompt 'Installation de Firebase et Flutterfire faites, vous pouvez fermer cette fenetre'
+#$User = Read-Host -Prompt 'Installation de Firebase et Flutterfire faites, vous pouvez fermer cette fenetre'

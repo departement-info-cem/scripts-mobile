@@ -1,4 +1,5 @@
-﻿. "$PSScriptRoot\urls-et-versions.ps1"
+﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+. "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
 
@@ -18,7 +19,6 @@ function Remove-Env([string]$name, [string]$value) {
         'User'
     )
 }
-
 
 Invoke-Env-Reload
 
@@ -47,26 +47,6 @@ function Install-Flutter() {
      flutter doctor --android-licenses
 }
 
-# https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
-function Install-Npm() {
-
-}
-
-function Update-Npm() { 
-     Write-Host '    ✔️  Mise à jour de NPM.'  -ForegroundColor Green
-    npm install -g npm@latest
-}
-
-function Install-Firebase-Cli() {
-     Write-Host '    ✔️ Installation de firebase cli.'  -ForegroundColor Green
-     npm install -g firebase-tools
-}
-
-function Install-FlutterFire-Cli(){
-    Write-Host '    ✔️ Installation de FlutterFire cli.'  -ForegroundColor Green
-    dart pub global activate flutterfire_cli
-}
-
 # TODO wait until a certain file in SDK exists 
 
 Install-Flutter
@@ -82,8 +62,8 @@ Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️
 flutter doctor
 flutter precache
 
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\start-flutter.ps1"
+Start-Process powershell -ArgumentList "-noexit", "-command [console]::windowwidth=200; [console]::windowtop=50; [console]::windowleft=50; [console]::windowheight=200;","${env:scripty.scriptPath}\start-flutter.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\firebase-flutterfire.ps1"
 #Update-Npm
 #Install-Firebase-Cli
 #Install-FlutterFire-Cli

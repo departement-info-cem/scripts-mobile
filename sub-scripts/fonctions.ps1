@@ -7,7 +7,7 @@ function Check-Or-Install-Java() {
     # Write-Host "On a un JDK ici ${env:JAVA_HOME}"
     #} else {
     # nécessite Java
-    Write-Host "On a pas ouch un JDK"
+    Write-Host "JDK non installé ..."
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
     Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
@@ -27,8 +27,6 @@ function Check-Or-Install-Java() {
     }
     Write-Host '   Trouve que le fichier '$file' existe'
  }
-
- #Wait-Until-File-Exists('C:\prout.txt')
 
 # per https://devblogs.microsoft.com/scripting/use-a-powershell-function-to-see-if-a-command-exists/
 function Test-CommandExists([string]$name) {
@@ -110,13 +108,16 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
-    Write-Host ' Installation de'$Name' débuté.' -ForegroundColor Blue
+    Write-Host 'Installation de'$Name' débutée' -ForegroundColor Blue
     $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
-    Write-Host '    > Copie de'$ZIP_LOCATION' débuté vers '${env:scripty.localTempPath}$ZipName'.' -ForegroundColor Blue
+    Write-Host '  depuis '$ZIP_LOCATION'' -ForegroundColor Blue
+    Write-Host '  vers '${env:scripty.localTempPath}$ZipName'' -ForegroundColor Blue
+
     Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
     $ProgressPreference = 'SilentlyContinue'
     # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
-    Write-Host '    > Extraction de'${env:scripty.localTempPath}$ZipName' vers '$InstallLocation'.' -ForegroundColor Blue
+    Write-Host '  Dézippe '${env:scripty.localTempPath}$ZipName' ' -ForegroundColor Blue
+    Write-Host '  @ '$InstallLocation'.' -ForegroundColor Blue
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
@@ -160,20 +161,7 @@ function Invoke-Download {
         Set-Location ${env:scripty.cachePath}
         $ProgressPreference = 'Continue'
         $done = $false
-        try { 
-            # tester optimisation performance avec  Start-BitsTransfer -Source $url -Destination $dest 
-            Start-BitsTransfer -Source $Url -Destination $cacheLocation
-            #$wc = New-Object net.webclient
-            #$wc.Downloadfile($Url, "${env:scripty.cachePath}\$ZipName.zip")
-            #$response = Invoke-WebRequest  $Url -OutFile "$ZipName.zip"
-            #$StatusCode = $Response.StatusCode
-            #$done = $true
-        } 
-        catch {
-            #$StatusCode = $_.Exception.Response.StatusCode.value__
-            #Write-Host "Erreur avec $StatusCode"
-        }
-        #Write-Host "ca a marché $done  ou pas $StatusCode"
+        Start-BitsTransfer -Source $Url -Destination $cacheLocation
         $ProgressPreference = 'Continue'
                 
         if (Test-Path $cacheLocation ) {
