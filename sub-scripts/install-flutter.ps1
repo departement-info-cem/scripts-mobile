@@ -22,7 +22,6 @@ function Remove-Env([string]$name, [string]$value) {
 
 Invoke-Env-Reload
 
-Write-Host '🕰️  Mise à jour des variables d''environnement' -ForegroundColor Blue
 
 
 function Install-Flutter() {
@@ -43,11 +42,12 @@ function Install-Flutter() {
      [void](flutter config --android-studio-dir="$HOME\android-studio")
      Write-Host '    👍 Mise à jour' -ForegroundColor Blue
      [void](flutter upgrade)
-     Write-Host '    👍 Accepter les licenses.' -ForegroundColor Blue
+     Write-Host '    👍 Accepter les licenses. En attente du SDK Android ...' -ForegroundColor Blue
      flutter doctor --android-licenses
 }
 
 # TODO wait until a certain file in SDK exists 
+Write-Host 'Flutter'
 
 Install-Flutter
 [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")

@@ -5,8 +5,8 @@
 Invoke-Env-Reload
 
 Do {
-
-  Write-Host 'status des installations' -ForegroundColor Blue
+  Write-Host '---------------------------------------------'
+  Write-Host 'status des installations'Get-Date'.' -ForegroundColor Blue
 
   if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
     Write-Host '    Android SDK pas là.' -ForegroundColor Red
@@ -23,7 +23,7 @@ Do {
     Write-Host '    ✔️  Java JDK  installé.' -ForegroundColor Green
   }
 
-  if (-Not ( Test-CommandExists('flutter') )) {
+  if (-Not ( Test-Path $HOME\flutter )) {
     Write-Host '    Flutter SDK pas là.' -ForegroundColor Red
   }
   else {
@@ -47,6 +47,6 @@ Do {
     Write-Host '    ✔️  Intellij est déjà installé.'  -ForegroundColor Green
   }
 
-  Start-Sleep -s 5  # attend 10 seecondes avant de regarder
+  Start-Sleep -s 10  # attend 10 seecondes avant de regarder
 
 } While ($true)

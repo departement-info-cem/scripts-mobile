@@ -46,6 +46,6 @@ Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
 
-Start-Process powershell -ArgumentList "-command [console]::windowwidth=200; [console]::windowtop=50; [console]::windowleft=50; [console]::windowheight=200;","${env:scripty.scriptPath}\status.ps1"
+Start-Process powershell -ArgumentList "-command [console]::windowwidth=80; [console]::windowtop=10; [console]::windowleft=10; [console]::windowheight=50;","${env:scripty.scriptPath}\status.ps1"
 
 #$User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
