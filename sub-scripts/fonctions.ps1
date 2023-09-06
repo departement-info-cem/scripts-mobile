@@ -128,7 +128,8 @@ function Invoke-Install() {
         & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y 
         $ProgressPreference = 'Continue'
     }
-    New-Item -Name "$InstallLocation\fini.txt" -ItemType File
+    Out-File -FilePath "$InstallLocation\fini.txt"
+    #New-Item -Name  -ItemType File
     Write-Host '    > Extraction terminée.' -ForegroundColor Blue
 
 }
