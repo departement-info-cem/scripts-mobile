@@ -4,7 +4,7 @@
 
 Invoke-Env-Reload
 
-Write-Host '🤖  Android Studio' -ForegroundColor Blue
+Write-Host 'Android Studio' -ForegroundColor Blue
 
 if (-Not ( Test-Path $HOME\android-studio )) {
     Invoke-Download "Android Studio" $STUDIO_URL "android-studio" $false

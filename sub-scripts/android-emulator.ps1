@@ -2,7 +2,7 @@
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-Write-Host 'EMULATOR' -ForegroundColor Blue
+Write-Host 'Emulateur Android ' -ForegroundColor Blue
 
 Set-Location $HOME
 Add-Env "ANDROID_SDK_ROOT" "$HOME\AppData\Local\Android\Sdk"

@@ -4,10 +4,8 @@
 
 Invoke-Env-Reload
 
-Write-Host '🕰️  Mise à jour des variables d''environnement' -ForegroundColor Blue
-
 function Install-Idea(){
-    Write-Host '🧠  IntelliJ' -ForegroundColor Blue
+    Write-Host 'IntelliJ' -ForegroundColor Blue
 
     if (-Not ( Test-Path $HOME\idea )) {
         #Invoke-Download "IntelliJ" "https://data.services.jetbrains.com/products/download?platform=windowsZip&code=IIU" "idea"

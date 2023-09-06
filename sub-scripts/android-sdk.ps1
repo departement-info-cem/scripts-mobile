@@ -2,7 +2,7 @@
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-Write-Host 'Installe le SDK Android' -ForegroundColor Blue
+Write-Host 'SDK Android' -ForegroundColor Blue
 
 Check-Or-Install-Java
 

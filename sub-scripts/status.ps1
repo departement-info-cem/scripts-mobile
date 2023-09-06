@@ -3,10 +3,11 @@
 . "$PSScriptRoot\fonctions.ps1"
 
 Invoke-Env-Reload
-
+Write-Host 'Script de status sur les installations :::' -ForegroundColor Blue
 Do {
   Write-Host '---------------------------------------------'
-  Write-Host 'status des installations'Get-Date'.' -ForegroundColor Blue
+  $date = Get-Date
+  Write-Host "status des installations @ $date" -ForegroundColor Blue
 
   if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
     Write-Host '    Android SDK pas là.' -ForegroundColor Red
