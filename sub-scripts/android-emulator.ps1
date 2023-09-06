@@ -10,7 +10,13 @@ Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
 Append-Env "Path" $HOME\AppData\Local\Android\Sdk\cmdline-tools\latest\bin
 Append-Env "Path" $HOME\AppData\Local\Android\Sdk\emulator
 
+$finijavapath = "$HOME\jdk\fini.txt"
+Wait-Until-File-Exists($finijavapath)
+
 Write-Host '👾  Création de la machine virtuelle' -ForegroundColor Blue
+
+# il faut attendre le JDK plus récent:
+
 
 avdmanager -s create avd -n pixel --device "pixel_5" -k "system-images;android-33;google_apis;x86_64"
 
