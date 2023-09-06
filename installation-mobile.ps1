@@ -40,9 +40,9 @@ Expand-Archive "${env:scripty.localTempPath}scripts.zip" -DestinationPath ${env:
 #        Start-Process powershell -argument "${env:scripty.scriptPath}\cmatrix.ps1"
 #    }
 #}
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\android-studio.ps1"
+Start-Process powershell -argument "${env:scripty.scriptPath}\install-JDK.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
 

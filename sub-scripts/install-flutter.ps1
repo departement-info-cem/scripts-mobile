@@ -62,7 +62,7 @@ Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️
 flutter doctor
 flutter precache
 
-Start-Process powershell -ArgumentList "-noexit", "-command [console]::windowwidth=200; [console]::windowtop=50; [console]::windowleft=50; [console]::windowheight=200;","${env:scripty.scriptPath}\start-flutter.ps1"
+Start-Process powershell -ArgumentList "-noexit", "-command [console]::windowtop=50; [console]::windowleft=450; ","${env:scripty.scriptPath}\start-flutter.ps1"
 Start-Process powershell -argument "${env:scripty.scriptPath}\firebase-flutterfire.ps1"
 #Update-Npm
 #Install-Firebase-Cli
