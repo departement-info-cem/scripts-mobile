@@ -63,7 +63,7 @@ function Add-Env([string]$name, [string]$value) {
     }
     else {
         $existing = [Environment]::GetEnvironmentVariable("$name", $scope)
-        Write-Host '    X '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
+        Write-Host '    ✔️ '$name' existe déjà et vaut '$existing'.'  -ForegroundColor Red
     }
     Invoke-Env-Reload
 }
@@ -108,25 +108,58 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
-    Write-Host 'Installation de'$Name' débutée' -ForegroundColor Blue
-    $ZIP_LOCATION = Get-ChildItem ${env:scripty.cachePath}\"$ZipName"
-    Write-Host '  depuis '$ZIP_LOCATION'' -ForegroundColor Blue
-    Write-Host '  vers '${env:scripty.localTempPath}$ZipName'' -ForegroundColor Blue
+    Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
+    Invoke-Unzip $Name ${env:scripty.localTempPath}\$ZipName $InstallLocation
+}
 
-    Copy-Item  $ZIP_LOCATION -Destination "${env:scripty.localTempPath}$ZipName"
-    $ProgressPreference = 'SilentlyContinue'
-    # regarder si on a 7zip, sinon on utilise le dezippeur de PowerShell
-    Write-Host '  Dézippe '${env:scripty.localTempPath}$ZipName' ' -ForegroundColor Blue
-    Write-Host '  @ '$InstallLocation'.' -ForegroundColor Blue
+function Invoke-Copy() {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Name,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Source,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Destination
+    )
+    Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
+    
+    Copy-Item  $Source -Destination $Destination
+
+    if(Test-Path $Destination) {
+        Write-Host '    ✔️ '$Name' copié.' -ForegroundColor Green
+    } else {
+        Write-Host '    ❌ '$Name' n''a pas pu être copié.' -ForegroundColor Red
+    }
+}
+
+function Invoke-Unzip() {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Name,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Source,
+        [parameter(Mandatory = $true)]
+        [String]
+        $Destination
+    )
+    Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
-        Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $InstallLocation
-        $ProgressPreference = 'Continue'
+        Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $Destination
     }
     else {
-        & ${env:ProgramFiles}\7-Zip\7z.exe x "${env:scripty.localTempPath}\$ZipName" "-o$($InstallLocation)" -y 
-        $ProgressPreference = 'Continue'
+        if (${env:scripty.debug} -eq $true) {
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y
+        }
+        else {
+            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
+        }
     }
     Out-File -FilePath "$InstallLocation\fini.txt"
     #New-Item -Name  -ItemType File
@@ -199,7 +232,19 @@ function Invoke-Zip() {
     )
     Write-Host '    👍 Compression de'$Name' débuté.' -ForegroundColor Blue
 
-    $ProgressPreference = 'SilentlyContinue'
-    & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y
-    $ProgressPreference = 'Continue'
+    if (${env:scripty.debug} -eq $true) {
+        & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y
+    }
+    else {
+        & ${env:ProgramFiles}\7-Zip\7z.exe a $SrcDir $SrcDir -y -bso0 -bsp0
+    }
+
+    $parent = Split-Path -Path $SrcDir -Parent
+    $dirName = Split-Path -Path $SrcDir -Leaf
+
+    if(Test-Path $parent\$dirname.7z) {
+        Write-Host '    ✔️ '$Name' compressé.' -ForegroundColor Green
+    } else {
+        Write-Host '    ❌ '$Name' n''a pas pu être compressé.' -ForegroundColor Red
+    }
 }

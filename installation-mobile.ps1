@@ -2,7 +2,8 @@
 # Piste pour le conflit flutter au college, scripter la suppression du Flutter déjà installé
 # Piste pour le PATH ? comment embarquer avec notre Java à nous
 
-$devMode = $true
+
+$devMode = $false
 
 # config du chemin local pour le stockage des GROS zips avant dézippage
 ${env:scripty.localTempPath} = "$HOME\temp\"
@@ -32,7 +33,7 @@ Write-Host " obtient les ZIP @ ${env:scripty.cachePath} "
 [void](New-Item -type directory -Path ${env:scripty.cachePath} -Force)
 
 # download le repo sur la machine cible
-Invoke-WebRequest ${env:scripty.rawRepoPath} -OutFile "${env:scripty.localTempPath}scripts.zip" 
+Invoke-WebRequest ${env:scripty.rawRepoPath} -OutFile "${env:scripty.localTempPath}scripts.zip"
 Expand-Archive "${env:scripty.localTempPath}scripts.zip" -DestinationPath ${env:scripty.localTempPath} -Force
 
 #if ($args[0] -eq "H4X0R_M0D") {

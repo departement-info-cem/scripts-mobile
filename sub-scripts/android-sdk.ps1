@@ -12,7 +12,6 @@ if (-Not ( Test-Path "${env:scripty.cachePath}\Sdk.7z" )) {
     #Write-Host '    TODO installer cmd-tools tout configurer, faire update puis zipper et poser dans le cache' -ForegroundColor Green
 
 
-    
     #Invoke-Download "Android SDK manager" $ANDROID_SDK_MANAGER "sdk-manager"
     #Invoke-Install "Android SDK manager" "$HOME\sdk-manager" "sdk-manager.zip"
 

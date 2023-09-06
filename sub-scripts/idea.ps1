@@ -1,4 +1,4 @@
-﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
@@ -17,7 +17,7 @@ function Install-Idea(){
         Write-Host '    ✔️  IntelliJ est déjà installé.'  -ForegroundColor Green
     }
     #TODO test if shortcut already exists in C:\Users\joris\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
-    Add-Shortcut $HOME\idea\bin\idea64.exe "IntelliJ IDEA Ultimate"
+    Add-Shortcut $HOME\idea\bin\idea64.exe "IntelliJ IDEA Community"
     Add-Env "Path" "$HOME\idea\bin"
 
     if (-Not(Test-Path $HOME\idea\plugins\flutter-intellij)) {

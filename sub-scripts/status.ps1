@@ -1,4 +1,4 @@
-﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
@@ -41,3 +41,4 @@ Do {
   }
   Start-Sleep -s 10  # attend 10 seecondes avant de regarder
 } While ($true)
+

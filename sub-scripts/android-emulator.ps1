@@ -12,7 +12,7 @@ Append-Env "Path" $HOME\AppData\Local\Android\Sdk\emulator
 
 Write-Host '👾  Création de la machine virtuelle' -ForegroundColor Blue
 
-avdmanager -s create avd -n pixel --device "pixel_5" -k "system-images;android-34;google_apis;x86_64"
+avdmanager -s create avd -n pixel --device "pixel_5" -k "system-images;android-33;google_apis;x86_64"
 
 Write-Host '👾  Activation du clavier sur émulateur' -ForegroundColor Blue
    
