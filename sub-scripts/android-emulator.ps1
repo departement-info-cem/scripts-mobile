@@ -10,6 +10,8 @@ Add-Env "ANDROID_HOME" "$env:ANDROID_SDK_ROOT"
 Append-Env "Path" $HOME\AppData\Local\Android\Sdk\cmdline-tools\latest\bin
 Append-Env "Path" $HOME\AppData\Local\Android\Sdk\emulator
 
+Invoke-Env-Reload
+
 $finijavapath = "$HOME\jdk\fini.txt"
 Wait-Until-File-Exists($finijavapath)
 
