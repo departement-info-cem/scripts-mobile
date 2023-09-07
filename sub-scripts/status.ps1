@@ -9,7 +9,7 @@ Do {
   $date = Get-Date
   Write-Host "status des installations @ $date" -ForegroundColor Blue
 
-  if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
+  if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk\emulator" )) {
     Write-Host '    Android SDK nope.' -ForegroundColor Red
   }
   else {
