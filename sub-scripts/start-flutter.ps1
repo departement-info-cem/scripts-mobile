@@ -1,12 +1,12 @@
 $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
-$User = Read-Host -Prompt 'Block pour voir la fenetre'
+#$User = Read-Host -Prompt 'Block pour voir la fenetre'
 Write-Host 'Démarrage Flutter.' -ForegroundColor Blue
 #wait on flutter to exist
-Start-Sleep -s 15
-Wait-Until-File-Exists("$HOME\flutter\bin\flutter")
 
+Wait-Until-File-Exists("$HOME\flutter\bin\flutter")
+Start-Sleep -s 60
 
 Set-Location $HOME
 flutter create fake_start
