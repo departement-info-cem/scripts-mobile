@@ -39,3 +39,16 @@ flowchart LR
 1. Ouvrir et modifier https://github.com/departement-info-cem/scripts-mobile/blob/main/sub-scripts/urls-et-versions.ps1
 2. Pour forcer le téléchargement des nouvelles versions, il faut vider le dossier contenant la cache de ZIP
 3. Partir le script principal. Le script va détecter les éléments manquants et les télécharger.
+
+## Pour les profs, comment travailler en mode dev
+1. TODO
+2. TODO
+3. TODO
+
+## Choses potentielles à améliorer
+- vérifier les installations de firebase CLI et flutterfire
+- intégrer le clonage du serveur de KMB et ouvrir intellij directement dessus
+- créer un fichier de log qui liste ce qui a marché ou pas, pourquoi et à quelle heure
+- gérer l'installation à la maison (poste Windows 10 vierge)
+- transformer en jobs powershell
+
