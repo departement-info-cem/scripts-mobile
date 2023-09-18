@@ -26,6 +26,9 @@ Invoke-Env-Reload
 
 function Install-Flutter() {
      Write-Host '🧠  Flutter SDK' -ForegroundColor Blue
+     Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
+     Remove-Env "Path" "C:\Flutter\bin"
+     Append-Env "Path" "$HOME\flutter\bin"
 
      if (-Not ( Test-Path $HOME\flutter )) {
          Invoke-Download "Flutter" $FLUTTER_SDK "flutter" $false
@@ -35,9 +38,7 @@ function Install-Flutter() {
      else {
          Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green
      }
-     Write-Host 'MAJ des variables environnement' -ForegroundColor Blue
-     Remove-Env "Path" "C:\Flutter\bin"
-     Append-Env "Path" "$HOME\flutter\bin"
+     
      [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
      [void](flutter config --android-studio-dir="$HOME\android-studio")
      Write-Host '    👍 Mise à jour' -ForegroundColor Blue

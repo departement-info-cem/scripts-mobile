@@ -5,6 +5,8 @@
 Invoke-Env-Reload
 
 Write-Host 'Android Studio' -ForegroundColor Blue
+Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
+Append-Env "Path" "$HOME\android-studio\bin"
 
 if (-Not ( Test-Path $HOME\android-studio )) {
     Invoke-Download "Android Studio" $STUDIO_URL "android-studio" $false
@@ -14,8 +16,7 @@ else {
     Write-Host '    Android Studio est déjà installé.'  -ForegroundColor Green
 }
 
-Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
-Append-Env "Path" "$HOME\android-studio\bin"
+
 
 
 if (-Not(Test-Path $HOME\android-studio\plugins\flutter-intellij)) {
