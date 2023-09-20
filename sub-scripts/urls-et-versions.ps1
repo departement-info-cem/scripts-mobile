@@ -1,8 +1,10 @@
 # Android Studio
 
 $STUDIO_URL = 'https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.19/android-studio-2022.3.1.19-windows.zip' # https://developer.android.com/studio
-$FLUTTER_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=372031' # https://plugins.jetbrains.com/plugin/9212-flutter/versions
+$FLUTTER_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=372033' # https://plugins.jetbrains.com/plugin/9212-flutter/versions
 $DART_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=332609' # https://plugins.jetbrains.com/plugin/6351-dart/versions
+$FLUTTER_INTL_PLUGIN_URL_STUDIO = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=374050'
+
 $CURRENT_SDK_VERSION = '30'
 $CURRENT_BUILD_TOOLS_VERSION = '30.0.2'
 
@@ -17,8 +19,7 @@ $ANDROID_PLATFORM_TOOLS = 'https://dl.google.com/android/repository/platform-too
 
 $IDEA_URL = 'https://download.jetbrains.com/idea/ideaIC-2023.2.1.win.zip' # https://www.jetbrains.com/idea/download/other.html
 $FLUTTER_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=372033' # https://plugins.jetbrains.com/plugin/9212-flutter/versions
-$DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=365479' # https://plugins.jetbrains.com/plugin/6351-dart/versions
-
+$DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=374782' # https://plugins.jetbrains.com/plugin/6351-dart/versions
 
 # Flutter
 
