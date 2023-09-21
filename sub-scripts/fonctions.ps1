@@ -96,6 +96,7 @@ function Append-Env([string]$name, [string]$value) {
     }
 }
 
+
 function Invoke-Install() {
     Param(
         [parameter(Mandatory = $true)]
@@ -124,15 +125,20 @@ function Invoke-Copy() {
         [String]
         $Destination
     )
-    Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
-    
-    Copy-Item  $Source -Destination $Destination
+
 
     if(Test-Path $Destination) {
-        Write-Host '    ✔️ '$Name' copié.' -ForegroundColor Green
+        Write-Host '    ✔️ '$Name' deja la.' -ForegroundColor Green
     } else {
-        Write-Host '    ❌ '$Name' n''a pas pu être copié.' -ForegroundColor Red
+        Write-Host '    ❌ '$Name' va etre copié.' -ForegroundColor Red
+        Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
+
+        Copy-Item  $Source -Destination $Destination
     }
+}
+
+function hasCache() {
+    return ${env:scripty.cachePath} -ne ${env:scripty.localTempPath}
 }
 
 function Invoke-Unzip() {
@@ -151,6 +157,10 @@ function Invoke-Unzip() {
 
     if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         # pas de 7zip, c'Est plus lent
+        # TODO install 7 zip locally if not present
+        #Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
+
+        #& ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y
         Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $Destination
     }
     else {
@@ -247,4 +257,21 @@ function Invoke-Zip() {
     } else {
         Write-Host '    ❌ '$Name' n''a pas pu être compressé.' -ForegroundColor Red
     }
+}
+
+# TODO cannot remove existing flutter PATH as it is defined in the Machine part of the PATH
+function Remove-Env([string]$name, [string]$value) {
+    $path = [System.Environment]::GetEnvironmentVariable(
+            "$name",
+            'User'
+    )
+    # Remove unwanted elements
+    $path = ($path.Split(';') | Where-Object { $_ -ne '$value' }) -join ';'
+    Write-Host $path
+    # Set it
+    [System.Environment]::SetEnvironmentVariable(
+            "$name",
+            $path,
+            'User'
+    )
 }
