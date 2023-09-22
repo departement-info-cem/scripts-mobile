@@ -18,8 +18,6 @@ $ANDROID_PLATFORM_TOOLS = 'https://dl.google.com/android/repository/platform-too
 # IntelliJ
 
 $IDEA_URL = 'https://download.jetbrains.com/idea/ideaIC-2023.2.2.win.zip' # https://www.jetbrains.com/idea/download/other.html
-$FLUTTER_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=372033' # https://plugins.jetbrains.com/plugin/9212-flutter/versions
-$DART_PLUGIN_URL_IDEA = 'https://plugins.jetbrains.com/plugin/download?rel=true&updateId=400427' # https://plugins.jetbrains.com/plugin/6351-dart/versions
 
 # Flutter
 
