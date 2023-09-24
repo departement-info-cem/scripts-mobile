@@ -19,22 +19,16 @@ If(${env:scripty.auCollege} -eq $true) {
         # Detecter si un SDK est présent sur la cache
         if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
             [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
-            Invoke-Install "Android SDK" "$HOME\AppData\Local\Android" "Sdk.7z"
+            Copy-Item  "${env:scripty.cachePath}\Sdk.7z" "${env:scripty.localTempPath}\Sdk.7z"
+            # Invoke-Copy $Name "${env:scripty.cachePath}\Sdk.7z" ${env:scripty.localTempPath}\$ZipName
+            # Invoke-Install "Android SDK" "$HOME\AppData\Local\Android" "Sdk.7z"
+            Write-Host '   SDK copié dans . On va le copier et installer' -ForegroundColor Green
+            Start-Process powershell -argument "${env:scripty.scriptPath}\sdk-installe.ps1"
         }
         else {
             Write-Host '    ✔️  Android SDK déjà copié et déjà installé.' -ForegroundColor Green
         }
     }
-
-    Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.ps1"
-
-    # partir Android studio
-    $finipath = "$HOME\android-studio"
-    $studiopath = "$HOME\android-studio\bin\studio64.exe"
-    Wait-Until-File-Exists($finipath)
-    Write-Host 'Android Studio va partir dans 30 secondes'
-    Start-Sleep -s 30
-    Start-Process -FilePath $studiopath
 }
 Else{
     Write-Host "Optimisation du téléchargement du SDK inutile"
