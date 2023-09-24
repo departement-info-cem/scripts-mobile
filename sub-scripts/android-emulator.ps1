@@ -24,9 +24,11 @@ replaceInFile $HOME"\.android\avd\pixel.avd\config.ini" "PlayStore.enabled=no" "
 
 # TODO trouver un moyen pour que fermer la fenêtre ne ferme pas l'émulateur
 Write-Host '👾  Démarrage de la machine virtuelle' -ForegroundColor Blue
-Write-Host "${env:scripty.scriptPath}\start-flutter.ps1"
-Start-Process pwsh -argument "${env:scripty.scriptPath}\start-flutter.ps1"
 Start-Process -FilePath $HOME'\AppData\Local\Android\Sdk\emulator\emulator.exe' -ArgumentList '-avd pixel' -NoNewWindow
+
+
+Start-Script "${env:scripty.scriptPath}\flutter-execute.ps1"
+
 
 # on donne 15 secondes emulateur pour partir
 
