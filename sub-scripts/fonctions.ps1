@@ -181,7 +181,7 @@ function Invoke-Unzip() {
             & $sevenZipPath x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
-    Out-File -FilePath "$InstallLocation\fini.txt"
+    Out-File -FilePath "$Destination\fini.txt"
     #New-Item -Name  -ItemType File
     Write-Host '    > Extraction terminée.' -ForegroundColor Blue
 
