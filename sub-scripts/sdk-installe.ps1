@@ -4,12 +4,12 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 Invoke-Env-Reload
 
 
-Write-Host "Installation du SDK Android Studio"
-Invoke-Unzip "Android SDK" "Sdk.7z" "$HOME\AppData\Local\Android"
+Write-Host "Installation du SDK Android Studio dans $HOME\AppData\Local\Android\Sdk"
+[void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
+Invoke-Unzip "Android SDK" "${env:scripty.localTempPath}\Sdk.7z" "$HOME\AppData\Local\Android"
 
 
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\android-emulator.ps1"
+Start-Script "${env:scripty.scriptPath}\android-emulator.ps1"
 
 # partir Android studio
 $finipath = "$HOME\android-studio"

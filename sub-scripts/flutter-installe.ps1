@@ -26,7 +26,7 @@ flutter doctor --android-licenses
 # TODO wait until a certain file in SDK exists
 Write-Host 'Flutter'
 
-Install-Flutter
+#Install-Flutter
 [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
 [void](flutter config --android-studio-dir="$HOME\android-studio")
 #Write-Host '    Mise à jour' -ForegroundColor Blue
@@ -39,5 +39,5 @@ Write-Host '✔️ ✔️ ✔️  Mise en place complétée ✔️ ✔️ ✔️
 flutter doctor
 flutter precache
 
-Start-Process powershell -argument "${env:scripty.scriptPath}\firebase-flutterfire.ps1"
+Start-Script "${env:scripty.scriptPath}\firebase-flutterfire.ps1"
 

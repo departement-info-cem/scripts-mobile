@@ -1,5 +1,6 @@
 ﻿
 $scope = "User"
+$debug = $false
 #$scope = "Machine"
 
 $sevenZipPath = "${env:ProgramFiles}\7-Zip\7z.exe"
@@ -16,6 +17,19 @@ function Check-Or-Install-Java() {
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
     Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
     #}
+}
+
+Function Start-Script() {
+    Param ($script)
+    # TODO if debug, we should add noexit option and not minimize
+    If ($debug -eq $true) {
+        Start-Process powershell -ArgumentList "-noexit","$script"
+
+    }
+    Else {
+        Start-Process -WindowStyle Minimized  powershell -argument "$script"
+    }
+    #Start-Process powershell -argument "${env:scripty.scriptPath}\flutter-installe.ps1"
 }
 
     
@@ -111,8 +125,14 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
-    Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
-    Invoke-Unzip $Name ${env:scripty.localTempPath}\$ZipName $InstallLocation
+    #Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
+    $tempPath = "${env:scripty.localTempPath}$ZipName"
+    if(-Not (Test-Path $tempPath)  ) {
+        Write-Host '   Fichier manquant pour Dézippage   '$tempPath -ForegroundColor Red
+    } else {
+        Write-Host '    '$tempPath' va etre copié dans '$InstallLocation -ForegroundColor Green
+        Invoke-Unzip $Name $tempPath $InstallLocation
+    }
 }
 
 function Invoke-Copy() {
@@ -181,9 +201,10 @@ function Invoke-Unzip() {
             & $sevenZipPath x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
-    Out-File -FilePath "$Destination\fini.txt"
+    $tagFile = "$HOME\fini$Name.txt"
+    Out-File -FilePath $tagFile
     #New-Item -Name  -ItemType File
-    Write-Host '    > Extraction terminée.' -ForegroundColor Blue
+    Write-Host '    > Extraction terminée:'$tagFile -ForegroundColor Blue
 
 }
 
@@ -195,7 +216,7 @@ function Add-Shortcut([string]$source_exe, [string]$name) {
     $Shortcut.Save()
 }
 
-function Invoke-Download {
+function Invoke-CopyFromCache-Or-Download {
     Param(
         [parameter(Mandatory = $true)]
         [String]
@@ -210,8 +231,9 @@ function Invoke-Download {
         [bool]
         $ForceRedownload
     )
-    $cacheLocation = "${env:scripty.cachePath}\$ZipName.zip"
-    if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName"
+    
+    if ( -Not ( Test-Path $cacheLocation) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
         $ProgressPreference = 'Continue'
@@ -225,13 +247,19 @@ function Invoke-Download {
         else {
             Set-Location $HOME
             Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
+            # TODO throw an exception
             exit
         }
     }
     else {
         Write-Host '    ✔️ '$Name' est déjà présent dans '$cacheLocation'.' -ForegroundColor Green
+        $destination = "${env:scripty.localTempPath}$ZipName"
+        #Copy it where it should
+        Invoke-Copy $Name $cacheLocation $destination
     }
 }
+
+
 
 function replaceInFile([string] $filePath, [string] $toReplace, [string] $replacement) {
     # Read the file content using the Get-Content

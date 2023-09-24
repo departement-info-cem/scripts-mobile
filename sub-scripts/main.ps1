@@ -2,7 +2,7 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-# installe un 7 zip local si on trouve pas dans Program Files cass� voir comment installer le .exe portable
+# installe un 7 zip local si on trouve pas dans Program Files cassé voir comment installer le .exe portable
 #Local7Zip
 
 Write-Host "Script d'installation des outils mobile CEM"
@@ -27,3 +27,4 @@ powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
 
 Write-Host "--- Téléchargement / installation des repos de 3N5 4N6 et 5N6"
 powershell "${env:scripty.scriptPath}\cours-repo.ps1"
+Read-Host "gna"
