@@ -2,6 +2,8 @@
 $scope = "User"
 #$scope = "Machine"
 
+$sevenZipPath = "${env:ProgramFiles}\7-Zip\7z.exe"
+
 function Check-Or-Install-Java() {
     #if (Test-CommandExists "javac") {
     # Write-Host "On a un JDK ici ${env:JAVA_HOME}"
@@ -141,6 +143,14 @@ function hasCache() {
     return ${env:scripty.cachePath} -ne ${env:scripty.localTempPath}
 }
 
+function Local7Zip(){
+    if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
+        Write-Host "Je ne trouve pas de 7zip sur l'ordi, je le télécharge dans temp"
+        Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
+        $sevenZipPath = "${env:scripty.localTempPath}\7z.exe"
+    }
+}
+
 function Invoke-Unzip() {
     Param(
         [parameter(Mandatory = $true)]
@@ -155,7 +165,7 @@ function Invoke-Unzip() {
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
 
-    if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
+    if (-Not ( Test-Path ${env:scripty.localTempPath}\7z.exe)) {
         # pas de 7zip, c'Est plus lent
         # TODO install 7 zip locally if not present
         #Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
@@ -165,10 +175,10 @@ function Invoke-Unzip() {
     }
     else {
         if (${env:scripty.debug} -eq $true) {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y
+            & ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y
         }
         else {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
+            & ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
     Out-File -FilePath "$InstallLocation\fini.txt"

@@ -10,15 +10,8 @@ if (-Not ( Test-Path $HOME\idea )) {
     Invoke-Download "IntelliJ Idea" "$IDEA_URL" "idea" $false
     Invoke-Download "plugin Flutter" $FLUTTER_PLUGIN_URL_IDEA "plugin-flutter-idea" $false
     Invoke-Download "plugin Dart" $DART_PLUGIN_URL_IDEA "plugin-dart-idea" $false
-
-
+    Start-Process powershell -argument "${env:scripty.scriptPath}\ij-installe.ps1"
 }
 else {
     Write-Host '    ✔️  IntelliJ est déjà installé.'  -ForegroundColor Green
-}
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\ij-installe.ps1"
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
 }

@@ -54,17 +54,6 @@ If (${env:scripty.devMode} -eq $false) {
 
 Write-Host " scripts localement @ ${env:scripty.scriptPath}"
 
-Start-Process powershell -argument "${env:scripty.scriptPath}\sdk-obtient.ps1"
-#Start-Process powershell -argument "${env:scripty.scriptPath}\android-sdk.ps1"
-#Start-Process powershell -argument "${env:scripty.scriptPath}\install-jdk.ps1"
-#Start-Process powershell -argument "${env:scripty.scriptPath}\idea.ps1"
-#Start-Process powershell -argument "${env:scripty.scriptPath}\install-flutter.ps1"
 
-#Start-Process pwsh -argument "${env:scripty.scriptPath}\status.ps1"
-# Start-Process powershell -ArgumentList "-command [console]::windowtop=10; [console]::windowleft=10; ","${env:scripty.scriptPath}\status.ps1"
 
-#$User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
-}
+powershell "${env:scripty.scriptPath}\main.ps1"

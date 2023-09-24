@@ -13,19 +13,11 @@ if (-Not ( Test-Path $HOME\android-studio )) {
     Invoke-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio" $false
     Write-Host 'Android Studio > plugin dart'
     Invoke-Download "Plugin Dart Android Studio" $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio" $false
-
+    Start-Process powershell -ArgumentList "-noexit","${env:scripty.scriptPath}\as-installe.ps1"
 
 }
 else {
     Write-Host '    Android Studio est déjà installé.'  -ForegroundColor Green
 }
 
-#Start-Sleep -Seconds 2
-Start-Process powershell -ArgumentList "-noexit","${env:scripty.scriptPath}\as-installe.ps1"
 
-#Start-Process powershell -ArgumentList "-noexit", "-command ${env:scripty.scriptPath}\as-installe.ps1"
-#Start-Process powershell -argument "${env:scripty.scriptPath}\as-installe.ps1"
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
-}

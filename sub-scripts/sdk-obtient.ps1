@@ -39,12 +39,4 @@ If(${env:scripty.auCollege} -eq $true) {
 Else{
     Write-Host "Optimisation du téléchargement du SDK inutile"
     Write-Host "Le SDK Android se téléchargera au premier lancement d'Android Studio"
-    Start-Process powershell -argument "${env:scripty.scriptPath}\as-obtient.ps1"
-    Start-Process powershell -argument "${env:scripty.scriptPath}\ij-obtient.ps1"
-    Start-Process powershell -argument "${env:scripty.scriptPath}\flutter-obtient.ps1"
-    Start-Process powershell -argument "${env:scripty.scriptPath}\server-obtient.ps1"
-}
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
 }

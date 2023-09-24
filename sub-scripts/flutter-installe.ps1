@@ -18,7 +18,7 @@ Append-Env "Path" "$HOME\flutter\bin"
 [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
 [void](flutter config --android-studio-dir="$HOME\android-studio")
 Write-Host '    Mise à jour'
-[void](flutter upgrade)
+#[void](flutter upgrade)
 Write-Host '    Accepter les licenses. En attente du SDK Android ...'
 flutter doctor --android-licenses
 
@@ -29,8 +29,8 @@ Write-Host 'Flutter'
 Install-Flutter
 [void](flutter config --android-sdk "$HOME\AppData\Local\Android\Sdk")
 [void](flutter config --android-studio-dir="$HOME\android-studio")
-Write-Host '    Mise à jour' -ForegroundColor Blue
-[void](flutter upgrade)
+#Write-Host '    Mise à jour' -ForegroundColor Blue
+#[void](flutter upgrade)
 Write-Host '    Accepter les licenses.' -ForegroundColor Blue
 flutter doctor --android-licenses
 

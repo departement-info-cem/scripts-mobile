@@ -17,9 +17,3 @@ if (-Not ( Test-Path $HOME\idea )) {
 else {
     Write-Host '    ✔️  IntelliJ est déjà installé.'  -ForegroundColor Green
 }
-
-
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
-}

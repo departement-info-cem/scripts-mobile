@@ -5,13 +5,5 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 Write-Host 'Java JDK 17'
 Write-Host "JDK non installé ..."
 Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
+powershell "${env:scripty.scriptPath}\jdk-installe.ps1"
 
-
-Start-Process powershell -argument "${env:scripty.scriptPath}\jdk-install.ps1"
-
-
-
-
-If(${env:scripty.devMode} -eq $true) {
-    $User = Read-Host -Prompt 'Tu peux fermer cette fenetre.'
-}
