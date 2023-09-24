@@ -165,7 +165,7 @@ function Invoke-Unzip() {
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
 
-    if (-Not ( Test-Path ${env:scripty.localTempPath}\7z.exe)) {
+    if (-Not ( Test-Path $sevenZipPath)) {
         # pas de 7zip, c'Est plus lent
         # TODO install 7 zip locally if not present
         #Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
@@ -175,10 +175,10 @@ function Invoke-Unzip() {
     }
     else {
         if (${env:scripty.debug} -eq $true) {
-            & ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y
+            & $sevenZipPath x "$Source" "-o$($Destination)" -y
         }
         else {
-            & ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
+            & $sevenZipPath x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
     Out-File -FilePath "$InstallLocation\fini.txt"

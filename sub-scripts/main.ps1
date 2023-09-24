@@ -2,8 +2,8 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
-# installe un 7 zip local si on trouve pas dans Program Files
-Local7Zip
+# installe un 7 zip local si on trouve pas dans Program Files cassé voir comment installer le .exe portable
+#Local7Zip
 
 Write-Host "Script d'installation des outils mobile CEM"
 # TODO make sure we get 7zip.exe in portable format so we can start from fresh Windows install
