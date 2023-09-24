@@ -6,7 +6,7 @@ Invoke-Env-Reload
 Write-Host 'Flutter installation'
 
 if (-Not ( Test-Path $HOME\flutter )) {
-    Invoke-Install "Flutter" "$HOME" "flutter.zip"
+    Invoke-Install "flutter" "$HOME" "flutter.zip"
 
 }
 else {

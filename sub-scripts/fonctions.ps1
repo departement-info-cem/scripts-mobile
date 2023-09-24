@@ -12,7 +12,7 @@ function Check-Or-Install-Java() {
     # nécessite Java
     Write-Host "JDK non installé ..."
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
-    Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
+    Invoke-Install "JDK" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
     Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
@@ -156,6 +156,7 @@ function Invoke-Copy() {
         Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
 
         Copy-Item  $Source -Destination $Destination
+        Copy-Item  $Source -Destination $Destination
     }
 }
 
@@ -201,7 +202,7 @@ function Invoke-Unzip() {
             & $sevenZipPath x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
-    $tagFile = "$HOME\fini$Name.txt"
+    $tagFile = "$HOME\temp\fini$ZipName.txt"
     Out-File -FilePath $tagFile
     #New-Item -Name  -ItemType File
     Write-Host '    > Extraction terminée:'$tagFile -ForegroundColor Blue
