@@ -154,8 +154,6 @@ function Invoke-Copy() {
     } else {
         Write-Host '    ❌ '$Name' va etre copié.' -ForegroundColor Red
         Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
-
-        Copy-Item  $Source -Destination $Destination
         Copy-Item  $Source -Destination $Destination
     }
 }
@@ -233,17 +231,21 @@ function Invoke-CopyFromCache-Or-Download {
         $ForceRedownload
     )
     $cacheLocation = "${env:scripty.cachePath}\$ZipName"
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName"
     
     if ( -Not ( Test-Path $cacheLocation) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
+        $tempLocation = "${env:scripty.localTempPath}$ZipName"
+        Write-Host 'De '$Url' vers '$tempLocation
         $ProgressPreference = 'Continue'
         $done = $false
-        Start-BitsTransfer -Source $Url -Destination $cacheLocation
+        Start-BitsTransfer -Source $Url -Destination $tempLocation
         $ProgressPreference = 'Continue'
                 
-        if (Test-Path $cacheLocation ) {
-            Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
+        if (Test-Path $tempLocation ) {
+            Write-Host '    ✔️ '$Name' téléchargé.'$tempLocation -ForegroundColor Green
+            Copy-Item  $tempLocation -Destination $cacheLocation
         }
         else {
             Set-Location $HOME
