@@ -12,7 +12,12 @@ if (-Not ( Test-Path $HOME\android-studio )) {
     Write-Host 'Android Studio > plugin flutter'
     Invoke-CopyFromCache-Or-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip" $false
     Write-Host 'Android Studio > plugin dart'
+    Invoke-CopyFromCache-Or-Download "Plugin Flutter Intl Android Studio" $FLUTTER_INTL_PLUGIN_URL_STUDIO "plugin-flutter-intl-android-studio.zip" $false
+    
+    Write-Host 'Android Studio > plugin dart'
     Invoke-CopyFromCache-Or-Download "Plugin Dart Android Studio" $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio.zip" $false
+    
+
     # TODO ajouter le flutter intl plugin
 
 
