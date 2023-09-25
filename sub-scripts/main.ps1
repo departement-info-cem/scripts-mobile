@@ -22,8 +22,8 @@ powershell "${env:scripty.scriptPath}\ij-obtient.ps1"
 Write-Host "--- Téléchargement / installation de Flutter"
 powershell "${env:scripty.scriptPath}\flutter-obtient.ps1"
 
-Write-Host "--- Téléchargement / installation de Firebase CLI et FlutterFire"
-powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
+#Write-Host "--- Téléchargement / installation de Firebase CLI et FlutterFire"
+#powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
 
 Write-Host "--- Téléchargement / installation des repos de 3N5 4N6 et 5N6"
 powershell "${env:scripty.scriptPath}\cours-repo.ps1"
