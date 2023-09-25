@@ -240,6 +240,7 @@ function Invoke-CopyFromCache-Or-Download {
         Write-Host 'De '$Url' vers '$tempLocation
         $ProgressPreference = 'Continue'
         $done = $false
+        # TODO strange bug when doing it with android studio --- test with regular Invoke-Download?
         Start-BitsTransfer -Source $Url -Destination $tempLocation
         $ProgressPreference = 'Continue'
                 
