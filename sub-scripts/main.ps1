@@ -27,4 +27,41 @@ powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
 
 Write-Host "--- Téléchargement / installation des repos de 3N5 4N6 et 5N6"
 powershell "${env:scripty.scriptPath}\cours-repo.ps1"
-Read-Host "gna"
+
+
+Invoke-Env-Reload
+Write-Host 'Status des installations :::' -ForegroundColor Blue
+
+$data = @('\jdk\jdk17.0.8_8\bin',
+    '\AppData\Local\Android\Sdk\licenses',
+    '\android-studio\bin',
+    '\idea\bin',
+    '\flutter\bin'
+
+    )
+
+$counter = 0
+Do {
+  Write-Host '---------------------------------------------'
+  $date = Get-Date
+  Write-Host "status des installations @ $date" -ForegroundColor Blue
+  $allgood = $true
+  $counter = 0
+  foreach ( $node in $data )
+  {
+        $filePath = "$HOME$node"
+         if (-Not ( Test-Path $filePath )) {
+           Write-Host $filePath'     nope.' -ForegroundColor Red
+           $allgood = $false
+         }
+         else {
+            $counter++
+           Write-Host $filePath'     ok.' -ForegroundColor Green
+         }
+  }
+
+
+
+
+  Start-Sleep -s 10  # attend 10 seecondes avant de regarder
+} While ($data.Length -ne $counter)
