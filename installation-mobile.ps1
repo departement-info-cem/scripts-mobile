@@ -36,6 +36,10 @@ Else {
         ${env:scripty.cachePath} = ${env:scripty.localTempPath}
     }
 }
+# création du dossier local et téléchargement des sous-scripts
+[void](New-Item -type directory -Path ${env:scripty.localTempPath} -Force)
+[void](New-Item -type directory -Path ${env:scripty.cachePath} -Force)
+
 
 # config du chemin de téléchargement de base pour les sous-scripts
 If (${env:scripty.devMode} -eq $false) {
@@ -48,9 +52,6 @@ If (${env:scripty.devMode} -eq $false) {
 
 }
 
-# création du dossier local et téléchargement des sous-scripts
-[void](New-Item -type directory -Path ${env:scripty.localTempPath} -Force)
-[void](New-Item -type directory -Path ${env:scripty.cachePath} -Force)
 
 Write-Host " scripts localement @ ${env:scripty.scriptPath}"
 
