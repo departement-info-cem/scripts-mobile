@@ -15,24 +15,41 @@ Les scripts suivants permettent d'installer:
 
 ## Diagramme
 ```mermaid
-flowchart LR
+flowchart TD
     clone["Clone repo"]
-    idea["Install Intellij"]
-    androidstudio["Install Android Studio"]
+    dJDK["Get JDK"]
+    unzipJDK["Unzip and Install JDK"]
+    dSDK["Get SDK"]
+    unzipSDK["Unzip and install SDK"]
+    dIDEA["Get Intellij"]
+    unzipIDEA["Unzip and install Intellij"]
+    dAS["Get Android Studio"]
+    unzipAS["Unzip Android Studio"]
     startandroidstudio["Partir Android Studio"]
-    androidsdk["Install Android SDK"]
-    flutter["Install Flutter"]
+    dSDK["Get Android SDK"]
+    unzipSDK["Unzip Android SDK"]
+    dFLUTTER["Download Flutter"]
+    unzipFLUTTER["Unzip & Install Flutter"]
+    repos["Download repos 3N5 4N6 5N6 serveur"]
     projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
-    clone --> flutter
-    clone --> idea
-    clone --> androidstudio
-    androidsdk --> startandroidstudio;
-    androidstudio --> startandroidstudio;
-    clone --> androidsdk
-    androidsdk --> emulator
+    clone --> dJDK
+    dJDK --> unzipJDK
+    unzipJDK --> dSDK
+    dSDK --> dAS
+    dSDK --> unzipSDK
+
+    dAS --> unzipAS
+    dAS --> dIDEA
+    dIDEA --> dFLUTTER
+    dIDEA --> unzipIDEA
+    dFLUTTER --> unzipFLUTTER
+    dFLUTTER --> repos
+    unzipAS --> startandroidstudio
+    unzipSDK --> startandroidstudio
+    unzipSDK --> emulator
     emulator --> projetflutter
-    flutter --> projetflutter
+    unzipFLUTTER --> projetflutter
 ```
 
 ## Pour les profs pour changer les versions
