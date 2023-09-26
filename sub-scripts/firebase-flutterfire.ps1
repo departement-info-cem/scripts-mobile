@@ -3,9 +3,9 @@
 . "$PSScriptRoot\fonctions.ps1"
 Write-Host 'Firebase et FlutterFire'
 
+
 # https://stackoverflow.com/questions/70320263/error-the-term-flutterfire-is-not-recognized-as-the-name-of-a-cmdlet-functio
 Append-Env "Path" $HOME\AppData\Local\Pub\Cache\bin
-
 
 # https://www.how2shout.com/how-to/how-to-install-node-js-and-npm-on-windows-10-or-11-using-cmd.html
 function Install-Npm() {

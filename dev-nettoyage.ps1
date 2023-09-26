@@ -17,6 +17,11 @@ Remove-Item -LiteralPath "$HOME\fake_start" -Force -Recurse
 Remove-Item -LiteralPath "$HOME\jdk" -Force -Recurse
 Remove-Item -LiteralPath "$HOME\android-studio" -Force -Recurse
 
+Remove-Item -LiteralPath "$HOME\3N5-Prog3-main" -Force -Recurse
+Remove-Item -LiteralPath "$HOME\4N6-Mobile-master" -Force -Recurse
+Remove-Item -LiteralPath "$HOME\5N6-mobile-2-main" -Force -Recurse
+Remove-Item -LiteralPath "$HOME\KickMyB-Server-main" -Force -Recurse
+
 Remove-Item -LiteralPath "$HOME\sdk-manager" -Force -Recurse
 Remove-Item -LiteralPath "$HOME\sdk-tools" -Force -Recurse
 

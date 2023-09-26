@@ -16,24 +16,47 @@ Les scripts suivants permettent d'installer:
 
 ## Diagramme
 ```mermaid
-flowchart LR
+flowchart TD
     clone["Clone repo"]
-    idea["Install Intellij"]
-    androidstudio["Install Android Studio"]
+    dJDK["Get JDK"]
+    unzipJDK["Unzip and Install JDK"]
+    dSDK["Get SDK"]
+    unzipSDK["Unzip and install SDK"]
+    dIDEA["Get Intellij"]
+    unzipIDEA["Unzip and install Intellij"]
+    dAS["Get Android Studio"]
+    unzipAS["Unzip Android Studio"]
     startandroidstudio["Partir Android Studio"]
-    androidsdk["Install Android SDK"]
-    flutter["Install Flutter"]
+    dSDK["Get Android SDK"]
+    unzipSDK["Unzip Android SDK"]
+    dFLUTTER["Download Flutter"]
+    unzipFLUTTER["Unzip & Install Flutter"]
+    firebase["Install Firebase CLI + FlutterFire"]
+    repos["Download repos 3N5 4N6 5N6 serveur"]
     projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
-    clone --> flutter
-    clone --> idea
-    clone --> androidstudio
-    androidsdk --> startandroidstudio;
-    androidstudio --> startandroidstudio;
-    clone --> androidsdk
-    androidsdk --> emulator
+    subgraph téléchargements
+        direction LR
+        clone ==> dJDK
+        dSDK ==> dAS
+        dAS ==> dIDEA
+        dFLUTTER ==> repos
+        dIDEA ==> dFLUTTER
+    end
+    dJDK --> unzipJDK
+    unzipJDK --> dSDK
+    dSDK --> unzipSDK
+    dAS --> unzipAS
+    
+    dIDEA --> unzipIDEA
+    dFLUTTER --> unzipFLUTTER
+    
+    unzipAS --> startandroidstudio
+    unzipSDK --> startandroidstudio
+    unzipSDK --> emulator
     emulator --> projetflutter
-    flutter --> projetflutter
+    unzipFLUTTER --> projetflutter
+    unzipFLUTTER --> firebase
 ```
 
 ## Travailler sur le script

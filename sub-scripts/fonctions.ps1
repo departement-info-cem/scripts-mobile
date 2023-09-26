@@ -1,6 +1,9 @@
 ﻿
 $scope = "User"
+$debug = $false
 #$scope = "Machine"
+
+$sevenZipPath = "${env:ProgramFiles}\7-Zip\7z.exe"
 
 function Check-Or-Install-Java() {
     #if (Test-CommandExists "javac") {
@@ -9,11 +12,24 @@ function Check-Or-Install-Java() {
     # nécessite Java
     Write-Host "JDK non installé ..."
     Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
-    Invoke-Install "Corretto Java Dev Kit" "$HOME\jdk" "jdk.zip"
+    Invoke-Install "JDK" "$HOME\jdk" "jdk.zip"
     $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
     Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
     Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
     #}
+}
+
+Function Start-Script() {
+    Param ($script)
+    # TODO if debug, we should add noexit option and not minimize
+    If ($debug -eq $true) {
+        Start-Process powershell -ArgumentList "-noexit","$script"
+
+    }
+    Else {
+        Start-Process -WindowStyle Minimized  powershell -argument "$script"
+    }
+    #Start-Process powershell -argument "${env:scripty.scriptPath}\flutter-installe.ps1"
 }
 
     
@@ -96,6 +112,7 @@ function Append-Env([string]$name, [string]$value) {
     }
 }
 
+
 function Invoke-Install() {
     Param(
         [parameter(Mandatory = $true)]
@@ -108,8 +125,14 @@ function Invoke-Install() {
         [String]
         $ZipName
     )
-    Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
-    Invoke-Unzip $Name ${env:scripty.localTempPath}\$ZipName $InstallLocation
+    #Invoke-Copy $Name ${env:scripty.cachePath}\$ZipName ${env:scripty.localTempPath}\$ZipName
+    $tempPath = "${env:scripty.localTempPath}$ZipName"
+    if(-Not (Test-Path $tempPath)  ) {
+        Write-Host '   Fichier manquant pour Dézippage   '$tempPath -ForegroundColor Red
+    } else {
+        Write-Host '    '$tempPath' va etre copié dans '$InstallLocation -ForegroundColor Green
+        Invoke-Unzip $Name $tempPath $InstallLocation
+    }
 }
 
 function Invoke-Copy() {
@@ -124,14 +147,26 @@ function Invoke-Copy() {
         [String]
         $Destination
     )
-    Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
-    
-    Copy-Item  $Source -Destination $Destination
+
 
     if(Test-Path $Destination) {
-        Write-Host '    ✔️ '$Name' copié.' -ForegroundColor Green
+        Write-Host '    ✔️ '$Name' deja la.' -ForegroundColor Green
     } else {
-        Write-Host '    ❌ '$Name' n''a pas pu être copié.' -ForegroundColor Red
+        Write-Host '    ❌ '$Name' va etre copié.' -ForegroundColor Red
+        Write-Host '    👍 Copie de'$Name' débuté.' -ForegroundColor Blue
+        Copy-Item  $Source -Destination $Destination
+    }
+}
+
+function hasCache() {
+    return ${env:scripty.cachePath} -ne ${env:scripty.localTempPath}
+}
+
+function Local7Zip(){
+    if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
+        Write-Host "Je ne trouve pas de 7zip sur l'ordi, je le télécharge dans temp"
+        Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
+        $sevenZipPath = "${env:scripty.localTempPath}\7z.exe"
     }
 }
 
@@ -149,21 +184,26 @@ function Invoke-Unzip() {
     )
     Write-Host '    👍 Extraction de'$Name' débuté.' -ForegroundColor Blue
 
-    if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
+    if (-Not ( Test-Path $sevenZipPath)) {
         # pas de 7zip, c'Est plus lent
+        # TODO install 7 zip locally if not present
+        #Invoke-WebRequest 'https://www.7-zip.org/a/7z2301-x64.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
+
+        #& ${env:scripty.localTempPath}\7z.exe x "$Source" "-o$($Destination)" -y
         Expand-Archive "${env:scripty.localTempPath}$ZipName" -DestinationPath $Destination
     }
     else {
         if (${env:scripty.debug} -eq $true) {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y
+            & $sevenZipPath x "$Source" "-o$($Destination)" -y
         }
         else {
-            & ${env:ProgramFiles}\7-Zip\7z.exe x "$Source" "-o$($Destination)" -y -bso0 -bsp0
+            & $sevenZipPath x "$Source" "-o$($Destination)" -y -bso0 -bsp0
         }
     }
-    Out-File -FilePath "$InstallLocation\fini.txt"
+    $tagFile = "$HOME\temp\fini$ZipName.txt"
+    Out-File -FilePath $tagFile
     #New-Item -Name  -ItemType File
-    Write-Host '    > Extraction terminée.' -ForegroundColor Blue
+    Write-Host '    > Extraction terminée:'$tagFile -ForegroundColor Blue
 
 }
 
@@ -175,7 +215,7 @@ function Add-Shortcut([string]$source_exe, [string]$name) {
     $Shortcut.Save()
 }
 
-function Invoke-Download {
+function Invoke-CopyFromCache-Or-Download {
     Param(
         [parameter(Mandatory = $true)]
         [String]
@@ -190,28 +230,40 @@ function Invoke-Download {
         [bool]
         $ForceRedownload
     )
-    $cacheLocation = "${env:scripty.cachePath}\$ZipName.zip"
-    if ( -Not ( Test-Path ${env:scripty.cachePath}\$ZipName.zip) -or $ForceRedownload) {
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName"
+    $cacheLocation = "${env:scripty.cachePath}\$ZipName"
+    
+    if ( -Not ( Test-Path $cacheLocation) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
         Set-Location ${env:scripty.cachePath}
+        $tempLocation = "${env:scripty.localTempPath}$ZipName"
+        Write-Host 'De '$Url' vers '$tempLocation
         $ProgressPreference = 'Continue'
         $done = $false
-        Start-BitsTransfer -Source $Url -Destination $cacheLocation
+        # TODO strange bug when doing it with android studio --- test with regular Invoke-Download?
+        Start-BitsTransfer -Source $Url -Destination $tempLocation
         $ProgressPreference = 'Continue'
                 
-        if (Test-Path $cacheLocation ) {
-            Write-Host '    ✔️ '$Name' téléchargé.' -ForegroundColor Green
+        if (Test-Path $tempLocation ) {
+            Write-Host '    ✔️ '$Name' téléchargé.'$tempLocation -ForegroundColor Green
+            Copy-Item  $tempLocation -Destination $cacheLocation
         }
         else {
             Set-Location $HOME
             Write-Host '    ❌ '$Name' n''a pas pu être téléchargé.' -ForegroundColor Red
+            # TODO throw an exception
             exit
         }
     }
     else {
         Write-Host '    ✔️ '$Name' est déjà présent dans '$cacheLocation'.' -ForegroundColor Green
+        $destination = "${env:scripty.localTempPath}$ZipName"
+        #Copy it where it should
+        Invoke-Copy $Name $cacheLocation $destination
     }
 }
+
+
 
 function replaceInFile([string] $filePath, [string] $toReplace, [string] $replacement) {
     # Read the file content using the Get-Content
@@ -247,4 +299,21 @@ function Invoke-Zip() {
     } else {
         Write-Host '    ❌ '$Name' n''a pas pu être compressé.' -ForegroundColor Red
     }
+}
+
+# TODO cannot remove existing flutter PATH as it is defined in the Machine part of the PATH
+function Remove-Env([string]$name, [string]$value) {
+    $path = [System.Environment]::GetEnvironmentVariable(
+            "$name",
+            'User'
+    )
+    # Remove unwanted elements
+    $path = ($path.Split(';') | Where-Object { $_ -ne '$value' }) -join ';'
+    Write-Host $path
+    # Set it
+    [System.Environment]::SetEnvironmentVariable(
+            "$name",
+            $path,
+            'User'
+    )
 }
