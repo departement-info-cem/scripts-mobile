@@ -4,7 +4,6 @@
 Write-Host 'Firebase et FlutterFire'
 
 
-
 # https://stackoverflow.com/questions/70320263/error-the-term-flutterfire-is-not-recognized-as-the-name-of-a-cmdlet-functio
 Append-Env "Path" $HOME\AppData\Local\Pub\Cache\bin
 
