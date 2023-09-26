@@ -30,6 +30,7 @@ flowchart TD
     unzipSDK["Unzip Android SDK"]
     dFLUTTER["Download Flutter"]
     unzipFLUTTER["Unzip & Install Flutter"]
+    firebase["Install Firebase CLI + FlutterFire"]
     repos["Download repos 3N5 4N6 5N6 serveur"]
     projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
@@ -54,6 +55,7 @@ flowchart TD
     unzipSDK --> emulator
     emulator --> projetflutter
     unzipFLUTTER --> projetflutter
+    unzipFLUTTER --> firebase
 ```
 
 ## Pour les profs pour changer les versions
