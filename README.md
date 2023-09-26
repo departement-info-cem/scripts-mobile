@@ -33,18 +33,22 @@ flowchart TD
     repos["Download repos 3N5 4N6 5N6 serveur"]
     projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
-    clone --> dJDK
+    subgraph téléchargements
+        direction LR
+        clone ==> dJDK
+        dSDK ==> dAS
+        dAS ==> dIDEA
+        dFLUTTER ==> repos
+        dIDEA ==> dFLUTTER
+    end
     dJDK --> unzipJDK
     unzipJDK --> dSDK
-    dSDK --> dAS
     dSDK --> unzipSDK
-
     dAS --> unzipAS
-    dAS --> dIDEA
-    dIDEA --> dFLUTTER
+    
     dIDEA --> unzipIDEA
     dFLUTTER --> unzipFLUTTER
-    dFLUTTER --> repos
+    
     unzipAS --> startandroidstudio
     unzipSDK --> startandroidstudio
     unzipSDK --> emulator
