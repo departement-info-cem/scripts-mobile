@@ -2,6 +2,7 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
+Start-Transcript -Path ${env:scripty.localTempPath}\transcript-main.txt
 # installe un 7 zip local si on trouve pas dans Program Files cassé voir comment installer le .exe portable
 #Local7Zip
 

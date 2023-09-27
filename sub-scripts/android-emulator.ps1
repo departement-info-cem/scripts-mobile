@@ -1,7 +1,7 @@
 ﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
-
+Start-Transcript -Path ${env:scripty.localTempPath}\transcript-android-emulator.txt
 Write-Host 'Emulateur Android ' -ForegroundColor Blue
 
 Set-Location $HOME
