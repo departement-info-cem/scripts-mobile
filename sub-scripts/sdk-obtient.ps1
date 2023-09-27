@@ -5,7 +5,7 @@ Invoke-Env-Reload
 Write-Host "Obtention du SDK Android Studio ${env:scripty.scriptPath}"
 
 
-
+Start-Transcript -Path ${env:scripty.localTempPath}\transcript-sdk-obtient.txt
 If(${env:scripty.auCollege} -eq $true) {
 
     if (-Not ( Test-Path "${env:scripty.cachePath}\Sdk.7z" )) {

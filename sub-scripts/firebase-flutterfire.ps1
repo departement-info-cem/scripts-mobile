@@ -1,8 +1,8 @@
 ﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
+Start-Transcript -Path ${env:scripty.localTempPath}\transcript-firebase-flutterfire.txt
 Write-Host 'Firebase et FlutterFire'
-
 
 # https://stackoverflow.com/questions/70320263/error-the-term-flutterfire-is-not-recognized-as-the-name-of-a-cmdlet-functio
 Append-Env "Path" $HOME\AppData\Local\Pub\Cache\bin

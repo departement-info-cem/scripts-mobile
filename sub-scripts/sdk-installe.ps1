@@ -3,7 +3,7 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\fonctions.ps1"
 Invoke-Env-Reload
 
-
+Start-Transcript -Path ${env:scripty.localTempPath}\transcript-sdk-installe.txt
 Write-Host "Installation du SDK Android Studio dans $HOME\AppData\Local\Android\Sdk"
 [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
 Invoke-Unzip "android-sdk" "${env:scripty.localTempPath}\Sdk.7z" "$HOME\AppData\Local\Android"
