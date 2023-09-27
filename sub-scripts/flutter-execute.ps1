@@ -3,6 +3,8 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\fonctions.ps1"
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-flutter-execute.txt
+
+Append-Env "Path" "$HOME\flutter\bin"
 Invoke-Env-Reload
 
 
