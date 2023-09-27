@@ -59,9 +59,5 @@ Do {
            Write-Host $filePath'     ok.' -ForegroundColor Green
          }
   }
-
-
-
-
   Start-Sleep -s 10  # attend 10 seecondes avant de regarder
 } While ($data.Length -ne $counter)

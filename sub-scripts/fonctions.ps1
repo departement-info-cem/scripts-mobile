@@ -231,7 +231,6 @@ function Invoke-CopyFromCache-Or-Download {
         $ForceRedownload
     )
     $cacheLocation = "${env:scripty.cachePath}\$ZipName"
-    $cacheLocation = "${env:scripty.cachePath}\$ZipName"
     
     if ( -Not ( Test-Path $cacheLocation) -or $ForceRedownload) {
         Write-Host '    👍 Téléchargement de'$Name' débuté.' -ForegroundColor Blue
@@ -259,7 +258,12 @@ function Invoke-CopyFromCache-Or-Download {
         Write-Host '    ✔️ '$Name' est déjà présent dans '$cacheLocation'.' -ForegroundColor Green
         $destination = "${env:scripty.localTempPath}$ZipName"
         #Copy it where it should
-        Invoke-Copy $Name $cacheLocation $destination
+        # While the file is not there, try to copy it
+        While( -Not (Test-Path $destination) ) {
+            Write-Host 'Tentative de copie de '$cacheLocation' vers '$destination
+            Copy-Item  $cacheLocation -Destination $destination
+        }
+        Write-Host '    ✔️ '$Name' est présent dans '$destination'.' -ForegroundColor Green
     }
 }
 
