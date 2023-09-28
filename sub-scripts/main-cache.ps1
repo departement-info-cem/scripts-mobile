@@ -5,7 +5,8 @@ $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 $cachecache = "\\ed5depinfo\Logiciels\Android\scripts\cachecache\"
 $tempcache = $HOME + "\tempcache\"
 
-Remove-Item -Path $tempcache -Recurse
+Remove-Item -LiteralPath $tempcache -Force -Recurse
+
 [void](New-Item -type directory -Path $cachecache -Force)
 [void](New-Item -type directory -Path $tempcache -Force)
 
@@ -41,12 +42,13 @@ function GoGetIt {
     # Push it to the cachecache
 }
 
-#GoGetIt $CORRETTO_URL "jdk.zip"
+GoGetIt $CORRETTO_URL "jdk.zip"
 
-#GoGetIt $STUDIO_URL "android-studio.zip"
+GoGetIt $STUDIO_URL "android-studio.zip"
 GoGetIt $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip"
 GoGetIt $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio.zip"
 GoGetIt $FLUTTER_INTL_PLUGIN_URL_STUDIO "plugin-flutter-intl-android-studio.zip"
 
+GoGetIt $IDEA_URL "idea.zip"
 
-#GoGetIt $FLUTTER_SDK "flutter.zip"
+GoGetIt $FLUTTER_SDK "flutter.zip"
