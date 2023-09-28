@@ -209,10 +209,16 @@ function Invoke-Unzip() {
 
 # Source : https://stackoverflow.com/a/9701907
 function Add-Shortcut([string]$source_exe, [string]$name) {
-    $WshShell = New-Object -ComObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
-    $Shortcut.TargetPath = $source_exe
-    $Shortcut.Save()
+    if(Test-Path "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk") {
+        Write-Host '    👍 Ajout du raccourci'$Name'' -ForegroundColor Blue
+        $WshShell = New-Object -ComObject WScript.Shell
+        $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
+        $Shortcut.TargetPath = $source_exe
+        $Shortcut.Save()
+        Write-Host '    ✔️ Raccourdi '$name' ajouté.'  -ForegroundColor Green
+    } else {
+        Write-Host '    ✔️ Raccourdi '$name' déjà présent.'  -ForegroundColor Green
+    }
 }
 
 function Invoke-CopyFromCache-Or-Download {
