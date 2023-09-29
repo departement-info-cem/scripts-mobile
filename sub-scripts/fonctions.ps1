@@ -209,7 +209,7 @@ function Invoke-Unzip() {
 
 # Source : https://stackoverflow.com/a/9701907
 function Add-Shortcut([string]$source_exe, [string]$name) {
-    if(Test-Path "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk") {
+    if(-Not(Test-Path "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")) {
         Write-Host '    👍 Ajout du raccourci'$Name'' -ForegroundColor Blue
         $WshShell = New-Object -ComObject WScript.Shell
         $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
