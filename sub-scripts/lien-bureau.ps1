@@ -4,6 +4,6 @@
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-liens-bureau.txt
 
-Add-Desktop-Shortcut "$HOME\android-studio\bin\studio64.exe" "idea"
+Add-Desktop-Shortcut "$HOME\android-studio\bin\studio64.exe" "androidstudio"
 
-Add-Desktop-Shortcut  "$HOME\idea\bin\idea64.exe" "androidstudio"
+Add-Desktop-Shortcut  "$HOME\idea\bin\idea64.exe" "idea"

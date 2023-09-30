@@ -212,7 +212,7 @@ function Add-Desktop-Shortcut([string]$source, [string]$name) {
     Write-Host '    👍 Ajout du raccourci sur le bureau'$Name'' -ForegroundColor Blue
     $WshShell = New-Object -ComObject WScript.Shell
     $Shortcut = $WshShell.CreateShortcut("$HOME\Desktop\$name.lnk")
-    $Shortcut.TargetPath = $source_exe
+    $Shortcut.TargetPath = $source
     $Shortcut.Save()
     Write-Host '    ✔️ Raccourdi '$name' ajouté.'  -ForegroundColor Green
 }
