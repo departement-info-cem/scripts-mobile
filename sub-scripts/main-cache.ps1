@@ -8,7 +8,24 @@ $tempcache = $HOME + "\tempcache\"
 Remove-Item -LiteralPath $tempcache -Force -Recurse
 
 [void](New-Item -type directory -Path $cachecache -Force)
-[void](New-Item -type directory -Path $tempcache -Force)
+[void](New-Item -type directory -Path $tempcache -Force)à
+
+function AskWithDefault {
+    [parameter(Mandatory = $true)]
+        [String]
+        $Prompt,
+        [parameter(Mandatory = $true)]
+        [String]
+        $DefaultValue
+    $fullPrompt = $Prompt + " ... valeur par défaut sera " + $DefaultValue    
+    $userAnswer = Read-Host -Prompt ‘$ [some-value]’
+
+    if ([string]::IsNullOrWhiteSpace($Interesting))
+    {
+        $userAnswer = $DefaultValue
+    }
+    Write-Host 'On continue avec ' + $userAnswer
+}
 
 function GoGetIt {
     Param(
@@ -41,14 +58,22 @@ function GoGetIt {
     Remove-Item -Path $tempcache"a\" -Recurse
     # Push it to the cachecache
 }
+$jdkURL = AskWithDefault "Quelle URL pour le JDK?" $CORRETTO_URL
 
-GoGetIt $CORRETTO_URL "jdk.zip"
 
-GoGetIt $STUDIO_URL "android-studio.zip"
-GoGetIt $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip"
-GoGetIt $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio.zip"
-GoGetIt $FLUTTER_INTL_PLUGIN_URL_STUDIO "plugin-flutter-intl-android-studio.zip"
 
-GoGetIt $IDEA_URL "idea.zip"
+GoGetIt $jdkURL "jdk.zip"
 
-GoGetIt $FLUTTER_SDK "flutter.zip"
+# TODO build SDK b
+
+Read-Host -Prompt 'Ici il faut partir Android Studio pour procéder aux install du SDK, appuyez sur ENTER quand fait'
+Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
+
+#GoGetIt $STUDIO_URL "android-studio.zip"
+#GoGetIt $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip"
+#GoGetIt $DART_PLUGIN_URL_STUDIO "plugin-dart-android-studio.zip"
+#GoGetIt $FLUTTER_INTL_PLUGIN_URL_STUDIO "plugin-flutter-intl-android-studio.zip"
+
+#GoGetIt $IDEA_URL "idea.zip"
+
+#GoGetIt $FLUTTER_SDK "flutter.zip"
