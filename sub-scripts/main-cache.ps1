@@ -68,6 +68,7 @@ GoGetIt $jdkURL "jdk.zip"
 
 Read-Host -Prompt 'Ici il faut partir Android Studio pour procéder aux install du SDK, appuyez sur ENTER quand fait'
 Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
+Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
 
 #GoGetIt $STUDIO_URL "android-studio.zip"
 #GoGetIt $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip"
