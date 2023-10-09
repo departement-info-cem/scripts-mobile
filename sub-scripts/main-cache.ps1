@@ -119,9 +119,9 @@ ReZip "jdk" "jdk.zip"
 ReZip "idea" "idea.zip"
 ReZip "flutter" "flutter.zip"
 
-$localTempPath = $tempcache + "android-studio.zip"
-Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio"
-#ReZip "android-studio" "android-studio.zip"
+# $localTempPath = $tempcache + "android-studio.zip"
+# Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio"
+ReZip "android-studio" "android-studio.zip"
 $localTempPath = $tempcache + "plugin-dart-android-studio.zip"
 Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio\android-studio\plugins"
 $localTempPath = $tempcache + "plugin-flutter-android-studio.zip"
@@ -150,7 +150,7 @@ Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
 
 # Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
 
-Copy-Item $tempcache"android-studio.zip"  -Destination $cachecache
+Copy-Item $tempcache"android-studio-plugins.zip"  -Destination $cachecache
 Copy-Item $tempcache"idea.zip"  -Destination $cachecache
 Copy-Item $tempcache"flutter.zip"  -Destination $cachecache
 Copy-Item $tempcache"jdk.zip"  -Destination $cachecache
