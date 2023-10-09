@@ -36,8 +36,10 @@ function AskWithDefault {
         [String]
         $DefaultValue
     )
-    $fullPrompt = $Prompt + " ... valeur par défaut sera " + $DefaultValue    
-    $userAnswer = Read-Host -Prompt $fullPrompt
+    $fullPrompt = $Prompt + " ... valeur par défaut sera "  
+    Write-Host $ $fullPrompt
+    Write-Host $DefaultValue -ForegroundColor Green
+    $userAnswer = Read-Host -Prompt "Autre valeur ? " 
 
     if ([string]::IsNullOrWhiteSpace($Interesting))
     {
@@ -79,7 +81,11 @@ function GoGetIt {
     $source = $tempcache + $Directory + "\*"
     #$dest = $tempcache + 'zzz' + $ZipName
     $dest = $localTempPath
-    Compress-Archive -Path $source -DestinationPath $dest
+    $zipFileName = $Directory + ".zip"
+    $sevenZipFileName = $Directory + ".7z"
+    # Compress-Archive -Path $source -DestinationPath $dest
+    & $tempcache\7zr.exe a -t7z $sevenZipFileName $source -mx7 -y
+    & $tempcache\7zr.exe a -tzip $Directory".zip" $source
     # Delete temp folder
     # Remove-Item -Path $tempFolder -Recurse
     # Push it to the cachecache
@@ -118,8 +124,9 @@ Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
 
 
 # on attend le SDK
+& $tempcache\7zr.exe a -t7z "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk" -mx7 -y
 
-Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
+# Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
 
 
 
