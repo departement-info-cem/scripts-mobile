@@ -9,14 +9,10 @@ $tempcache = $HOME + "\tempcache\"
 
 Try{
     Remove-Item -LiteralPath $tempcache -Force -Recurse
-}Catch{
-
-}
-
+}Catch{}
 
 [void](New-Item -type directory -Path $cachecache -Force)
 [void](New-Item -type directory -Path $tempcache -Force)
-
 
 function Local7Zip(){
     #if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
@@ -25,7 +21,6 @@ function Local7Zip(){
         $sevenZipPath = "$tempcache\7zr.exe"
     #}
 }
-
 
 function AskWithDefault {
     Param(
@@ -40,7 +35,6 @@ function AskWithDefault {
     Write-Host $ $fullPrompt
     Write-Host $DefaultValue -ForegroundColor Green
     $userAnswer = Read-Host -Prompt "Autre valeur ? " 
-
     if ([string]::IsNullOrWhiteSpace($Interesting))
     {
         $userAnswer = $DefaultValue
@@ -48,6 +42,35 @@ function AskWithDefault {
     Write-Host 'On continue avec ' + $userAnswer
     return $userAnswer
 }
+
+function ReZip {
+    Param(
+        [parameter(Mandatory = $true)]
+        [String]
+        $Directory,
+        [parameter(Mandatory = $true)]
+        [String]
+        $ZipName
+    )
+    $localTempPath = $tempcache + $ZipName
+    #Unzip it somewhere
+    $tempFolder = $tempcache + $Directory + "\"
+    & ${env:ProgramFiles}\7-Zip\7z.exe x "$localTempPath" "-o$($tempFolder)" -y
+    #Expand-Archive $localTempPath -DestinationPath $tempFolder
+    # Delete original Zip
+    # Remove-Item -Path $localTempPath
+    $newZipname = "original" + $ZipName
+    Rename-Item -Path $localTempPath -NewName $newZipname
+    # Zip it back
+    $source = $tempcache + $Directory + "\*"
+    #$dest = $tempcache + 'zzz' + $ZipName
+    $dest = $localTempPath
+    $zipFileName = $Directory + ".zip"
+    $sevenZipFileName = $Directory + ".7z"
+    Compress-Archive -Path $source -DestinationPath $zipFileName
+    & ${env:ProgramFiles}\7-Zip\7z.exe a -t7z $sevenZipFileName $source -mx7 -y
+}
+
 
 function GoGetIt {
     Param(
@@ -64,34 +87,14 @@ function GoGetIt {
     $localTempPath = $tempcache + $ZipName
     Write-Host '    👍 Téléchargement de '$Url' débuté vers '$localTempPath -ForegroundColor Blue
     Set-Location $tempcache
-    $ProgressPreference = 'Continue'
-    $done = $false
+    # $ProgressPreference = 'Continue'
+    # $done = $false
     # TODO strange bug when doing it with android studio --- test with regular Invoke-Download?
-    Start-BitsTransfer -Source $Url -Destination $localTempPath
-    $ProgressPreference = 'Continue'
-
-    #Unzip it somewhere
-    $tempFolder = $tempcache + $Directory + "\"
-    Expand-Archive $localTempPath -DestinationPath $tempcache$Directory"\"
-    # Delete original Zip
-    # Remove-Item -Path $localTempPath
-    $newZipname = "original" + $ZipName
-    Rename-Item -Path $localTempPath -NewName $newZipname
-    # Zip it back
-    $source = $tempcache + $Directory + "\*"
-    #$dest = $tempcache + 'zzz' + $ZipName
-    $dest = $localTempPath
-    $zipFileName = $Directory + ".zip"
-    $sevenZipFileName = $Directory + ".7z"
-    # Compress-Archive -Path $source -DestinationPath $dest
-    & $tempcache\7zr.exe a -t7z $sevenZipFileName $source -mx7 -y
-    & $tempcache\7zr.exe a -tzip $Directory".zip" $source
-    # Delete temp folder
-    # Remove-Item -Path $tempFolder -Recurse
-    # Push it to the cachecache
+    Start-BitsTransfer -Source $Url -Destination $localTempPath 
+    # $ProgressPreference = 'Continue'
 }
 
-Local7Zip
+# Local7Zip
 $jdkURL = AskWithDefault "Quelle URL pour le JDK?" $CORRETTO_URL
 $asURL = AskWithDefault "Quelle URL pour Android Studio?" $STUDIO_URL
 
@@ -102,16 +105,32 @@ $asFlutterIntlURL = AskWithDefault "Plugin flutter?" $FLUTTER_INTL_PLUGIN_URL_ST
 $ijURL = AskWithDefault "Quelle URL pour Intellij?" $IDEA_URL
 $flutterURL = AskWithDefault "Quelle URL pour Flutter?" $FLUTTER_SDK
 
-
-
 GoGetIt $jdkURL "jdk" "jdk.zip"
+GoGetIt $ijURL "idea" "idea.zip"
+GoGetIt $flutterURL "flutter" "flutter.zip"
 GoGetIt $asURL "android-studio" "android-studio.zip"
 GoGetIt $asDartURL "asDart" "plugin-dart-android-studio.zip"
 GoGetIt $asFlutterURL "asFlutter" "plugin-flutter-android-studio.zip"
 GoGetIt $asFlutterIntlURL "asFlutterIntl" "plugin-flutter-intl-android-studio.zip"
 
-GoGetIt $ijURL "idea" "idea.zip"
-GoGetIt $flutterURL "flutter" "flutter.zip"
+Get-BitsTransfer | Complete-BitsTransfer
+
+ReZip "jdk" "jdk.zip"
+ReZip "idea" "idea.zip"
+ReZip "flutter" "flutter.zip"
+
+$localTempPath = $tempcache + "android-studio.zip"
+Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio"
+#ReZip "android-studio" "android-studio.zip"
+$localTempPath = $tempcache + "plugin-dart-android-studio.zip"
+Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio\android-studio\plugins"
+$localTempPath = $tempcache + "plugin-flutter-android-studio.zip"
+Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio\android-studio\plugins"
+$localTempPath = $tempcache + "plugin-flutter-intl-android-studio.zip"
+Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio\android-studio\plugins"
+# extract plugin in the good folder
+
+# Build up the zip
 
 #vExpand-Archive $tempcache'\android-studio.zip' -DestinationPath $HOME"as\"
 
@@ -124,9 +143,15 @@ Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
 
 
 # on attend le SDK
-& $tempcache\7zr.exe a -t7z "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk" -mx7 -y
+& ${env:ProgramFiles}\7-Zip\7z.exe a -t7z "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk" -mx7 -y
 
 # Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
+
+Copy-Item $tempcache"android-studio.zip"  -Destination $cachecache
+Copy-Item $tempcache"idea.zip"  -Destination $cachecache
+Copy-Item $tempcache"flutter.zip"  -Destination $cachecache
+Copy-Item $tempcache"jdk.zip"  -Destination $cachecache
+Copy-Item $tempcache"Sdk.7z"  -Destination $cachecache
 
 
 
