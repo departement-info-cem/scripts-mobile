@@ -131,6 +131,9 @@ Expand-Archive $localTempPath -DestinationPath $HOME"\tempcache\android-studio\a
 # extract plugin in the good folder
 
 # Build up the zip
+$source = $tempcache + "android-studio\*"
+$localTempPath = $tempcache + "android-studio.zip"
+Compress-Archive -Path $source -DestinationPath $zipFileName
 
 #vExpand-Archive $tempcache'\android-studio.zip' -DestinationPath $HOME"as\"
 
