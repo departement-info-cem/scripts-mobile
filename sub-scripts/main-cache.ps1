@@ -19,11 +19,11 @@ Try{
 
 
 function Local7Zip(){
-    if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
+    #if (-Not ( Test-Path ${env:ProgramFiles}\7-Zip\7z.exe)) {
         Write-Host "Je ne trouve pas de 7zip sur l'ordi, je le télécharge dans temp"
-        Invoke-WebRequest 'https://www.7-zip.org/a/7zr.exe' -OutFile "${env:scripty.localTempPath}\7z.exe"
-        $sevenZipPath = "${env:scripty.localTempPath}\7z.exe"
-    }
+        Invoke-WebRequest 'https://www.7-zip.org/a/7zr.exe' -OutFile "$tempcache\7zr.exe"
+        $sevenZipPath = "$tempcache\7zr.exe"
+    #}
 }
 
 
@@ -84,6 +84,8 @@ function GoGetIt {
     # Remove-Item -Path $tempFolder -Recurse
     # Push it to the cachecache
 }
+
+Local7Zip
 $jdkURL = AskWithDefault "Quelle URL pour le JDK?" $CORRETTO_URL
 $asURL = AskWithDefault "Quelle URL pour Android Studio?" $STUDIO_URL
 
@@ -107,12 +109,16 @@ GoGetIt $flutterURL "flutter" "flutter.zip"
 
 #vExpand-Archive $tempcache'\android-studio.zip' -DestinationPath $HOME"as\"
 
-$androidBinPath = $HOME"\tempcache\android-studio\android-studio\bin\studio64.exe"
-#Start-Process 
+$androidBinPath = $HOME + "\tempcache\android-studio\android-studio\bin\studio64.exe"
+Start-Process -FilePath $androidBinPath
 # TODO build SDK b so unzip Android Studio and start it.
 
 Read-Host -Prompt 'Ici il faut partir Android Studio pour procéder aux install du SDK, appuyez sur ENTER quand fait'
 Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
+
+
+# on attend le SDK
+
 Invoke-Zip  "$tempcache\Sdk.7z" "$HOME\AppData\Local\Android\Sdk"
 
 
