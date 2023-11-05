@@ -6,6 +6,11 @@ Start-Transcript -Path ${env:scripty.localTempPath}\transcript-main.txt
 # installe un 7 zip local si on trouve pas dans Program Files cassé voir comment installer le .exe portable
 #Local7Zip
 
+# Fix some PATH before all 
+Remove-Env "Path" "C:\Flutter\bin"
+Append-Env "Path" "$HOME\flutter\bin"
+Append-Env "Path" $HOME\AppData\Local\Pub\Cache\bin
+
 Write-Host "Script d'installation des outils mobile CEM"
 # TODO make sure we get 7zip.exe in portable format so we can start from fresh Windows install
 Write-Host "--- Installation du JDK 17 de Corretto"
@@ -59,5 +64,5 @@ Do {
            Write-Host $filePath'     ok.' -ForegroundColor Green
          }
   }
-  Start-Sleep -s 10  # attend 10 seecondes avant de regarder
+  Start-Sleep -s 10  # attend 10 secondes avant de regarder
 } While ($data.Length -ne $counter)
