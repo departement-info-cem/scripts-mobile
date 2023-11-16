@@ -141,6 +141,7 @@ $androidBinPath = $HOME + "\tempcache\android-studio\android-studio\bin\studio64
 Start-Process -FilePath $androidBinPath
 # TODO build SDK b so unzip Android Studio and start it.
 
+Write-Host 'Attention de bien inclure Android SDK Command-line Tools et Google USB Driver'
 Read-Host -Prompt 'Ici il faut partir Android Studio pour procéder aux install du SDK, appuyez sur ENTER quand fait'
 Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
 
