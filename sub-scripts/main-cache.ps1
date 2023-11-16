@@ -154,9 +154,16 @@ Write-Host 'On va maintenant procéder au zippage du SDK et depot dans la cache'
 Copy-Item $tempcache"idea.zip"  -Destination $cachecache
 Copy-Item $tempcache"flutter.zip"  -Destination $cachecache
 Copy-Item $tempcache"jdk.zip"  -Destination $cachecache
-Copy-Item $tempcache"Sdk.7z"  -Destination $cachecache
 Copy-Item $tempcache"android-studio-plugins.zip"  -Destination $cachecache
 Copy-Item $tempcache"android-studio.zip"  -Destination $cachecache
+
+Copy-Item $tempcache"Sdk.7z"  -Destination $cachecache
+
+Copy-Item $tempcache"idea.7z"  -Destination $cachecache
+Copy-Item $tempcache"flutter.7z"  -Destination $cachecache
+Copy-Item $tempcache"jdk.7z"  -Destination $cachecache
+Copy-Item $tempcache"android-studio-plugins.7z"  -Destination $cachecache
+Copy-Item $tempcache"android-studio.7z"  -Destination $cachecache
 
 
 
