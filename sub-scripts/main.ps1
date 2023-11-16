@@ -37,7 +37,7 @@ powershell "${env:scripty.scriptPath}\lien-bureau.ps1"
 Invoke-Env-Reload
 Write-Host 'Status des installations :::' -ForegroundColor Blue
 
-$data = @('\jdk\jdk17.0.8_8\bin',
+$data = @('\jdk\jdk17.0.9_8\bin',
     '\AppData\Local\Android\Sdk\licenses',
     '\android-studio\bin',
     '\idea\bin',
