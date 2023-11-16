@@ -4,12 +4,12 @@
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-ij-obtient.txt
 Invoke-Env-Reload
-Write-Host "Intellij Idea r�cup�ration"
+Write-Host "Intellij Idea recuperation"
 
 if (-Not ( Test-Path $HOME\idea )) {
-    Invoke-CopyFromCache-Or-Download "IntelliJ Idea" $IDEA_URL "idea.zip" $false
+    Invoke-CopyFromCache-Or-Download "IntelliJ Idea" $IDEA_URL "idea.7z" $false
     Start-Script "${env:scripty.scriptPath}\ij-installe.ps1"
 }
 else {
-    Write-Host '    ✔️  IntelliJ est d�j� install�.'  -ForegroundColor Green
+    Write-Host '    ✔️  IntelliJ est deja installe.'  -ForegroundColor Green
 }

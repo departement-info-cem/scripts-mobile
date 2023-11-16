@@ -20,7 +20,7 @@ If (${env:scripty.devMode} -eq $true) {
     $currentDirectory = Get-Location
     ${env:scripty.scriptPath} = "$currentDirectory\sub-scripts"
     If (${env:scripty.auCollege} -eq $true) {
-        ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cacheDev"
+        ${env:scripty.cachePath} = "\\ed5depinfo\Logiciels\Android\scripts\cachecache"
     }
     Else  {
         ${env:scripty.cachePath} = ${env:scripty.localTempPath}

@@ -9,7 +9,7 @@ Write-Host 'Android Studio téléchargement'
 
 if (-Not ( Test-Path $HOME\android-studio )) {
     Write-Host 'Android Studio '
-    Invoke-CopyFromCache-Or-Download "Android Studio" $STUDIO_URL "android-studio.zip" $false
+    Invoke-CopyFromCache-Or-Download "Android Studio" $STUDIO_URL "android-studio.7z" $false
     Write-Host 'Android Studio > plugin flutter'
     Invoke-CopyFromCache-Or-Download "Plugin Flutter" $FLUTTER_PLUGIN_URL_STUDIO "plugin-flutter-android-studio.zip" $false
     Write-Host 'Android Studio > plugin dart'

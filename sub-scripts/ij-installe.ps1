@@ -7,7 +7,7 @@ Invoke-Env-Reload
 Write-Host "Intellij Idea installation"
 
 if (-Not ( Test-Path $HOME\idea )) {
-    Invoke-Install "intellij" "$HOME\idea"  "idea.zip"
+    Invoke-Install "intellij" "$HOME\idea"  "idea.7z"
 }
 else {
     Write-Host '    ✔️  IntelliJ est déjà installé.'  -ForegroundColor Green
