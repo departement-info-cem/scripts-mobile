@@ -4,7 +4,7 @@
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-jdk-obtient.txt
 Write-Host 'Java JDK 17'
-Write-Host "JDK non install�e ..."
+Write-Host "JDK non installée ..."
 Invoke-CopyFromCache-Or-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk.7z" $false
 powershell "${env:scripty.scriptPath}\jdk-installe.ps1"
 

@@ -16,7 +16,7 @@ If(${env:scripty.auCollege} -eq $true) {
     }
     else {
         Write-Host '    Cache contient un SDK. On va le copier et installer' -ForegroundColor Green
-        # Detecter si un SDK est prÃ©sent sur la cache
+        # Detecter si un SDK est présent sur la cache
         if (-Not ( Test-Path "$HOME\AppData\Local\Android\Sdk" )) {
             [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
             Copy-Item  "${env:scripty.cachePath}\Sdk.7z" "${env:scripty.localTempPath}\Sdk.7z"

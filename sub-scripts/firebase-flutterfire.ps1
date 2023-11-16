@@ -3,8 +3,6 @@
 . "$PSScriptRoot\fonctions.ps1"
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-firebase-flutterfire.txt
 
-
-
 function Install-Firebase-Cli() {
      Write-Host '    ✔️ Installation de firebase cli.'  -ForegroundColor Green
      npm install -g firebase-tools
@@ -14,7 +12,6 @@ function Install-FlutterFire-Cli(){
     Write-Host '    ✔️ Installation de FlutterFire cli.'  -ForegroundColor Green
     dart pub global activate flutterfire_cli
 }
-
 
 Write-Host 'Firebase et FlutterFire'
 # https://stackoverflow.com/questions/70320263/error-the-term-flutterfire-is-not-recognized-as-the-name-of-a-cmdlet-functio

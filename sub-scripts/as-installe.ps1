@@ -5,8 +5,6 @@ Start-Transcript -Path ${env:scripty.localTempPath}\transcript-as-installe.txt
 Invoke-Env-Reload
 Write-Host "Android Studio installation"
 
-
-
 Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
 Append-Env "Path" "$HOME\android-studio\bin"
 
