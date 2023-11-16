@@ -5,20 +5,6 @@ $debug = $false
 
 $sevenZipPath = "${env:ProgramFiles}\7-Zip\7z.exe"
 
-function Check-Or-Install-Java() {
-    #if (Test-CommandExists "javac") {
-    # Write-Host "On a un JDK ici ${env:JAVA_HOME}"
-    #} else {
-    # nécessite Java
-    Write-Host "JDK non installé ..."
-    Invoke-Download "Corretto Java Dev Kit" $CORRETTO_URL "jdk" $false
-    Invoke-Install "JDK" "$HOME\jdk" "jdk.zip"
-    $jdkVersion = (Get-ChildItem $HOME\jdk | Select-Object -First 1).Name
-    Add-Env "JAVA_HOME" "$HOME\jdk\$jdkVersion"
-    Append-Env "Path" "$HOME\jdk\$jdkVersion\bin"
-    #}
-}
-
 Function Start-Script() {
     Param ($script)
     # TODO if debug, we should add noexit option and not minimize
@@ -209,10 +195,26 @@ function Invoke-Unzip() {
 
 # Source : https://stackoverflow.com/a/9701907
 function Add-Shortcut([string]$source_exe, [string]$name) {
+    if(-Not(Test-Path "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")) {
+        Write-Host '    👍 Ajout du raccourci'$Name'' -ForegroundColor Blue
+        $WshShell = New-Object -ComObject WScript.Shell
+        $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
+        $Shortcut.TargetPath = $source_exe
+        $Shortcut.Save()
+        Write-Host '    ✔️ Raccourdi '$name' ajouté.'  -ForegroundColor Green
+    } else {
+        Write-Host '    ✔️ Raccourdi '$name' déjà présent.'  -ForegroundColor Green
+    }
+}
+
+
+function Add-Desktop-Shortcut([string]$source, [string]$name) {
+    Write-Host '    👍 Ajout du raccourci sur le bureau'$Name'' -ForegroundColor Blue
     $WshShell = New-Object -ComObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut("$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\$name.lnk")
-    $Shortcut.TargetPath = $source_exe
+    $Shortcut = $WshShell.CreateShortcut("$HOME\Desktop\$name.lnk")
+    $Shortcut.TargetPath = $source
     $Shortcut.Save()
+    Write-Host '    ✔️ Raccourdi '$name' ajouté.'  -ForegroundColor Green
 }
 
 function Invoke-CopyFromCache-Or-Download {

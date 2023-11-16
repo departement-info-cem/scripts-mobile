@@ -1,10 +1,15 @@
-$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+﻿$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 . "$PSScriptRoot\urls-et-versions.ps1"
 . "$PSScriptRoot\fonctions.ps1"
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-main.txt
 # installe un 7 zip local si on trouve pas dans Program Files cassé voir comment installer le .exe portable
 #Local7Zip
+
+# Fix some PATH before all 
+Remove-Env "Path" "C:\Flutter\bin"
+Append-Env "Path" "$HOME\flutter\bin"
+Append-Env "Path" $HOME\AppData\Local\Pub\Cache\bin
 
 Write-Host "Script d'installation des outils mobile CEM"
 # TODO make sure we get 7zip.exe in portable format so we can start from fresh Windows install
@@ -23,12 +28,11 @@ powershell "${env:scripty.scriptPath}\ij-obtient.ps1"
 Write-Host "--- Téléchargement / installation de Flutter"
 powershell "${env:scripty.scriptPath}\flutter-obtient.ps1"
 
-#Write-Host "--- Téléchargement / installation de Firebase CLI et FlutterFire"
-#powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
-
 Write-Host "--- Téléchargement / installation des repos de 3N5 4N6 et 5N6"
 powershell "${env:scripty.scriptPath}\cours-repo.ps1"
 
+Write-Host "--- Création des lien sur le bureau"
+powershell "${env:scripty.scriptPath}\lien-bureau.ps1"
 
 Invoke-Env-Reload
 Write-Host 'Status des installations :::' -ForegroundColor Blue
@@ -60,5 +64,5 @@ Do {
            Write-Host $filePath'     ok.' -ForegroundColor Green
          }
   }
-  Start-Sleep -s 10  # attend 10 seecondes avant de regarder
+  Start-Sleep -s 10  # attend 10 secondes avant de regarder
 } While ($data.Length -ne $counter)
