@@ -10,10 +10,7 @@ Write-Host "Android Studio installation"
 Add-Shortcut $HOME\android-studio\bin\studio64.exe "Android Studio"
 Append-Env "Path" "$HOME\android-studio\bin"
 
-Invoke-Install "android-studio" "$HOME" "android-studio.7z"
-Invoke-Install "android-studio-dart" "$HOME\android-studio\plugins" "plugin-dart-android-studio.zip"
-Invoke-Install "android-studio-flutter" "$HOME\android-studio\plugins" "plugin-flutter-android-studio.zip"
-Invoke-Install "android-studio-flutter-intl" "$HOME\android-studio\plugins" "plugin-flutter-intl-android-studio.zip"
+Invoke-Install "android-studio" "$HOME" "android-studio-plugins.7z"
 
 If(${env:scripty.auCollege} -eq $false) {
     $studiopath = "$HOME\android-studio\bin\studio64.exe"
