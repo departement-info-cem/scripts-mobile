@@ -7,9 +7,7 @@ Invoke-Env-Reload
 Write-Host "Flutter obtention"
 
 if (-Not ( Test-Path $HOME\flutter )) {
-    Invoke-CopyFromCache-Or-Download "Flutter" $FLUTTER_SDK "flutter.zip" $false
-
-
+    Invoke-CopyFromCache-Or-Download "Flutter" $FLUTTER_SDK "flutter.7z" $false
 }
 else {
     Write-Host '    ✔️  Flutter est déjà installé.'  -ForegroundColor Green

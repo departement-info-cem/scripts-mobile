@@ -8,7 +8,6 @@ Write-Host "Installation du SDK Android Studio dans $HOME\AppData\Local\Android\
 [void](New-Item -type directory -Path "$HOME\AppData\Local\Android\Sdk" -Force)
 Invoke-Unzip "android-sdk" "${env:scripty.localTempPath}\Sdk.7z" "$HOME\AppData\Local\Android"
 
-
 Start-Script "${env:scripty.scriptPath}\android-emulator.ps1"
 
 # partir Android studio

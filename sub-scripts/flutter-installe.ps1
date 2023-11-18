@@ -7,8 +7,7 @@ Invoke-Env-Reload
 Write-Host 'Flutter installation'
 
 if (-Not ( Test-Path $HOME\flutter )) {
-    Invoke-Install "flutter" "$HOME" "flutter.zip"
-
+    Invoke-Install "flutter" "$HOME" "flutter.7z"
 }
 else {
     Write-Host '    Flutter est déjà installé.'  -ForegroundColor Green
@@ -23,8 +22,6 @@ Write-Host '    Mise à jour'
 Write-Host '    Accepter les licenses. En attente du SDK Android ...'
 flutter doctor --android-licenses
 
-
-# TODO wait until a certain file in SDK exists
 Write-Host 'Flutter'
 
 #Install-Flutter

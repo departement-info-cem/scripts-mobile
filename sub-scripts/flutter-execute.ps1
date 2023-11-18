@@ -7,19 +7,16 @@ Start-Transcript -Path ${env:scripty.localTempPath}\transcript-flutter-execute.t
 Append-Env "Path" "$HOME\flutter\bin"
 Invoke-Env-Reload
 
-
-#$User = Read-Host -Prompt 'Block pour voir la fenetre'
-Write-Host 'D�marrage Flutter.' -ForegroundColor Blue
-#wait on flutter to exist
+Write-Host 'Démarrage Flutter.' -ForegroundColor Blue
 
 Wait-Until-File-Exists("$HOME\flutter\bin\flutter")
 Start-Sleep -s 60
 
 Set-Location $HOME
 flutter create fake_start
-Write-Host ' Premier d�marrage.' -ForegroundColor Blue
+Write-Host ' Premier démarrage.' -ForegroundColor Blue
 Set-Location $HOME\fake_start
 
 flutter run
 
-$User = Read-Host -Prompt 'L appli devrait etre partie sur �mulateur'
+$User = Read-Host -Prompt 'L appli devrait etre partie sur émulateur'
