@@ -3,10 +3,18 @@ import ssl
 import sys
 import urllib.request
 
+
+
 def telecharge(url, destination):
     urllib.request.urlretrieve(
         "https://release.gitkraken.com/darwin/installGitKraken.dmg",
         "/Users/Prof/kraken.dmg", context=ssl.SSLContext())
+
+
+
+flutterLocation = "/opt/flutter"
+
+
 motDePasse = ""
 if len(sys.argv) == 0 :
     print("Ouch pas d'arguments")
