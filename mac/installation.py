@@ -1,86 +1,148 @@
 import os
-import ssl
+
 import sys
 import urllib.request
 
+import requests
 
+
+userName = "jorisdeguet"
+#userName = "Prof"
+
+def executeAsUser(command):
+    currentUser = userName
+    os.system("sudo -u " + currentUser + " " + command)
+
+def macupdate():
+    print("Installation des mises à jour de MacOS en général Xcode inclus")
+    os.system("softwareupdate --install -a")
+
+def flutter():
+    currentUser = os.popen("id -un").read().strip()
+    print("Installation de flutter as " + currentUser)
+    if os.system("which flutter") == 0:
+        print("Flutter est déjà installé")
+        # sudo -u "$currentUser" defaults write com.apple.dock orientation left
+        executeAsUser("flutter upgrade")
+    else:
+        print("Installation de flutter nouveau")
+        telecharge(
+            flutterURL,
+            "/Users/"+userName+"/Downloads/flutter.zip")
+        os.system("mkdir /opt/flutter")
+        os.system("chown -R " + userName + " /opt/flutter")
+        os.system("chmod 777 -R  /opt/flutter")
+        executeAsUser("unzip -qq /Users/"+userName+"/Downloads/flutter.zip -d /opt/")
+        os.system("chown -R " + userName + " /opt/flutter")
+        os.system("chgrp -R admin /opt/flutter")
+        os.system("chmod 777 -R  /opt/flutter")
+        # deplacer flutter dans /opt
+        # os.system("sudo mv flutter /opt/")
+        with open("/etc/paths", "r+") as file:
+            for line in file:
+                if "/opt/flutter/bin" in line:
+                    break
+            else:  # not found, we are at the eof
+                file.write("/opt/flutter/bin")  # append missing data
+        # ajouter flutter au path
+    #print("Etat de l'installation de Flutter")
+    #os.system("flutter doctor")
+
+def rosetta():
+    print("Installation de Rosetta")
+    os.system("sudo softwareupdate --install-rosetta --agree-to-license")
+def homebrew():
+    print("Installation de Brew ou mise à jour")
+    # test if brew is installed
+    if os.system("which brew") == 0:
+        print("Brew est déjà installé")
+    else:
+        print("Installation de Brew")
+        os.system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
+        os.system("brew update")
+    # install homebrew
+
+def cocoapods():
+    print("Installation de cocoapods / mise à jour")
+    os.system("sudo gem update")
+    print("Mise à jour de cocoapods")
+    os.system("sudo gem install cocoapods")
+
+def xcode():
+    print("Configure Xcode")
+    # configure Xcode
+    os.system("sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer")
+    os.system("sudo xcodebuild -runFirstLaunch")
+    os.system("open -a XCode")
 
 def telecharge(url, destination):
-    urllib.request.urlretrieve(
-        "https://release.gitkraken.com/darwin/installGitKraken.dmg",
-        "/Users/Prof/kraken.dmg", context=ssl.SSLContext())
+    r = requests.get(url, allow_redirects=True)
+    open(destination, 'wb').write(r.content)
 
+def installDansApplication(url, tempFile, volumeName, applicationName):
+    os.system("rm -rf \"/Applications/" + applicationName + "\"")
+    print("Telechargement de " + applicationName)
+    telecharge(url, tempFile)
 
+    mountCommand = "hdiutil attach -mountpoint \"/Volumes/" + volumeName + "\" " + tempFile + ("  -quiet")
+    print("Montage du volume de " + mountCommand)
+    os.system(mountCommand)
+
+    copyCommand = "cp -Rf \"/Volumes/" + volumeName + "/" + applicationName + "\"" " /Applications"
+    print("Copie de l'application " + copyCommand)
+    os.system(copyCommand)
+
+    #print("Demontage de l'image \"" + applicationName + "\" dans Applications")
+    os.system("hdiutil detach \"/Volumes/" + volumeName+ "\" -quiet ")
+    os.system("rm " + tempFile)
+    #print("Demarrage de l'application " + applicationName )
+    os.system("open -a \"" + applicationName+ "\" ")
 
 flutterLocation = "/opt/flutter"
+flutterURL = "https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_3.16.1-stable.zip"
+intellijURL = "https://download.jetbrains.com/idea/ideaIC-2023.2.5-aarch64.dmg"
+
+androidStudioURL = "https://redirector.gvt1.com/edgedl/android/studio/install/2022.3.1.22/android-studio-2022.3.1.22-mac_arm.dmg"
+
+githubDesktopURL = "https://central.github.com/deployments/desktop/desktop/latest/darwin-arm64"
+gitKrakenURL = "https://release.gitkraken.com/darwin-arm64/installGitKraken.dmg"
+
+# Premier truc a faire partir la mise a jour de Xcode
+print("ALLER DANS LE MAC APP STORE ET LANCER LA MISE A JOUR DE XCODE, C'EST LONG!!!!!")
+
+def githubDesktop():
+    os.system("rm -rf \"/Applications/GitHub Desktop.app\"")
+    telecharge(githubDesktopURL, "/Users/"+userName+"/Downloads/githubDesktop.zip")
+    os.system("unzip -o /Users/"+userName+"/Downloads/githubDesktop.zip -d /Applications" )
+    os.system("rm /Users/"+userName+"/Downloads/githubDesktop.zip")
 
 
-motDePasse = ""
-if len(sys.argv) == 0 :
-    print("Ouch pas d'arguments")
-    motDePasse = "TODO"
-else :
-    motDePasse = sys.argv[0]
-print("Mot de passe admin " + motDePasse)
+####  Real calls   ####
 
-# TODO faire ca pour IDEA, Android Studio GitKraken GithubDesktop
+installDansApplication(
+    intellijURL,
+    "/Users/"+userName+"/Downloads/intellij.dmg",
+    "IntelliJ IDEA CE",
+    "IntelliJ IDEA CE.app")
 
-print("telecharge client GitKraken")
-telecharge(
-    "https://release.gitkraken.com/darwin/installGitKraken.dmg",
-    "/Users/Prof/kraken.dmg")
-os.system("hdiutil attach -mountpoint /Volumes/kraken <filename.dmg>")
-os.system("cp -R /Volumes/kraken /Applications")
-os.system("open -a GitKraken")
-# copier dans Applications
+installDansApplication(
+    androidStudioURL,
+    "/Users/"+userName+"/Downloads/android.dmg",
+    "Android Studio",
+    "Android Studio.app")
 
+installDansApplication(
+    gitKrakenURL,
+    "/Users/"+userName+"/Downloads/gitkraken.dmg",
+    "GitKraken",
+    "GitKraken.app")
 
-print("Installation des mises à jour de MacOS en général Xcode inclus")
-os.system("softwareupdate --install -a")
-
-print("Configure Xcode")
-# configure Xcode
-os.system("sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer")
-os.system("sudo xcodebuild -runFirstLaunch")
-os.system("open -a XCode")
-
-print("Installation de Brew ou mise à jour")
-# test if brew is installed
-if os.system("which brew") == 0:
-    print("Brew est déjà installé")
-else:
-    print("Installation de Brew")
-    os.system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
-    os.system("brew update")
-# install homebrew
-
-# TODO edit path
-# TODO modify current PATH
-
-print("Installation de cocoapods / mise à jour")
-os.system("sudo gem update")
-print("Mise à jour de cocoapods")
-os.system("sudo gem install cocoapods")
-
-print("Installation de Rosetta")
-os.system("sudo softwareupdate --install-rosetta --agree-to-license")
-
-
-print("Installation de flutter")
-if os.system("which flutter") == 0:
-    print("Flutter est déjà installé")
-    os.system("flutter upgrade")
-else:
-    print("Installation de flutter")
-    urllib.request.urlretrieve(
-        "https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_3.13.9-stable.zip",
-        "/Users/Prof/flutter.zip")
-    os.system("unzip -qq flutter.zip")
-    # deplacer flutter dans /opt
-    os.system("sudo mv flutter /opt/")
-    # ajouter flutter au path
-
-print("Etat de l'installation de Flutter")
-os.system("flutter doctor")
+#githubDesktop() TODO fix it is broken
+macupdate()
+xcode()
+homebrew()
+cocoapods()
+rosetta()
+flutter()
 
 
