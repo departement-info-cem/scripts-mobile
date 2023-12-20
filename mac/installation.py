@@ -68,9 +68,11 @@ def homebrew():
     # test if brew is installed
     if executeAsUser("which brew") == 0:
         print("Brew est déjà installé")
+        executeAsUser("brew update")
     else:
         print("Installation de Brew")
         executeAsUser("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
+        add_to_system_path("/opt/homebrew/bin")
         executeAsUser("brew update")
     # install homebrew
 
