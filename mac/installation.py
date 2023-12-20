@@ -6,7 +6,7 @@ import urllib.request
 import requests
 
 
-userName = "jorisdeguet"
+userName = os.getlogin()
 #userName = "Prof"
 
 def executeAsUser(command):
@@ -67,6 +67,7 @@ def cocoapods():
     os.system("sudo gem update")
     print("Mise à jour de cocoapods")
     os.system("sudo gem install cocoapods")
+    os.system("pod repo update")
 
 def xcode():
     print("Configure Xcode")
