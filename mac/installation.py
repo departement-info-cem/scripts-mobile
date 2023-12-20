@@ -5,6 +5,13 @@ import urllib.request
 
 import requests
 
+# logic goes as
+# install homebrew,
+# then install a 3.x ruby with brew
+# make this ruby the default ruby playing with the path
+# then install cocoapods with gem using this ruby
+# then we do not have to sudo all cocoapods commands
+
 
 userName = os.getlogin()
 #userName = "Prof"
@@ -72,7 +79,8 @@ def cocoapods():
     os.system("sudo gem update")
     print("Mise à jour de cocoapods")
     os.system("sudo gem install cocoapods")
-    os.system("pod repo update")
+    # cocoapods cannot be run as root
+    executeAsUser("pod repo update")
 
 def xcode():
     print("Configure Xcode")
@@ -87,7 +95,7 @@ def telecharge(url, destination):
 
 def installDansApplication(url, tempFile, volumeName, applicationName):
     # test first if the application is already installed
-    
+
     os.system("rm -rf \"/Applications/" + applicationName + "\"")
     print("Telechargement de " + applicationName)
     telecharge(url, tempFile)
@@ -152,5 +160,9 @@ homebrew()
 cocoapods()
 rosetta()
 flutter()
+
+os.system("flutter --version")
+os.system("pod --version")
+os.system("/usr/bin/xcodebuild -version")
 
 
