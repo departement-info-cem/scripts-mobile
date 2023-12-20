@@ -38,15 +38,20 @@ def flutter():
         os.system("chmod 777 -R  /opt/flutter")
         # deplacer flutter dans /opt
         # os.system("sudo mv flutter /opt/")
-        with open("/etc/paths", "r+") as file:
-            for line in file:
-                if "/opt/flutter/bin" in line:
-                    break
-            else:  # not found, we are at the eof
-                file.write("/opt/flutter/bin")  # append missing data
+        add_to_system_path("/opt/flutter/bin")
         # ajouter flutter au path
     #print("Etat de l'installation de Flutter")
     #os.system("flutter doctor")
+
+
+def add_to_system_path(path):
+    with open("/etc/paths", "r+") as file:
+        for line in file:
+            if path in line:
+                break
+        else:  # not found, we are at the eof
+            file.write(path)  # append missing data
+
 
 def rosetta():
     print("Installation de Rosetta")
@@ -54,12 +59,12 @@ def rosetta():
 def homebrew():
     print("Installation de Brew ou mise à jour")
     # test if brew is installed
-    if os.system("which brew") == 0:
+    if executeAsUser("which brew") == 0:
         print("Brew est déjà installé")
     else:
         print("Installation de Brew")
-        os.system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
-        os.system("brew update")
+        executeAsUser("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
+        executeAsUser("brew update")
     # install homebrew
 
 def cocoapods():
@@ -81,6 +86,8 @@ def telecharge(url, destination):
     open(destination, 'wb').write(r.content)
 
 def installDansApplication(url, tempFile, volumeName, applicationName):
+    # test first if the application is already installed
+    
     os.system("rm -rf \"/Applications/" + applicationName + "\"")
     print("Telechargement de " + applicationName)
     telecharge(url, tempFile)
