@@ -19,7 +19,9 @@ userName = os.getlogin()
 
 def executeAsUser(command):
     currentUser = userName
-    return subprocess.call("sudo -u " + currentUser + " " + command, shell=True)
+    command = "sudo -u " + currentUser + " " + command
+    print("             >>>> command:"+command)
+    return subprocess.call(command, shell=True)
 
 def execute(command):
     return subprocess.call(command, shell=True)
@@ -93,12 +95,13 @@ def homebrew():
 
 def install_ruby3():
     print("\n\n\n####################################################  Installation de ruby 3")
-    executeAsUser("brew install ruby")
+    executeAsUser("brew install ruby@3.2.0")
     add_to_system_path("/opt/homebrew/opt/ruby/bin")
     executeAsUser("gem update --system")
 
 def cocoapods():
     print("\n\n\n####################################################  Installation de cocoapods / mise à jour")
+    add_to_system_path("/opt/homebrew/lib/ruby/gems/3.2.0/bin")
     executeAsUser("gem install cocoapods")
     executeAsUser("gem update")
     print("Mise à jour de cocoapods")
