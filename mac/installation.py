@@ -19,10 +19,10 @@ userName = os.getlogin()
 
 def executeAsUser(command):
     currentUser = userName
-    os.system("sudo -u " + currentUser + " " + command)
+    return subprocess.call("sudo -u " + currentUser + " " + command, shell=True)
 
 def execute(command):
-    subprocess.check_output(command, shell=True)
+    return subprocess.call(command, shell=True)
 
 def macupdate():
     try:
@@ -82,7 +82,7 @@ def rosetta():
 def homebrew():
     print("\n\n\n####################################################  Installation de Brew ou mise à jour")
     # test if brew is installed
-    if executeAsUser("which brew") == 0:
+    if execute("which brew") == 0:
         print("\n\n\n####################################################  Brew est déjà installé")
         execute("brew update")
     else:
@@ -90,7 +90,6 @@ def homebrew():
         executeAsUser("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
         add_to_system_path("/opt/homebrew/bin")
         executeAsUser("brew update")
-    # install homebrew
 
 def install_ruby3():
     print("\n\n\n####################################################  Installation de ruby 3")
@@ -103,14 +102,12 @@ def cocoapods():
     executeAsUser("gem install cocoapods")
     executeAsUser("gem update")
     print("Mise à jour de cocoapods")
-    # cocoapods cannot be run as root
     executeAsUser("pod repo update")
 
 def xcode():
     print("\n\n\n####################################################  Configure Xcode")
     # configure Xcode
     os.system("xcode-select --install")
-    # os.system("sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer")
     os.system("sudo xcodebuild -runFirstLaunch")
     os.system("open -a XCode")
 
@@ -162,27 +159,21 @@ def githubDesktop():
     os.system("unzip -o /Users/"+userName+"/Downloads/githubDesktop.zip -d /Applications" )
     os.system("rm /Users/"+userName+"/Downloads/githubDesktop.zip")
 
-
 ####  Real calls   ####
-
 installDansApplication(
     intellijURL,
     "/Users/"+userName+"/Downloads/intellij.dmg",
-    "IntelliJ IDEA CE",
-    "IntelliJ IDEA CE.app")
+    "IntelliJ IDEA CE", "IntelliJ IDEA CE.app")
 
 installDansApplication(
     androidStudioURL,
     "/Users/"+userName+"/Downloads/android.dmg",
-    "Android Studio",
-    "Android Studio.app")
+    "Android Studio", "Android Studio.app")
 
 installDansApplication(
     gitKrakenURL,
     "/Users/"+userName+"/Downloads/gitkraken.dmg",
-    "GitKraken",
-    "GitKraken.app")
-
+    "GitKraken", "GitKraken.app")
 
 add_to_system_path("pipo")
 #githubDesktop() TODO fix it is broken
