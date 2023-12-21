@@ -15,16 +15,30 @@ import requests
 
 
 userName = os.getlogin()
+paths = []
 #userName = "Prof"
 
 def executeAsUser(command):
     currentUser = userName
     command = "sudo -u " + currentUser + " " + command
-    print("             >>>> command:"+command)
-    return subprocess.call(command, shell=True)
+    my_env = os.environ.copy()
+    newPath = ""
+    for path in paths:
+        newPath += path+":"
+    newPath += my_env['PATH']
+    my_env["PATH"] = newPath
+    print("             >>>> command :"+command + " with path " + my_env["PATH"])
+    return subprocess.call(command, shell=True, env=my_env)
 
 def execute(command):
-    return subprocess.call(command, shell=True)
+    my_env = os.environ.copy()
+    newPath = ""
+    for path in paths:
+        newPath += path+":"
+    newPath += my_env['PATH']
+    my_env["PATH"] = newPath
+    print("             >>>> command ROOT :"+command + " with path " + my_env["PATH"])
+    return subprocess.call(command, shell=True, env=my_env)
 
 def macupdate():
     try:
@@ -71,6 +85,7 @@ def add_to_system_path(path):
                 data = original.read()
             with open("/etc/paths", 'w') as modified:
                 modified.write(path+"\n" + data)
+    paths.append(path)
     os.system("source ~/.bashrc")
             #file.write(path)  # append missing data
 
@@ -95,7 +110,7 @@ def homebrew():
 
 def install_ruby3():
     print("\n\n\n####################################################  Installation de ruby 3")
-    executeAsUser("brew install ruby@3.2.0")
+    executeAsUser("brew install ruby@3.2")
     add_to_system_path("/opt/homebrew/opt/ruby/bin")
     executeAsUser("gem update --system")
 
