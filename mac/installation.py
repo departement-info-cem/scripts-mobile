@@ -27,8 +27,8 @@ def executeAsUser(command):
         newPath += path+":"
     newPath += my_env['PATH']
     my_env["PATH"] = newPath
-    print(paths)
-    print("             >>>> command :"+command + " with path " + my_env["PATH"])
+    #print(paths)
+    #print("             >>>> command :"+command + " with path " + my_env["PATH"])
     return subprocess.call(command, shell=True, env=my_env)
 
 def execute(command):
@@ -38,8 +38,8 @@ def execute(command):
         newPath += path+":"
     newPath += my_env['PATH']
     my_env["PATH"] = newPath
-    print(paths)
-    print("             >>>> command ROOT :"+command + " with path " + my_env["PATH"])
+    # print(paths)
+    # print("             >>>> command ROOT :"+command + " with path " + my_env["PATH"])
     return subprocess.call(command, shell=True, env=my_env)
 
 def macupdate():
@@ -207,9 +207,9 @@ cocoapods()
 rosetta()
 flutter()
 
-os.system("flutter --version")
-os.system("pod --version")
-os.system("/usr/bin/xcodebuild -version")
-os.system("ruby -v")
+executeAsUser("flutter --version")
+executeAsUser("pod --version")
+executeAsUser("/usr/bin/xcodebuild -version")
+executeAsUser("ruby -v")
 
 
