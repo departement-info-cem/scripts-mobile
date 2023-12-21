@@ -19,6 +19,9 @@ A FAIRE : chaque début de session ou si des problèmes sur un mac
 - ouvrir un terminal
 - se placer dans le dossier du repo, dans le dossier mac
 - taper la commande `sudo python3 installation.py`
+- il est possible qu'un prompt apparaisse pour installer python3
+- il faudra peut etre aussi taper "pip3 install requests"
+- on peut mettre a jour "python3 -m pip install --upgrade pip"
 - on devrait avoir:
   - Android Studio  dans /Applications 
   - Intellij        dans /Applications

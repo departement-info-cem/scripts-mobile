@@ -2,6 +2,7 @@ import os
 
 import sys
 import urllib.request
+import subprocess
 
 import requests
 
@@ -19,6 +20,9 @@ userName = os.getlogin()
 def executeAsUser(command):
     currentUser = userName
     os.system("sudo -u " + currentUser + " " + command)
+
+def execute(command):
+    subprocess.check_output(command, shell=True)
 
 def macupdate():
     try:
@@ -65,6 +69,7 @@ def add_to_system_path(path):
                 data = original.read()
             with open("/etc/paths", 'w') as modified:
                 modified.write(path+"\n" + data)
+    os.system("source ~/.bashrc")
             #file.write(path)  # append missing data
 
 
@@ -79,7 +84,7 @@ def homebrew():
     # test if brew is installed
     if executeAsUser("which brew") == 0:
         print("\n\n\n####################################################  Brew est déjà installé")
-        executeAsUser("brew update")
+        execute("brew update")
     else:
         print("\n\n\n####################################################  Installation de Brew")
         executeAsUser("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
@@ -89,14 +94,14 @@ def homebrew():
 
 def install_ruby3():
     print("\n\n\n####################################################  Installation de ruby 3")
-    os.system("brew install ruby")
+    executeAsUser("brew install ruby")
     add_to_system_path("/opt/homebrew/opt/ruby/bin")
-    os.system("gem update --system")
+    executeAsUser("gem update --system")
 
 def cocoapods():
     print("\n\n\n####################################################  Installation de cocoapods / mise à jour")
-    os.system("gem install cocoapods")
-    os.system("gem update")
+    executeAsUser("gem install cocoapods")
+    executeAsUser("gem update")
     print("Mise à jour de cocoapods")
     # cocoapods cannot be run as root
     executeAsUser("pod repo update")
@@ -104,7 +109,7 @@ def cocoapods():
 def xcode():
     print("\n\n\n####################################################  Configure Xcode")
     # configure Xcode
-    os.system("sudo xcode-select –-install")
+    os.system("xcode-select --install")
     # os.system("sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer")
     os.system("sudo xcodebuild -runFirstLaunch")
     os.system("open -a XCode")
