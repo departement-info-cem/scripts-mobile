@@ -27,6 +27,7 @@ def executeAsUser(command):
         newPath += path+":"
     newPath += my_env['PATH']
     my_env["PATH"] = newPath
+    print(paths)
     print("             >>>> command :"+command + " with path " + my_env["PATH"])
     return subprocess.call(command, shell=True, env=my_env)
 
@@ -37,6 +38,7 @@ def execute(command):
         newPath += path+":"
     newPath += my_env['PATH']
     my_env["PATH"] = newPath
+    print(paths)
     print("             >>>> command ROOT :"+command + " with path " + my_env["PATH"])
     return subprocess.call(command, shell=True, env=my_env)
 
@@ -50,6 +52,7 @@ def macupdate():
 def flutter():
     try:
         print("\n\n\n####################################################  Installation de flutter as " + userName)
+        add_to_system_path("/opt/flutter/bin")
         if os.system("which flutter") == 0:
             print("Flutter est déjà installé")
             executeAsUser("flutter upgrade")
@@ -67,7 +70,7 @@ def flutter():
             os.system("chmod 777 -R  /opt/flutter")
             # deplacer flutter dans /opt
             # os.system("sudo mv flutter /opt/")
-            add_to_system_path("/opt/flutter/bin")
+
             # ajouter flutter au path
     except:
         print("Erreur lors de l'installation de Flutter")
@@ -98,6 +101,7 @@ def rosetta():
         print("Erreur lors de l'installation de Rosetta")
 def homebrew():
     print("\n\n\n####################################################  Installation de Brew ou mise à jour")
+    add_to_system_path("/opt/homebrew/bin")
     # test if brew is installed
     if execute("which brew") == 0:
         print("\n\n\n####################################################  Brew est déjà installé")
@@ -105,7 +109,6 @@ def homebrew():
     else:
         print("\n\n\n####################################################  Installation de Brew")
         executeAsUser("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
-        add_to_system_path("/opt/homebrew/bin")
         executeAsUser("brew update")
 
 def install_ruby3():
@@ -193,7 +196,6 @@ installDansApplication(
     "/Users/"+userName+"/Downloads/gitkraken.dmg",
     "GitKraken", "GitKraken.app")
 
-add_to_system_path("pipo")
 #githubDesktop() TODO fix it is broken
 macupdate()
 xcode()
