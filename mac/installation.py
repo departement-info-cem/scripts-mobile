@@ -130,17 +130,17 @@ def installDansApplication(url, tempFile, volumeName, applicationName):
 
         mountCommand = "hdiutil attach -mountpoint \"/Volumes/" + volumeName + "\" " + tempFile + ("  -quiet")
         print("Montage du volume de " + mountCommand)
-        os.system(mountCommand)
+        executeAsUser(mountCommand)
 
         copyCommand = "cp -Rf \"/Volumes/" + volumeName + "/" + applicationName + "\"" " /Applications"
         print("Copie de l'application " + copyCommand)
-        os.system(copyCommand)
+        executeAsUser(copyCommand)
 
         #print("Demontage de l'image \"" + applicationName + "\" dans Applications")
-        os.system("hdiutil detach \"/Volumes/" + volumeName+ "\" -quiet ")
+        executeAsUser("hdiutil detach \"/Volumes/" + volumeName+ "\" -quiet ")
         os.system("rm " + tempFile)
         #print("Demarrage de l'application " + applicationName )
-        os.system("open -a \"" + applicationName+ "\" ")
+        executeAsUser("open -a \"" + applicationName+ "\" ")
     except:
         print("Erreur lors de l'installation de " + applicationName)
 
