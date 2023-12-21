@@ -89,8 +89,8 @@ def add_to_system_path(path):
             with open("/etc/paths", 'w') as modified:
                 modified.write(path+"\n" + data)
     paths.append(path)
-    os.system("source ~/.bashrc")
-            #file.write(path)  # append missing data
+    #os.system("source ~/.bashrc")
+    #file.write(path)  # append missing data
 
 
 def rosetta():
