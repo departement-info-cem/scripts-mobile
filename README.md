@@ -89,7 +89,7 @@ Pour installer les logiciels des cours de 3N5, 4N6 et 5N6, le script commence pa
 4. Partir le script principal. Le script va détecter les éléments manquants et les télécharger.
 5. Remplacez `cache` par `cacheDev`. Vous devriez tout de même effectuer une copie de sauvegarde de `cache`.
 
-<a href="https://raw.githubusercontent.com/departement-info-cem/scripts-mobile/main/installation.bat" download>Test</a>
+<a href="https://raw.githubusercontent.com/departement-info-cem/scripts-mobile/main/installation.bat" download target="_blank">Test</a>
 
 ## Améliorations
 
