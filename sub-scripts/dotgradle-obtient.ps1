@@ -4,5 +4,6 @@
 
 Start-Transcript -Path ${env:scripty.localTempPath}\transcript-dotgradle-obtient.txt
 Copy-Item  "${env:scripty.cachePath}\.gradle.7z" "${env:scripty.localTempPath}\.gradle.7z"
-powershell "${env:scripty.scriptPath}\dotgradle-installe.ps1"
+
+Start-Script "${env:scripty.scriptPath}\dotgradle-installe.ps1"
 
