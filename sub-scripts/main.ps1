@@ -16,6 +16,9 @@ Write-Host "Script d'installation des outils mobile CEM"
 Write-Host "--- Installation du JDK 17 de Corretto"
 powershell "${env:scripty.scriptPath}\jdk-obtient.ps1"
 
+Write-Host "--- Téléchargement du cache gradle"
+powershell "${env:scripty.scriptPath}\dotgradle-obtient.ps1"
+
 Write-Host "--- Téléchargement du SDK"
 powershell "${env:scripty.scriptPath}\sdk-obtient.ps1"
 
