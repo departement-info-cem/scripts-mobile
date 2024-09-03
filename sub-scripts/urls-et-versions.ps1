@@ -13,7 +13,7 @@ $CORRETTO_URL = 'https://corretto.aws/downloads/latest/amazon-corretto-17-x64-wi
 
 # IntelliJ
 
-$IDEA_URL = 'https://download.jetbrains.com/idea/ideaIC-2024.2.0.1.win.zip' # https://www.jetbrains.com/idea/download/other.html
+$IDEA_URL = 'https://download.jetbrains.com/idea/ideaIC-2024.2.1.win.zip' # https://www.jetbrains.com/idea/download/other.html
 
 # Flutter
 
