@@ -40,6 +40,10 @@ powershell "${env:scripty.scriptPath}\gh-kmb.ps1"
 Write-Host "--- Création des lien sur le bureau"
 powershell "${env:scripty.scriptPath}\lien-bureau.ps1"
 
+Write-Host "--- Ajustement de Windows Defender"
+
+Start-Process powershell.exe -Verb RunAs -ArgumentList ('-noprofile -noexit -file "C:\Users\po.brillant\Desktop\scripts-mobile\sub-scripts\test.ps1" -elevated')
+
 Invoke-Env-Reload
 Write-Host 'Status des installations :::' -ForegroundColor Blue
 
