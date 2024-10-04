@@ -27,12 +27,16 @@ flowchart TD
     dAS["Get Android Studio"]
     unzipAS["Unzip Android Studio"]
     startandroidstudio["Partir Android Studio"]
+    startidea["Partir IntelliJ"]
     dSDK["Get Android SDK"]
     unzipSDK["Unzip Android SDK"]
     dFLUTTER["Download Flutter"]
     unzipFLUTTER["Unzip & Install Flutter"]
     firebase["Install Firebase CLI + FlutterFire"]
-    repos["Download repos 3N5 4N6 5N6 serveur"]
+    gh3n5["Download repo 3N5"]
+    gh4n6["Download repo 4N6"]
+    gh5n6["Download repo 5N6"]
+    ghkmb["Download repo KickMyB"]
     projetflutter["Première run Flutter"]
     emulator["Lancer émulateur"]
     subgraph téléchargements
@@ -40,7 +44,10 @@ flowchart TD
         clone ==> dJDK
         dSDK ==> dAS
         dAS ==> dIDEA
-        dFLUTTER ==> repos
+        dFLUTTER ==> gh3n5
+        dFLUTTER ==> gh4n6
+        dFLUTTER ==> gh5n6
+        dFLUTTER ==> ghkmb
         dIDEA ==> dFLUTTER
     end
     dJDK --> unzipJDK
@@ -49,6 +56,7 @@ flowchart TD
     dAS --> unzipAS
     
     dIDEA --> unzipIDEA
+    unzipIDEA --> startidea
     dFLUTTER --> unzipFLUTTER
     
     unzipAS --> startandroidstudio
