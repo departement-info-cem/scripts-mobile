@@ -31,8 +31,11 @@ powershell "${env:scripty.scriptPath}\ij-obtient.ps1"
 Write-Host "--- Téléchargement / installation de Flutter"
 powershell "${env:scripty.scriptPath}\flutter-obtient.ps1"
 
-Write-Host "--- Téléchargement / installation des repos de 3N5 4N6 et 5N6"
-powershell "${env:scripty.scriptPath}\cours-repo.ps1"
+Write-Host "--- Téléchargement / installation des repos de KickMyB, 3N5 4N6 et 5N6"
+powershell "${env:scripty.scriptPath}\gh-3n5.ps1"
+powershell "${env:scripty.scriptPath}\gh-4n6.ps1"
+powershell "${env:scripty.scriptPath}\gh-5n6.ps1"
+powershell "${env:scripty.scriptPath}\gh-kmb.ps1"
 
 Write-Host "--- Création des lien sur le bureau"
 powershell "${env:scripty.scriptPath}\lien-bureau.ps1"
