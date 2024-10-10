@@ -74,6 +74,9 @@ namespace ScriptSharp
 
             switch (choice)
             {
+                case "0":
+                    await HandleCache();
+                    break;
                 case "1":
                     await Handle3N5KotlinConsoleAsync();
                     break;
@@ -102,6 +105,31 @@ namespace ScriptSharp
             Console.ReadLine();
         }
 
+        
+        static async Task HandleCache()
+        {
+            LogAndWriteLine("Creation de la cache ...");
+            var downloadTasks = new[]
+            {
+                DownloadFileAsync(IDEA_URL, "idea.zip"),
+                DownloadFileAsync(STUDIO_URL, "studio.zip"),
+                DownloadFileAsync(FLUTTER_SDK, "flutter.zip"),
+                DownloadFileAsync(CORRETTO_URL, "corretto.zip"),
+                DownloadFileAsync(FLUTTER_PLUGIN_URL_STUDIO, "flutter_plugin.zip"),
+                DownloadFileAsync(DART_PLUGIN_URL_STUDIO, "dart_plugin.zip")
+            };
+
+            await Task.WhenAll(downloadTasks);
+
+            var convertTasks = new[]
+            {
+                ConvertZipTo7zAsync("idea.zip", "idea.7z"),
+                ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
+            };
+
+            await Task.WhenAll(convertTasks);
+            LogAndWriteLine("Creation de la cache finie");
+        }
         static async Task Handle3N5KotlinConsoleAsync()
         {
             LogAndWriteLine("Installation de kotlin (console) 3N5...");
@@ -221,6 +249,46 @@ namespace ScriptSharp
             LogAndWriteLine("Installation Flutter  fini");
         }
 
+        public static async Task ConvertZipTo7zAsync(string zipFilePath, string output7zFilePath)
+        {
+            string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+
+            try
+            {
+                // Extract ZIP file to temporary directory
+                ZipFile.ExtractToDirectory(zipFilePath, tempDir);
+
+                // Create 7z archive from the temporary directory
+                string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = sevenZipPath,
+                    Arguments = $"a \"{output7zFilePath}\" \"{tempDir}\\*\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = new Process { StartInfo = processStartInfo })
+                {
+                    process.Start();
+                    await process.WaitForExitAsync();
+                    if (process.ExitCode != 0)
+                    {
+                        throw new Exception($"7-Zip exited with code {process.ExitCode}");
+                    }
+                }
+            }
+            finally
+            {
+                // Delete the temporary directory
+                if (Directory.Exists(tempDir))
+                {
+                    Directory.Delete(tempDir, true);
+                }
+            }
+        }
+        
         static void RunCommand(string command)
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo
