@@ -109,22 +109,39 @@ namespace ScriptSharp
         static async Task HandleCache()
         {
             LogAndWriteLine("Creation de la cache ...");
+            var cachePath = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
             var downloadTasks = new[]
             {
                 DownloadFileAsync(IDEA_URL, "idea.zip"),
                 DownloadFileAsync(STUDIO_URL, "studio.zip"),
-                DownloadFileAsync(FLUTTER_SDK, "flutter.zip"),
-                DownloadFileAsync(CORRETTO_URL, "corretto.zip"),
-                DownloadFileAsync(FLUTTER_PLUGIN_URL_STUDIO, "flutter_plugin.zip"),
-                DownloadFileAsync(DART_PLUGIN_URL_STUDIO, "dart_plugin.zip")
+                //DownloadFileAsync(FLUTTER_SDK, "flutter.zip"),
+                //DownloadFileAsync(CORRETTO_URL, "corretto.zip"),
+                DownloadFileAsync(FLUTTER_PLUGIN_URL_STUDIO, "plugin-flutter-android-studio.zip"),
+                DownloadFileAsync(DART_PLUGIN_URL_STUDIO, "plugin-dart-android-studio.zip"),
+                DownloadFileAsync(FLUTTER_INTL_PLUGIN_URL_STUDIO, "plugin-flutter-intl-android-studio.zip")
             };
 
             await Task.WhenAll(downloadTasks);
+            
+            string tempcache = "."; // Replace with the actual path to temp cache
+            string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string localTempPath = Path.Combine(tempcache, "studio.zip");
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio"));
 
+            localTempPath = Path.Combine(tempcache, "plugin-dart-android-studio.zip");
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            localTempPath = Path.Combine(tempcache, "plugin-flutter-android-studio.zip");
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            localTempPath = Path.Combine(tempcache, "plugin-flutter-intl-android-studio.zip");
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            // create android-studio.7z from the folder with plugins
+            await CompressFolderTo7zAsync("tempcache\\android-studio", "android-studio.7z");
+            
+            
             var convertTasks = new[]
             {
                 ConvertZipTo7zAsync("idea.zip", "idea.7z"),
-                ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
+                //ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
             };
 
             await Task.WhenAll(convertTasks);
@@ -248,9 +265,34 @@ namespace ScriptSharp
             RunCommand("flutter run");
             LogAndWriteLine("Installation Flutter  fini");
         }
+        
+        public static async Task CompressFolderTo7zAsync(string folderPath, string output7zFilePath)
+        {
+            string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe"; // Adjust the path if necessary
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = sevenZipPath,
+                Arguments = $"a \"{output7zFilePath}\" \"{folderPath}\\*\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = new Process { StartInfo = processStartInfo })
+            {
+                process.Start();
+                await process.WaitForExitAsync();
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"7-Zip exited with code {process.ExitCode}");
+                }
+            }
+        }
 
         public static async Task ConvertZipTo7zAsync(string zipFilePath, string output7zFilePath)
         {
+            LogAndWriteLine("Conversion de ZIP en 7z commencée pour " + zipFilePath);
             string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
             try
@@ -287,6 +329,7 @@ namespace ScriptSharp
                     Directory.Delete(tempDir, true);
                 }
             }
+            LogAndWriteLine("Conversion de ZIP en 7z fini pour " + zipFilePath);
         }
         
         static void RunCommand(string command)
@@ -480,12 +523,17 @@ namespace ScriptSharp
             LogAndWriteLine("Copie du fichier finie");
         }
 
+        private static readonly object logLock = new object();
+
         static void LogAndWriteLine(string message)
         {
-            Console.WriteLine(message);
-            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            lock (logLock)
             {
-                writer.WriteLine($"{DateTime.Now}: {message}");
+                Console.WriteLine(message);
+                using (StreamWriter writer = new StreamWriter(logFilePath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now}: {message}");
+                }
             }
         }
     }
