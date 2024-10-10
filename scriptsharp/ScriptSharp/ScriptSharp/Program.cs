@@ -57,8 +57,6 @@ namespace ScriptSharp
                 }
 
             }
-
-            await Utils.InstallGradleAsync("8.10.2",".");
             Utils.LogAndWriteLine("Veuillez choisir une option:");
             Utils.LogAndWriteLine("1. 3N5 console kotlin");
             Utils.LogAndWriteLine("2. 3N5 Android");

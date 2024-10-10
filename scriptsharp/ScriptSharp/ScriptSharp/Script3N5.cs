@@ -30,6 +30,14 @@ public class Script3N5
         await Utils.Unzip7zFileAsync(ideaZipPath, destinationFolder);
         //AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
 
+        await Utils.InstallGradleAsync("8.10.2",".");
+        // then create a directory in C:\EspaceLabo\fakotlin
+        Directory.CreateDirectory("C:\\EspaceLabo\\fakotlin");
+        // mv working directory to C:\EspaceLabo\fakotlin
+        Directory.SetCurrentDirectory("C:\\EspaceLabo\\fakotlin");
+        // execute gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
+        Utils.RunCommand("gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17");
+        Utils.RunCommand("gradle run");
 
         await Script3N5.DownloadRepo3N5();
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5");
