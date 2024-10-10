@@ -54,6 +54,7 @@ namespace ScriptSharp
             {
                 try
                 {
+                    AddDesktopToDefenderExclusion();
                     DisableWindowsDefender();
                 }
                 catch (Exception e) {
@@ -137,7 +138,8 @@ namespace ScriptSharp
         {
             LogAndWriteLine("Gestion de 3N5 Android...");
             // Add your specific logic here
-
+            await HandleAndroidSDK();
+            await HandleAndroidStudio();
             await DownloadRepo3N5();
             LogAndWriteLine("3N5 Android fini");
         }
@@ -146,8 +148,9 @@ namespace ScriptSharp
         {
             LogAndWriteLine("Gestion de 4N6 Android...");
             // Add your specific logic here
+            await HandleAndroidSDK();
             await HandleAndroidStudio();
-            
+
             var downloadTasks = new[] { DownloadRepo4N6(), DownloadRepoKMB() };
             await Task.WhenAll(downloadTasks);
             LogAndWriteLine("4N6 Android arrêté");
@@ -156,7 +159,7 @@ namespace ScriptSharp
         static async Task Handle4N6AndroidSpringAsync()
         {
             LogAndWriteLine("Installation de 4N6 Android + Spring...");
-            // Add your specific logic here
+            await HandleAndroidSDK();
             await HandleAndroidStudio();
             await DownloadRepo4N6();
             await DownloadRepoKMB();
@@ -172,6 +175,19 @@ namespace ScriptSharp
             await DownloadRepo5N6();
             await DownloadRepoKMB();
             LogAndWriteLine("5N6 Flutter fini");
+        }
+
+        // TODO split copy and unzip to start other download while unzipping
+        static async Task HandleAndroidSDK()
+        {
+            LogAndWriteLine("Installation Android SDK démarré");
+            string zipPath = Path.Combine(localCache, "Sdk.7z");
+            await CopyFileFromNetworkShareAsync(zipPath, "Sdk.7z");
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string destinationFolder = Path.Combine(desktopPath, "sdk");
+            await Unzip7zFileAsync("Sdk.7z", destinationFolder);
+
+            LogAndWriteLine("Installation Android SDK fini");
         }
 
         static async Task HandleAndroidStudio()
@@ -235,9 +251,40 @@ namespace ScriptSharp
             LogAndWriteLine("5N6 Flutter + Firebase fini");
         }
 
+        
+        public static void AddDesktopToDefenderExclusion()
+        {
+            try
+            {
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string command = $"powershell -Command \"Add-MpPreference -ExclusionPath '{desktopPath}'\"";
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/c {command}",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = Process.Start(processStartInfo))
+                {
+                    process.WaitForExit();
+                    if (process.ExitCode != 0)
+                    {
+                        throw new Exception($"Command exited with code {process.ExitCode}");
+                    }
+                }
+                Console.WriteLine("Desktop folder added to Windows Defender exclusion list successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
         static void DisableWindowsDefender()
         {
-            LogAndWriteLine("DisableWindowsDefender démarré");
+            LogAndWriteLine("DisableWindowsDefender commencement");
             string command = "powershell -Command \"Set-MpPreference -DisableRealtimeMonitoring $true\"";
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
