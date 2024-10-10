@@ -45,21 +45,21 @@ namespace ScriptSharp
         {
             //clear the log file
             File.WriteAllText(logFilePath, string.Empty);
-            LogAndWriteLine("Main started");
+            LogAndWriteLine("Main démarré");
             if (!Directory.Exists(localCache) && isWindows) // TODO remove false
             {
-                LogAndWriteLine("The local cache folder does not exist. Please make sure the network share is mounted and try again.");
-                LogAndWriteLine("Main stopped because the local cache folder does not exist");
+                LogAndWriteLine("Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
+                LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
                 return;
             }
             // confirm the local cache folder is accessible
-            LogAndWriteLine("The local cache folder is accessible.");
+            LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
                 DisableWindowsDefender();
             }
-            LogAndWriteLine("Please choose an option:");
-            LogAndWriteLine("1. 3N5 kotlin console");
+            LogAndWriteLine("Veuillez choisir une option:");
+            LogAndWriteLine("1. 3N5 console kotlin");
             LogAndWriteLine("2. 3N5 Android");
             LogAndWriteLine("3. 4N6 Android");
             LogAndWriteLine("4. 4N6 Android + Spring");
@@ -89,10 +89,10 @@ namespace ScriptSharp
                     await Handle5N6FlutterFirebaseAsync();
                     break;
                 default:
-                    LogAndWriteLine("Invalid choice. Please restart the program and choose a valid option.");
+                    LogAndWriteLine("Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
                     break;
             }
-            LogAndWriteLine("Main stopped");
+            LogAndWriteLine("Main arrêté");
             // Keep the console window open
             LogAndWriteLine("Appuyer sur une touche pour quitter, on a fini ...");
             Console.ReadLine();
@@ -100,15 +100,15 @@ namespace ScriptSharp
 
         static async Task Handle3N5KotlinConsoleAsync()
         {
-            LogAndWriteLine("Handle3N5KotlinConsoleAsync started");
-            LogAndWriteLine("Handling 3N5 kotlin console...");
+            LogAndWriteLine("Handle3N5KotlinConsoleAsync démarré");
+            LogAndWriteLine("Gestion de la console kotlin 3N5...");
             string ideaZipPath = Path.Combine(localCache, "idea.7z");
             await CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
             await Unzip7zFileAsync(ideaZipPath, "C:\\Program Files\\JetBrains\\idea");
             AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
 
             await DownloadRepo3N5();
-            LogAndWriteLine("Handle3N5KotlinConsoleAsync stopped");
+            LogAndWriteLine("Handle3N5KotlinConsoleAsync arrêté");
         }
 
         private static async Task DownloadRepo3N5()
@@ -140,57 +140,57 @@ namespace ScriptSharp
 
         static async Task Handle3N5AndroidAsync()
         {
-            LogAndWriteLine("Handle3N5AndroidAsync started");
-            LogAndWriteLine("Handling 3N5 Android...");
+            LogAndWriteLine("Handle3N5AndroidAsync démarré");
+            LogAndWriteLine("Gestion de 3N5 Android...");
             // Add your specific logic here
 
             await DownloadRepo3N5();
-            LogAndWriteLine("Handle3N5AndroidAsync stopped");
+            LogAndWriteLine("Handle3N5AndroidAsync arrêté");
         }
 
         static async Task Handle4N6AndroidAsync()
         {
-            LogAndWriteLine("Handle4N6AndroidAsync started");
-            LogAndWriteLine("Handling 4N6 Android...");
+            LogAndWriteLine("Handle4N6AndroidAsync démarré");
+            LogAndWriteLine("Gestion de 4N6 Android...");
             // Add your specific logic here
 
             await DownloadRepo4N6();
-            LogAndWriteLine("Handle4N6AndroidAsync stopped");
+            LogAndWriteLine("Handle4N6AndroidAsync arrêté");
         }
 
         static async Task Handle4N6AndroidSpringAsync()
         {
-            LogAndWriteLine("Handle4N6AndroidSpringAsync started");
-            LogAndWriteLine("Handling 4N6 Android + Spring...");
+            LogAndWriteLine("Handle4N6AndroidSpringAsync démarré");
+            LogAndWriteLine("Gestion de 4N6 Android + Spring...");
             // Add your specific logic here
 
             await DownloadRepo4N6();
-            LogAndWriteLine("Handle4N6AndroidSpringAsync stopped");
+            LogAndWriteLine("Handle4N6AndroidSpringAsync arrêté");
         }
 
         static async Task Handle5N6FlutterAsync()
         {
-            LogAndWriteLine("Handle5N6FlutterAsync started");
-            LogAndWriteLine("Handling 5N6 flutter...");
+            LogAndWriteLine("Handle5N6FlutterAsync démarré");
+            LogAndWriteLine("Gestion de 5N6 flutter...");
             // Add your specific logic here
 
             await DownloadRepo5N6();
-            LogAndWriteLine("Handle5N6FlutterAsync stopped");
+            LogAndWriteLine("Handle5N6FlutterAsync arrêté");
         }
 
         static async Task Handle5N6FlutterFirebaseAsync()
         {
-            LogAndWriteLine("Handle5N6FlutterFirebaseAsync started");
-            LogAndWriteLine("Handling 5N6 flutter + firebase...");
+            LogAndWriteLine("Handle5N6FlutterFirebaseAsync démarré");
+            LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
             // Add your specific logic here
 
             await DownloadRepo5N6();
-            LogAndWriteLine("Handle5N6FlutterFirebaseAsync stopped");
+            LogAndWriteLine("Handle5N6FlutterFirebaseAsync arrêté");
         }
 
         static void DisableWindowsDefender()
         {
-            LogAndWriteLine("DisableWindowsDefender started");
+            LogAndWriteLine("DisableWindowsDefender démarré");
             string command = "powershell -Command \"Set-MpPreference -DisableRealtimeMonitoring $true\"";
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
@@ -206,15 +206,15 @@ namespace ScriptSharp
                 process.WaitForExit();
                 if (process.ExitCode != 0)
                 {
-                    throw new Exception($"Command exited with code {process.ExitCode}");
+                    throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
                 }
             }
-            LogAndWriteLine("DisableWindowsDefender stopped");
+            LogAndWriteLine("DisableWindowsDefender arrêté");
         }
 
         static async Task DownloadFileAsync(string url, string filePath)
         {
-            LogAndWriteLine("DownloadFileAsync started");
+            LogAndWriteLine("DownloadFileAsync démarré");
             using (HttpClient client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromMinutes(10); // Set timeout to 10 minutes
@@ -223,19 +223,19 @@ namespace ScriptSharp
                 byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
                 await File.WriteAllBytesAsync(filePath, fileBytes);
             }
-            LogAndWriteLine("DownloadFileAsync stopped");
+            LogAndWriteLine("DownloadFileAsync arrêté");
         }
 
         static void SetEnvironmentVariable(string variable, string value)
         {
-            LogAndWriteLine("SetEnvironmentVariable started");
+            LogAndWriteLine("SetEnvironmentVariable démarré");
             Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
-            LogAndWriteLine("SetEnvironmentVariable stopped");
+            LogAndWriteLine("SetEnvironmentVariable arrêté");
         }
 
         static async Task Unzip7zFileAsync(string sourceFile, string destinationFolder)
         {
-            LogAndWriteLine("Unzip7zFileAsync started");
+            LogAndWriteLine("Unzip7zFileAsync démarré");
             try
             {
                 string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
@@ -254,32 +254,32 @@ namespace ScriptSharp
                     await process.WaitForExitAsync();
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"7-Zip exited with code {process.ExitCode}");
+                        throw new Exception($"7-Zip s'est terminé avec le code {process.ExitCode}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogAndWriteLine($"An error occurred: {ex.Message}");
+                LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
             }
-            LogAndWriteLine("Unzip7zFileAsync stopped");
+            LogAndWriteLine("Unzip7zFileAsync arrêté");
         }
 
         static void AddToPathEnvironmentVariable(string newPath)
         {
-            LogAndWriteLine("AddToPathEnvironmentVariable started");
+            LogAndWriteLine("AddToPathEnvironmentVariable démarré");
             string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
             if (!currentPath.Contains(newPath))
             {
                 string updatedPath = currentPath + ";" + newPath;
                 Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
             }
-            LogAndWriteLine("AddToPathEnvironmentVariable stopped");
+            LogAndWriteLine("AddToPathEnvironmentVariable arrêté");
         }
 
         static async Task CopyFileFromNetworkShareAsync(string networkFilePath, string localFilePath)
         {
-            LogAndWriteLine("CopyFileFromNetworkShareAsync started");
+            LogAndWriteLine("CopyFileFromNetworkShareAsync démarré");
             try
             {
                 using (FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true))
@@ -290,9 +290,9 @@ namespace ScriptSharp
             }
             catch (Exception ex)
             {
-                LogAndWriteLine($"An error occurred: {ex.Message}");
+                LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
             }
-            LogAndWriteLine("CopyFileFromNetworkShareAsync stopped");
+            LogAndWriteLine("CopyFileFromNetworkShareAsync arrêté");
         }
 
         static void LogAndWriteLine(string message)
