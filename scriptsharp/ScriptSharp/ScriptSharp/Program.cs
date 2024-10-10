@@ -52,7 +52,14 @@ namespace ScriptSharp
             LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
-                //DisableWindowsDefender();
+                try
+                {
+                    DisableWindowsDefender();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
+                }
+               
             }
             LogAndWriteLine("Veuillez choisir une option:");
             LogAndWriteLine("1. 3N5 console kotlin");
@@ -170,10 +177,12 @@ namespace ScriptSharp
         static async Task HandleAndroidStudio()
         {
             LogAndWriteLine("Installation Android Studio démarré");
-            // Add your specific logic here
-            await DownloadFileAsync(STUDIO_URL, "studio.zip");
-            await Unzip7zFileAsync("studio.zip", "C:\\Program Files\\Android Studio");
-            AddToPathEnvironmentVariable("C:\\Program Files\\Android Studio\\bin");
+            string ideaZipPath = Path.Combine(localCache, "android-studio-plugins.7z");
+            await CopyFileFromNetworkShareAsync(ideaZipPath, "android-studio-plugins.7z");
+            //await DownloadFileAsync(STUDIO_URL, "studio.zip");
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string destinationFolder = Path.Combine(desktopPath, "android-studio");
+            await Unzip7zFileAsync("android-studio-plugins.7z", destinationFolder);
             LogAndWriteLine("Installation Android Studio fini");
         }
 
