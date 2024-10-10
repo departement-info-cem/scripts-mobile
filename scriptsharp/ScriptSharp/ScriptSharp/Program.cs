@@ -120,11 +120,12 @@ namespace ScriptSharp
             await DownloadFileAsync(url, zipFilePath);
             LogAndWriteLine("Dézippage de " + zipFilePath + " vers " + desktopPath);
             ZipFile.ExtractToDirectory(zipFilePath, desktopPath);
+            // delete the zip file
+            File.Delete(zipFilePath);
         }
 
         static async Task Handle3N5AndroidAsync()
         {
-            LogAndWriteLine("3N5 Android  démarré");
             LogAndWriteLine("Gestion de 3N5 Android...");
             // Add your specific logic here
 
@@ -134,7 +135,6 @@ namespace ScriptSharp
 
         static async Task Handle4N6AndroidAsync()
         {
-            LogAndWriteLine("4N6 Android démarré");
             LogAndWriteLine("Gestion de 4N6 Android...");
             // Add your specific logic here
 
@@ -146,7 +146,6 @@ namespace ScriptSharp
 
         static async Task Handle4N6AndroidSpringAsync()
         {
-            LogAndWriteLine("4N6 Android + Spring démarré");
             LogAndWriteLine("Gestion de 4N6 Android + Spring...");
             // Add your specific logic here
 
@@ -157,7 +156,6 @@ namespace ScriptSharp
 
         static async Task Handle5N6FlutterAsync()
         {
-            LogAndWriteLine("5N6 Flutter démarré");
             LogAndWriteLine("Gestion de 5N6 flutter...");
             // Add your specific logic here
 
@@ -178,7 +176,6 @@ namespace ScriptSharp
 
         static async Task Handle5N6FlutterFirebaseAsync()
         {
-            LogAndWriteLine("5N6 Flutter + Firebase démarré");
             LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
             // Add your specific logic here
 
