@@ -108,16 +108,35 @@ namespace ScriptSharp
             AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
             
             
+            await DownloadRepo3N5();
+            Log("Handle3N5KotlinConsoleAsync stopped");
+        }
+
+        private static async Task DownloadRepo3N5()
+        {
+            await DownloadRepo(URL_3N5, "3N5");
+        }
+        
+        private static async Task DownloadRepo4N6()
+        {
+            await DownloadRepo(URL_4N6, "4N6");
+        }
+        
+        private static async Task DownloadRepo5N6()
+        {
+            await DownloadRepo(URL_5N6, "5N6");
+        }
+        
+        private static async Task DownloadRepo(string url, string name)
+        {
             // download URL_3N5 to the Desktop and unzip it
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string zipFilePath = Path.Combine(desktopPath, "3N5.zip");
-            await DownloadFileAsync(URL_3N5, zipFilePath);
-            string destinationFolder = Path.Combine(desktopPath, "3N5");
+            string zipFilePath = Path.Combine(desktopPath, name+".zip");
+            await DownloadFileAsync(url, zipFilePath);
+            string destinationFolder = Path.Combine(desktopPath, name);
             // use the standard library function to unzip the file
             Console.WriteLine(destinationFolder + " < " + zipFilePath);
             ZipFile.ExtractToDirectory(zipFilePath, destinationFolder);
-            
-            Log("Handle3N5KotlinConsoleAsync stopped");
         }
 
         static async Task Handle3N5AndroidAsync()
@@ -125,6 +144,9 @@ namespace ScriptSharp
             Log("Handle3N5AndroidAsync started");
             Console.WriteLine("Handling 3N5 Android...");
             // Add your specific logic here
+            
+            
+            await DownloadRepo3N5();
             Log("Handle3N5AndroidAsync stopped");
         }
 
@@ -133,6 +155,8 @@ namespace ScriptSharp
             Log("Handle4N6AndroidAsync started");
             Console.WriteLine("Handling 4N6 Android...");
             // Add your specific logic here
+            
+            await DownloadRepo4N6();
             Log("Handle4N6AndroidAsync stopped");
         }
 
@@ -141,6 +165,9 @@ namespace ScriptSharp
             Log("Handle4N6AndroidSpringAsync started");
             Console.WriteLine("Handling 4N6 Android + Spring...");
             // Add your specific logic here
+            
+            
+            await DownloadRepo4N6();
             Log("Handle4N6AndroidSpringAsync stopped");
         }
 
@@ -149,6 +176,9 @@ namespace ScriptSharp
             Log("Handle5N6FlutterAsync started");
             Console.WriteLine("Handling 5N6 flutter...");
             // Add your specific logic here
+            
+            
+            await DownloadRepo5N6();
             Log("Handle5N6FlutterAsync stopped");
         }
 
@@ -157,6 +187,9 @@ namespace ScriptSharp
             Log("Handle5N6FlutterFirebaseAsync started");
             Console.WriteLine("Handling 5N6 flutter + firebase...");
             // Add your specific logic here
+            
+            
+            await DownloadRepo5N6();
             Log("Handle5N6FlutterFirebaseAsync stopped");
         }
 
