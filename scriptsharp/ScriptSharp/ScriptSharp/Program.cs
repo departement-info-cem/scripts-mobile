@@ -158,11 +158,11 @@ namespace ScriptSharp
             //File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
             File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
             // get the size of the .gradle folder
-            var gradleSize = new DirectoryInfo(Path.Combine(home, ".gradle")).EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
+            //var gradleSize = new DirectoryInfo(Path.Combine(home, ".gradle")).EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
             // get the size in MB of the AppData\Local\Android\Sdk folder
-            var sdkSize = new DirectoryInfo(Path.Combine(home, "AppData", "Local", "Android", "Sdk")).EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
-            Console.WriteLine("taille de .gradle: " + gradleSize / 1024 / 1024 + " MB");
-            Console.WriteLine("taille de Android SDK: " + sdkSize / 1024 / 1024 + " MB");
+            //var sdkSize = new DirectoryInfo(Path.Combine(home, "AppData", "Local", "Android", "Sdk")).EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
+            //Console.WriteLine("taille de .gradle: " + gradleSize / 1024 / 1024 + " MB");
+            //Console.WriteLine("taille de Android SDK: " + sdkSize / 1024 / 1024 + " MB");
             Console.WriteLine("Merci de partir Android Studio  creer un projet et le partir sur un emulateur pour constituer le SDK et le .gradle");
             var s = Console.ReadLine();
             
