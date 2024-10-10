@@ -27,7 +27,7 @@ public class Script3N5
         await Utils.CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string destinationFolder = Path.Combine(desktopPath, "idea");
-        await Utils.Unzip7zFileAsync(ideaZipPath, destinationFolder);
+        await Utils.Unzip7zFileAsync("idea.7z", destinationFolder);
         //AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
 
         await Utils.InstallGradleAsync("8.10.2",".");

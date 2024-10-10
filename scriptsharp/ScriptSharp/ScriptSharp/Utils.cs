@@ -222,11 +222,13 @@ public class Utils
                 await response.Content.CopyToAsync(fs);
             }
         }
-
-        ZipFile.ExtractToDirectory(zipFilePath, extractPath);
+        // if extractPath exists, delete it with all its contents
+        var targetDirectory = Path.Combine(extractPath, $"gradle-{gradleVersion}");
+        
+        ZipFile.ExtractToDirectory(zipFilePath, extractPath, true);
         File.Delete(zipFilePath);
 
-        string gradleBinPath = Path.GetFullPath( Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin") );
+        string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
         string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         LogAndWriteLine("gradle bin path: " + gradleBinPath);
         if (!currentPath.Contains(gradleBinPath))
