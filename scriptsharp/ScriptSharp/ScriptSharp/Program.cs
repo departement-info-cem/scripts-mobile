@@ -216,10 +216,33 @@ namespace ScriptSharp
             using (HttpClient client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromMinutes(10); // Set timeout to 10 minutes
-                HttpResponseMessage response = await client.GetAsync(url);
+                HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
-                byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-                await File.WriteAllBytesAsync(filePath, fileBytes);
+
+                long totalBytes = response.Content.Headers.ContentLength ?? -1;
+                long totalRead = 0L;
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                double lastReportedProgress = 0;
+
+                using (Stream contentStream = await response.Content.ReadAsStreamAsync(), fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                {
+                    while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        totalRead += bytesRead;
+
+                        if (totalBytes != -1)
+                        {
+                            double progress = (double)totalRead / totalBytes * 100;
+                            if (progress - lastReportedProgress >= 10)
+                            {
+                                LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
+                                lastReportedProgress = progress;
+                            }
+                        }
+                    }
+                }
             }
             LogAndWriteLine("Téléchargement du fichier fini " + url);
         }
