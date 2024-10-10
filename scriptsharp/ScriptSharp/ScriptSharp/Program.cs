@@ -137,7 +137,7 @@ namespace ScriptSharp
         {
             LogAndWriteLine("Gestion de 4N6 Android...");
             // Add your specific logic here
-
+            await HandleAndroidStudio();
             
             var downloadTasks = new[] { DownloadRepo4N6(), DownloadRepoKMB() };
             await Task.WhenAll(downloadTasks);
@@ -148,7 +148,7 @@ namespace ScriptSharp
         {
             LogAndWriteLine("Gestion de 4N6 Android + Spring...");
             // Add your specific logic here
-
+            await HandleAndroidStudio();
             await DownloadRepo4N6();
             await DownloadRepoKMB();
             LogAndWriteLine("4N6 Android + Spring fini");
@@ -164,16 +164,57 @@ namespace ScriptSharp
             await DownloadRepoKMB();
             LogAndWriteLine("5N6 Flutter fini");
         }
-        
+
+        static async Task HandleAndroidStudio()
+        {
+            LogAndWriteLine("Installation Android Studio démarré");
+            // Add your specific logic here
+            await DownloadFileAsync(STUDIO_URL, "studio.zip");
+            await Unzip7zFileAsync("studio.zip", "C:\\Program Files\\Android Studio");
+            AddToPathEnvironmentVariable("C:\\Program Files\\Android Studio\\bin");
+            LogAndWriteLine("Installation Android Studio fini");
+        }
+
         static async Task HandleFlutter()
         {
             LogAndWriteLine("Installation Flutter démarré");
             // Add your specific logic here
-            
             await DownloadRepo(FLUTTER_SDK, "flutter");
+            
+            // execute "flutter doctor --android-licenses"
+            RunCommand("flutter doctor --android-licenses");
+            RunCommand("flutter doctor --verbose");
+            RunCommand("flutter precache");
+            RunCommand("flutter pub global activate devtools");
+            // create a fake project to initialize flutter
+            RunCommand("flutter create fake_start");
+            // cd to the fake project and run "flutter run"
+            RunCommand("cd fake_start");
+            RunCommand("flutter run");
             LogAndWriteLine("Installation Flutter  fini");
         }
 
+        static void RunCommand(string command)
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c {command}",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(processStartInfo))
+            {
+                process.WaitForExit();
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"Command exited with code {process.ExitCode}");
+                }
+            }
+        }
+        
         static async Task Handle5N6FlutterFirebaseAsync()
         {
             LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
