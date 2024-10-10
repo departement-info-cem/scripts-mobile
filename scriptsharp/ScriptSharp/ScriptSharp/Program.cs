@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
+// TODO try dotnet publish -c Release -r win-x64 --self-contained to build a single exe file and test
+
 namespace ScriptSharp
 {
     class Program
@@ -27,17 +29,10 @@ namespace ScriptSharp
 
         // Flutter
         static string FLUTTER_SDK = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
-
-        private static string URL_3N5 = "https://github.com/departement-info-cem/3N5-Prog3/archive/refs/heads/main.zip";
-
-        private static string URL_4N6 =
-            "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
-
-        private static string URL_5N6 =
-            "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
-
-        private static string URL_KMB =
-            "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
+        static string URL_3N5 = "https://github.com/departement-info-cem/3N5-Prog3/archive/refs/heads/main.zip";
+        static string URL_4N6 = "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
+        static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
+        static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
 
         static Boolean isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
@@ -46,7 +41,7 @@ namespace ScriptSharp
             //clear the log file
             File.WriteAllText(logFilePath, string.Empty);
             LogAndWriteLine("Main démarré");
-            if (!Directory.Exists(localCache) && isWindows) // TODO remove false
+            if (!Directory.Exists(localCache) && isWindows) 
             {
                 LogAndWriteLine("Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
                 LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
@@ -106,25 +101,16 @@ namespace ScriptSharp
             await CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
             await Unzip7zFileAsync(ideaZipPath, "C:\\Program Files\\JetBrains\\idea");
             AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
-
+            
+            
             await DownloadRepo3N5();
             LogAndWriteLine("Handle3N5KotlinConsoleAsync arrêté");
         }
 
-        private static async Task DownloadRepo3N5()
-        {
-            await DownloadRepo(URL_3N5, "3N5");
-        }
-
-        private static async Task DownloadRepo4N6()
-        {
-            await DownloadRepo(URL_4N6, "4N6");
-        }
-
-        private static async Task DownloadRepo5N6()
-        {
-            await DownloadRepo(URL_5N6, "5N6");
-        }
+        private static async Task DownloadRepo3N5() { await DownloadRepo(URL_3N5, "3N5"); }
+        private static async Task DownloadRepo4N6() { await DownloadRepo(URL_4N6, "4N6"); }
+        private static async Task DownloadRepo5N6() { await DownloadRepo(URL_5N6, "5N6"); } 
+        private static async Task DownloadRepoKMB() { await DownloadRepo(URL_KMB, "KMB"); }
 
         private static async Task DownloadRepo(string url, string name)
         {
@@ -132,60 +118,72 @@ namespace ScriptSharp
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string zipFilePath = Path.Combine(desktopPath, name+".zip");
             await DownloadFileAsync(url, zipFilePath);
-            string destinationFolder = Path.Combine(desktopPath, name);
-            // use the standard library function to unzip the file
-            LogAndWriteLine(destinationFolder + " < " + zipFilePath);
-            ZipFile.ExtractToDirectory(zipFilePath, destinationFolder);
+            LogAndWriteLine("Dézippage de " + zipFilePath + " vers " + desktopPath);
+            ZipFile.ExtractToDirectory(zipFilePath, desktopPath);
         }
 
         static async Task Handle3N5AndroidAsync()
         {
-            LogAndWriteLine("Handle3N5AndroidAsync démarré");
+            LogAndWriteLine("3N5 Android  démarré");
             LogAndWriteLine("Gestion de 3N5 Android...");
             // Add your specific logic here
 
             await DownloadRepo3N5();
-            LogAndWriteLine("Handle3N5AndroidAsync arrêté");
+            LogAndWriteLine("3N5 Android fini");
         }
 
         static async Task Handle4N6AndroidAsync()
         {
-            LogAndWriteLine("Handle4N6AndroidAsync démarré");
+            LogAndWriteLine("4N6 Android démarré");
             LogAndWriteLine("Gestion de 4N6 Android...");
             // Add your specific logic here
 
-            await DownloadRepo4N6();
-            LogAndWriteLine("Handle4N6AndroidAsync arrêté");
+            
+            var downloadTasks = new[] { DownloadRepo4N6(), DownloadRepoKMB() };
+            await Task.WhenAll(downloadTasks);
+            LogAndWriteLine("4N6 Android arrêté");
         }
 
         static async Task Handle4N6AndroidSpringAsync()
         {
-            LogAndWriteLine("Handle4N6AndroidSpringAsync démarré");
+            LogAndWriteLine("4N6 Android + Spring démarré");
             LogAndWriteLine("Gestion de 4N6 Android + Spring...");
             // Add your specific logic here
 
             await DownloadRepo4N6();
-            LogAndWriteLine("Handle4N6AndroidSpringAsync arrêté");
+            await DownloadRepoKMB();
+            LogAndWriteLine("4N6 Android + Spring fini");
         }
 
         static async Task Handle5N6FlutterAsync()
         {
-            LogAndWriteLine("Handle5N6FlutterAsync démarré");
+            LogAndWriteLine("5N6 Flutter démarré");
             LogAndWriteLine("Gestion de 5N6 flutter...");
             // Add your specific logic here
 
+            await HandleFlutter();
             await DownloadRepo5N6();
-            LogAndWriteLine("Handle5N6FlutterAsync arrêté");
+            await DownloadRepoKMB();
+            LogAndWriteLine("5N6 Flutter fini");
+        }
+        
+        static async Task HandleFlutter()
+        {
+            LogAndWriteLine("Installation Flutter démarré");
+            // Add your specific logic here
+            
+            await DownloadRepo(FLUTTER_SDK, "flutter");
+            LogAndWriteLine("Installation Flutter  fini");
         }
 
         static async Task Handle5N6FlutterFirebaseAsync()
         {
-            LogAndWriteLine("Handle5N6FlutterFirebaseAsync démarré");
+            LogAndWriteLine("5N6 Flutter + Firebase démarré");
             LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
             // Add your specific logic here
 
             await DownloadRepo5N6();
-            LogAndWriteLine("Handle5N6FlutterFirebaseAsync arrêté");
+            LogAndWriteLine("5N6 Flutter + Firebase fini");
         }
 
         static void DisableWindowsDefender()
@@ -209,12 +207,12 @@ namespace ScriptSharp
                     throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
                 }
             }
-            LogAndWriteLine("DisableWindowsDefender arrêté");
+            LogAndWriteLine("DisableWindowsDefender fini");
         }
 
         static async Task DownloadFileAsync(string url, string filePath)
         {
-            LogAndWriteLine("DownloadFileAsync démarré");
+            LogAndWriteLine("Téléchargement du fichier démarré " + url);
             using (HttpClient client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromMinutes(10); // Set timeout to 10 minutes
@@ -223,7 +221,7 @@ namespace ScriptSharp
                 byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
                 await File.WriteAllBytesAsync(filePath, fileBytes);
             }
-            LogAndWriteLine("DownloadFileAsync arrêté");
+            LogAndWriteLine("Téléchargement du fichier fini " + url);
         }
 
         static void SetEnvironmentVariable(string variable, string value)
@@ -235,7 +233,7 @@ namespace ScriptSharp
 
         static async Task Unzip7zFileAsync(string sourceFile, string destinationFolder)
         {
-            LogAndWriteLine("Unzip7zFileAsync démarré");
+            LogAndWriteLine("Dézippage avec 7z commencé pour " + sourceFile + " dans " + destinationFolder);
             try
             {
                 string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
@@ -262,7 +260,7 @@ namespace ScriptSharp
             {
                 LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
             }
-            LogAndWriteLine("Unzip7zFileAsync arrêté");
+            LogAndWriteLine("Dézippage avec 7z fini pour " + sourceFile);
         }
 
         static void AddToPathEnvironmentVariable(string newPath)
