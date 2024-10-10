@@ -114,8 +114,8 @@ namespace ScriptSharp
             {
                 DownloadFileAsync(IDEA_URL, "idea.zip"),
                 DownloadFileAsync(STUDIO_URL, "studio.zip"),
-                //DownloadFileAsync(FLUTTER_SDK, "flutter.zip"),
-                //DownloadFileAsync(CORRETTO_URL, "corretto.zip"),
+                DownloadFileAsync(FLUTTER_SDK, "flutter.zip"),
+                DownloadFileAsync(CORRETTO_URL, "corretto.zip"),
                 DownloadFileAsync(FLUTTER_PLUGIN_URL_STUDIO, "plugin-flutter-android-studio.zip"),
                 DownloadFileAsync(DART_PLUGIN_URL_STUDIO, "plugin-dart-android-studio.zip"),
                 DownloadFileAsync(FLUTTER_INTL_PLUGIN_URL_STUDIO, "plugin-flutter-intl-android-studio.zip")
@@ -125,15 +125,21 @@ namespace ScriptSharp
             
             string tempcache = "."; // Replace with the actual path to temp cache
             string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            // delete "android-studio" folder if it exists
+            if (Directory.Exists(Path.Combine(tempcache, "android-studio")))
+            {
+                Directory.Delete(Path.Combine(tempcache, "android-studio"), true);
+            }
+            
             string localTempPath = Path.Combine(tempcache, "studio.zip");
-            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio"));
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache, "android-studio"));
 
             localTempPath = Path.Combine(tempcache, "plugin-dart-android-studio.zip");
-            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
             localTempPath = Path.Combine(tempcache, "plugin-flutter-android-studio.zip");
-            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
             localTempPath = Path.Combine(tempcache, "plugin-flutter-intl-android-studio.zip");
-            ZipFile.ExtractToDirectory(localTempPath, Path.Combine("tempcache", "android-studio", "android-studio", "plugins"));
+            ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
             // create android-studio.7z from the folder with plugins
             await CompressFolderTo7zAsync("tempcache\\android-studio", "android-studio.7z");
             
@@ -141,10 +147,14 @@ namespace ScriptSharp
             var convertTasks = new[]
             {
                 ConvertZipTo7zAsync("idea.zip", "idea.7z"),
-                //ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
+                ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
             };
 
             await Task.WhenAll(convertTasks);
+            // copy the 7z files to the cache folder
+            File.Copy("idea.7z", Path.Combine(cachePath, "idea.7z"), true);
+            //File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
+            File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
             LogAndWriteLine("Creation de la cache finie");
         }
         static async Task Handle3N5KotlinConsoleAsync()
