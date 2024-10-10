@@ -205,5 +205,37 @@ public class Utils
 
         Utils.LogAndWriteLine("Copie du fichier finie");
     }
+    
+    public static async Task InstallGradleAsync(string gradleVersion, string installPath)
+    {
+        LogAndWriteLine("Installation de Gradle commencée");
+        string gradleUrl = $"https://services.gradle.org/distributions/gradle-{gradleVersion}-bin.zip";
+        string zipFilePath = Path.Combine(Path.GetTempPath(), $"gradle-{gradleVersion}-bin.zip");
+        string extractPath = Path.Combine(installPath);
+
+        using (HttpClient client = new HttpClient())
+        {
+            HttpResponseMessage response = await client.GetAsync(gradleUrl);
+            response.EnsureSuccessStatusCode();
+            using (FileStream fs = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                await response.Content.CopyToAsync(fs);
+            }
+        }
+
+        ZipFile.ExtractToDirectory(zipFilePath, extractPath);
+        File.Delete(zipFilePath);
+
+        string gradleBinPath = Path.GetFullPath( Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin") );
+        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        LogAndWriteLine("gradle bin path: " + gradleBinPath);
+        if (!currentPath.Contains(gradleBinPath))
+        {
+            string updatedPath = currentPath + ";" + gradleBinPath;
+            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
+        }
+
+        LogAndWriteLine($"Gradle {gradleVersion} installed successfully at {extractPath}");
+    }
 }
     

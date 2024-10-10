@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 // TODO creer un projet fake en kotlin pour peupler le .gradle Google "gradle init to create new kotlin project"
 // TODO ou la meme chose en maven : https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-archetype-jvm
 // https://books.sonatype.com/mvnex-book/reference/simple-project-sect-create-simple.html#:~:text=To%20start%20a%20new%20Maven,will%20use%20the%20archetype%20org.
+//  gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
 
 namespace ScriptSharp
 {
@@ -57,6 +58,7 @@ namespace ScriptSharp
 
             }
 
+            await Utils.InstallGradleAsync("8.10.2",".");
             Utils.LogAndWriteLine("Veuillez choisir une option:");
             Utils.LogAndWriteLine("1. 3N5 console kotlin");
             Utils.LogAndWriteLine("2. 3N5 Android");
