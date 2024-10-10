@@ -8,6 +8,9 @@
 *.userosscache
 *.sln.docstates
 **/Debug/
+**/.vs/
+**/bin/
+**/Release/
 # User-specific files (Mono Auto Generated)
 mono_crash.*
 

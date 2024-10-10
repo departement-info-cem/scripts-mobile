@@ -6,13 +6,14 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-// TODO try dotnet publish -c Release -r win-x64 --self-contained to build a single exe file and test
+// dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
+// permet de generer un seul gros .exe avec tout ce qu'il faut dedans
 
 namespace ScriptSharp
 {
     class Program
     {
-        static string localCache = "\\\\ed5depinfo\\cache";
+        static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cache";
         static string logFilePath = "log.txt";
 
         // Android Studio
@@ -40,7 +41,7 @@ namespace ScriptSharp
         {
             //clear the log file
             File.WriteAllText(logFilePath, string.Empty);
-            LogAndWriteLine("Main démarré");
+            LogAndWriteLine("Execution du script commencee");
             if (!Directory.Exists(localCache) && isWindows) 
             {
                 LogAndWriteLine("Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
@@ -51,7 +52,7 @@ namespace ScriptSharp
             LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
-                DisableWindowsDefender();
+                //DisableWindowsDefender();
             }
             LogAndWriteLine("Veuillez choisir une option:");
             LogAndWriteLine("1. 3N5 console kotlin");
@@ -95,16 +96,17 @@ namespace ScriptSharp
 
         static async Task Handle3N5KotlinConsoleAsync()
         {
-            LogAndWriteLine("Handle3N5KotlinConsoleAsync démarré");
-            LogAndWriteLine("Gestion de la console kotlin 3N5...");
+            LogAndWriteLine("Installation de kotlin (console) 3N5...");
             string ideaZipPath = Path.Combine(localCache, "idea.7z");
             await CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
-            await Unzip7zFileAsync(ideaZipPath, "C:\\Program Files\\JetBrains\\idea");
-            AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string destinationFolder = Path.Combine(desktopPath, "idea");
+            await Unzip7zFileAsync(ideaZipPath, destinationFolder);
+            //AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
             
             
             await DownloadRepo3N5();
-            LogAndWriteLine("Handle3N5KotlinConsoleAsync arrêté");
+            LogAndWriteLine("Installation de kotlin (console) 3N5");
         }
 
         private static async Task DownloadRepo3N5() { await DownloadRepo(URL_3N5, "3N5"); }
@@ -146,7 +148,7 @@ namespace ScriptSharp
 
         static async Task Handle4N6AndroidSpringAsync()
         {
-            LogAndWriteLine("Gestion de 4N6 Android + Spring...");
+            LogAndWriteLine("Installation de 4N6 Android + Spring...");
             // Add your specific logic here
             await HandleAndroidStudio();
             await DownloadRepo4N6();
@@ -338,7 +340,7 @@ namespace ScriptSharp
 
         static async Task CopyFileFromNetworkShareAsync(string networkFilePath, string localFilePath)
         {
-            LogAndWriteLine("CopyFileFromNetworkShareAsync démarré");
+            LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
             try
             {
                 using (FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true))
@@ -349,9 +351,9 @@ namespace ScriptSharp
             }
             catch (Exception ex)
             {
-                LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
+                LogAndWriteLine($"Copie du fichier Une erreur est survenue: {ex.Message}");
             }
-            LogAndWriteLine("CopyFileFromNetworkShareAsync arrêté");
+            LogAndWriteLine("Copie du fichier finie");
         }
 
         static void LogAndWriteLine(string message)
