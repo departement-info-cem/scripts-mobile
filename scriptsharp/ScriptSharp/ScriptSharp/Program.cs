@@ -27,7 +27,7 @@ namespace ScriptSharp
         public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
         static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
 
-        static Boolean isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        static Boolean isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         static async Task Main(string[] args)
         {
@@ -41,8 +41,6 @@ namespace ScriptSharp
                 Utils.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
                 return;
             }
-
-            // confirm the local cache folder is accessible
             Utils.LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
@@ -55,7 +53,6 @@ namespace ScriptSharp
                 {
                     Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
                 }
-
             }
             Utils.LogAndWriteLine("Veuillez choisir une option:");
             Utils.LogAndWriteLine("1. 3N5 console kotlin");
@@ -64,45 +61,24 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("4. 4N6 Android + Spring");
             Utils.LogAndWriteLine("5. 5N6 flutter");
             Utils.LogAndWriteLine("6. 5N6 flutter + firebase");
-
             string choice = Console.ReadLine();
-
             switch (choice)
             {
-                case "0":
-                    await CacheCreation.HandleCache();
-                    break;
-                case "1":
-                    await Script3N5.Handle3N5KotlinConsoleAsync();
-                    break;
-                case "2":
-                    await Script3N5.Handle3N5AndroidAsync();
-                    break;
-                case "3":
-                    await Script4N6.Handle4N6AndroidAsync();
-                    break;
-                case "4":
-                    await Script4N6.Handle4N6AndroidSpringAsync();
-                    break;
-                case "5":
-                    await Script5N6.Handle5N6FlutterAsync();
-                    break;
-                case "6":
-                    await Script5N6.Handle5N6FlutterFirebaseAsync();
-                    break;
-                default:
-                    Utils.LogAndWriteLine(
-                        "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
+                case "0": await CacheCreation.HandleCache(); break;
+                case "1": await Script3N5.Handle3N5KotlinConsoleAsync(); break;
+                case "2": await Script3N5.Handle3N5AndroidAsync(); break;
+                case "3": await Script4N6.Handle4N6AndroidAsync(); break;
+                case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
+                case "5": await Script5N6.Handle5N6FlutterAsync(); break;
+                case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
+                default: Utils.LogAndWriteLine("Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
                     break;
             }
-
-            Utils.LogAndWriteLine("Main arrêté");
-            // Keep the console window open
+            Utils.LogAndWriteLine("Installation finie");
             Utils.LogAndWriteLine("Appuyer sur une touche pour quitter, on a fini ...");
             Console.ReadLine();
         }
-
-
+        
         public static async Task DownloadRepoKMB()
         {
             await DownloadRepo(URL_KMB, "KMB");
