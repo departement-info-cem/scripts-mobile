@@ -29,7 +29,7 @@ public class Script3N5
         string destinationFolder = Path.Combine(desktopPath, "idea");
         await Utils.Unzip7zFileAsync("idea.7z", destinationFolder);
         //AddToPathEnvironmentVariable("C:\\Program Files\\JetBrains\\idea\\bin");
-        Utils.CreateDesktopShortcut(Path.Combine(desktopPath, "idea", "bin", "idea.exe"), "IntelliJ 3N5");
+        Utils.CreateDesktopShortcut("IntelliJ 3N5", Path.Combine(desktopPath, "idea", "bin", "idea64.exe"));
         await Utils.InstallGradleAsync("8.10.2",".");
         // then create a directory in C:\EspaceLabo\fakotlin
         Directory.CreateDirectory("C:\\EspaceLabo\\fakotlin");

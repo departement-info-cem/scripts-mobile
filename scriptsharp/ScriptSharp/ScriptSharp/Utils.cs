@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.WindowsAPICodePack.Shell;
+
 
 namespace ScriptSharp;
 
@@ -254,7 +254,32 @@ public class Utils
         LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
         string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
         LogAndWriteLine("path "+ commande);
-        RunCommand(commande);
+        // run the command in a powershell process
+        
+        
+        RunPowerShellCommand(commande);
+        LogAndWriteLine("Raccourci ajouté sur le bureau pour " + targetPath);
+    }
+    
+    public static void RunPowerShellCommand(string command)
+    {
+        ProcessStartInfo processStartInfo = new ProcessStartInfo
+        {
+            FileName = "powershell.exe",
+            Arguments = $"-Command \"{command}\"",
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using (Process process = Process.Start(processStartInfo))
+        {
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                throw new Exception($"PowerShell command exited with code {process.ExitCode}");
+            }
+        }
     }
     
     public static void DeleteGradle()
