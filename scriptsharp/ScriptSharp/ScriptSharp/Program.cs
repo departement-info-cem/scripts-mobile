@@ -105,18 +105,14 @@ namespace ScriptSharp
             await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "jdk");
-            
             await Utils.Unzip7zFileAsync("jdk.7z", destinationFolder);
             Utils.LogAndWriteLine("Copie de Java finie");
-            
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string jdkPath = Path.Combine(desktop, "jdk");
             DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
             string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
-
             string javaHome = Path.Combine(jdkPath, jdkVersion);
             Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
-
             string javaBinPath = Path.Combine(javaHome, "bin");
             string currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
             if (!currentPath.Contains(javaBinPath))
@@ -124,7 +120,6 @@ namespace ScriptSharp
                 string updatedPath = currentPath + ";" + javaBinPath;
                 Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
             }
-            
         }
         
         private static void deleteSDK()
@@ -136,16 +131,10 @@ namespace ScriptSharp
                 Directory.Delete(sdkPath, true);
                 Utils.LogAndWriteLine("Suppression du SDK Android finie");
             }
-            else
-            {
-                Utils.LogAndWriteLine("Le SDK Android n'existe pas.");
-            }
+            else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
         }
 
-        public static async Task DownloadRepoKMB()
-        {
-            await DownloadRepo(URL_KMB, "KMB");
-        }
+        public static async Task DownloadRepoKMB() { await DownloadRepo(URL_KMB, "KMB"); }
 
         public static async Task DownloadRepo(string url, string name)
         {
@@ -168,7 +157,6 @@ namespace ScriptSharp
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "sdk");
             await Utils.Unzip7zFileAsync("Sdk.7z", destinationFolder);
-
             Utils.LogAndWriteLine("Installation Android SDK fini");
         }
 
@@ -225,7 +213,6 @@ namespace ScriptSharp
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-
             using (Process process = Process.Start(processStartInfo))
             {
                 process.WaitForExit();
@@ -234,7 +221,6 @@ namespace ScriptSharp
                     throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
                 }
             }
-
             Utils.LogAndWriteLine("DisableWindowsDefender fini");
         }
 
@@ -254,9 +240,7 @@ namespace ScriptSharp
                 string updatedPath = currentPath + ";" + newPath;
                 Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
             }
-
             Utils.LogAndWriteLine("AddToPathEnvironmentVariable arrêté");
         }
     }
-
 }
