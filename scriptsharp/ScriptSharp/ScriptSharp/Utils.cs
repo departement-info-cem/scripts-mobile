@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace ScriptSharp;
 
@@ -206,6 +207,14 @@ public class Utils
         Utils.LogAndWriteLine("Copie du fichier finie");
     }
     
+    public static string GetSDKPath()
+    {
+        //C:\Users\joris.deguet\AppData\Local\Android\Sdk
+        string sdkPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
+        Console.WriteLine("Chemin vers le SDK Android: " + sdkPath);
+        return sdkPath;
+    }
+    
     public static async Task InstallGradleAsync(string gradleVersion, string installPath)
     {
         LogAndWriteLine("Installation de Gradle commencée");
@@ -238,6 +247,26 @@ public class Utils
         }
 
         LogAndWriteLine($"Gradle {gradleVersion} installed successfully at {extractPath}");
+    }
+
+    public static void CreateDesktopShortcut(string shortcutName, string targetPath)
+    {
+        LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
+        string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
+        LogAndWriteLine("path "+ commande);
+        RunCommand(commande);
+    }
+    
+    public static void DeleteGradle()
+    {
+        LogAndWriteLine("Suppression du .gradle commencee");
+        // delete the .gradle folder in the user's home directory
+        string gradlePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle");
+        if (Directory.Exists(gradlePath))
+        {
+            Directory.Delete(gradlePath, true);
+        }
+        LogAndWriteLine("Suppression du .gradle finie");
     }
 }
     

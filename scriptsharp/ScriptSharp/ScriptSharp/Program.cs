@@ -64,32 +64,22 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("4. 4N6 Android + Spring");
             Utils.LogAndWriteLine("5. 5N6 flutter");
             Utils.LogAndWriteLine("6. 5N6 flutter + firebase");
+            Utils.LogAndWriteLine("7. supprimer le SDK Android");
+            Utils.LogAndWriteLine("8. supprimer le .gradle");
 
             string choice = Console.ReadLine();
 
             switch (choice)
             {
-                case "0":
-                    await CacheCreation.HandleCache();
-                    break;
-                case "1":
-                    await Script3N5.Handle3N5KotlinConsoleAsync();
-                    break;
-                case "2":
-                    await Script3N5.Handle3N5AndroidAsync();
-                    break;
-                case "3":
-                    await Script4N6.Handle4N6AndroidAsync();
-                    break;
-                case "4":
-                    await Script4N6.Handle4N6AndroidSpringAsync();
-                    break;
-                case "5":
-                    await Script5N6.Handle5N6FlutterAsync();
-                    break;
-                case "6":
-                    await Script5N6.Handle5N6FlutterFirebaseAsync();
-                    break;
+                case "0": await CacheCreation.HandleCache(); break;
+                case "1": await Script3N5.Handle3N5KotlinConsoleAsync(); break;
+                case "2": await Script3N5.Handle3N5AndroidAsync(); break;
+                case "3": await Script4N6.Handle4N6AndroidAsync(); break;
+                case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
+                case "5": await Script5N6.Handle5N6FlutterAsync(); break;
+                case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
+                case "7": deleteSDK(); break;
+                case "8": Utils.DeleteGradle(); break;
                 default:
                     Utils.LogAndWriteLine(
                         "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
@@ -100,6 +90,21 @@ namespace ScriptSharp
             // Keep the console window open
             Utils.LogAndWriteLine("Appuyer sur une touche pour quitter, on a fini ...");
             Console.ReadLine();
+        }
+
+        private static void deleteSDK()
+        {
+            Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
+            string sdkPath = Utils.GetSDKPath();
+            if (Directory.Exists(sdkPath))
+            {
+                Directory.Delete(sdkPath, true);
+                Utils.LogAndWriteLine("Suppression du SDK Android finie");
+            }
+            else
+            {
+                Utils.LogAndWriteLine("Le SDK Android n'existe pas.");
+            }
         }
 
 
