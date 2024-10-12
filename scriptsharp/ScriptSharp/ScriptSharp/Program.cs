@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 // https://books.sonatype.com/mvnex-book/reference/simple-project-sect-create-simple.html#:~:text=To%20start%20a%20new%20Maven,will%20use%20the%20archetype%20org.
 //  gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
 
+
+// .gradle pour un projet kotlin tout court = 2.03 Go
+
 namespace ScriptSharp
 {
     class Program
@@ -34,6 +37,7 @@ namespace ScriptSharp
             //clear the log file
             File.WriteAllText(Utils.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Execution du script commencee");
+            await InstallJava();
             if (!Directory.Exists(localCache) && isWindows)
             {
                 Utils.LogAndWriteLine(
@@ -86,6 +90,35 @@ namespace ScriptSharp
             Console.ReadLine();
         }
 
+        private static async Task InstallJava()
+        {
+            Utils.LogAndWriteLine("Copie de Java commencee");
+            string javaPath = Path.Combine(localCache, "jdk.7z");
+            await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string destinationFolder = Path.Combine(desktopPath, "jdk");
+            
+            await Utils.Unzip7zFileAsync("jdk.7z", destinationFolder);
+            Utils.LogAndWriteLine("Copie de Java finie");
+            
+            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string jdkPath = Path.Combine(desktop, "jdk");
+            DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
+            string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
+
+            string javaHome = Path.Combine(jdkPath, jdkVersion);
+            Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
+
+            string javaBinPath = Path.Combine(javaHome, "bin");
+            string currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
+            if (!currentPath.Contains(javaBinPath))
+            {
+                string updatedPath = currentPath + ";" + javaBinPath;
+                Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
+            }
+            
+        }
+        
         private static void deleteSDK()
         {
             Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
