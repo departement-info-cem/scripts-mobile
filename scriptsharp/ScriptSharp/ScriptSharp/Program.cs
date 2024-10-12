@@ -32,12 +32,11 @@ namespace ScriptSharp
     class Program
     {
         public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cache";
-        // Android Studio
-
+        
         public static string URL_3N5 = "https://github.com/departement-info-cem/3N5-Prog3/archive/refs/heads/main.zip";
         public static string URL_4N6 = "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
         public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
-        static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
+        public static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
 
         static Boolean isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
@@ -185,8 +184,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("Installation Android Studio fini");
             // TODO add shortcut
         }
-
-
+        
         public static void AddDesktopToDefenderExclusion()
         {
             try
@@ -201,7 +199,6 @@ namespace ScriptSharp
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
-
                 using (Process process = Process.Start(processStartInfo))
                 {
                     process.WaitForExit();
@@ -210,13 +207,10 @@ namespace ScriptSharp
                         throw new Exception($"Command exited with code {process.ExitCode}");
                     }
                 }
-
                 Console.WriteLine("Desktop folder added to Windows Defender exclusion list successfully.");
             }
             catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
+            { Console.WriteLine($"An error occurred: {ex.Message}"); }
         }
 
         static void DisableWindowsDefender()
