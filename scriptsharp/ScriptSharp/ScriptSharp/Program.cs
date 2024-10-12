@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 // faut croire que c'est la meme taille mais pas les memes librairies
 
 // Sdk de base apres install de Labybug : 5.01 Go
+// Sdk de ed5depinfo                    : 7.52 Go
 
 // TODO bug pour les shortcut 
 // TODO mettre le Sdk a la bonne place
