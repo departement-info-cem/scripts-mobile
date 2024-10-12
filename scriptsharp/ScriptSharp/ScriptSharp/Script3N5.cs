@@ -9,7 +9,7 @@ public class Script3N5
     public static async Task Handle3N5AndroidAsync()
     {
         Utils.LogAndWriteLine("Gestion de 3N5 Android...");
-        //await Program.HandleAndroidSDK();
+        await Program.HandleAndroidSDK();
         await Program.HandleAndroidStudio();
         await DownloadRepo3N5();
         Utils.LogAndWriteLine("3N5 Android fini");

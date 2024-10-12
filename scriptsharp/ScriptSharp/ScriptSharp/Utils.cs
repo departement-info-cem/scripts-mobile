@@ -297,5 +297,17 @@ public class Utils
         }
         LogAndWriteLine("Suppression du .gradle finie");
     }
+
+    public static void deleteSDK()
+    {
+        Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
+        string sdkPath = Utils.GetSDKPath();
+        if (Directory.Exists(sdkPath))
+        {
+            Directory.Delete(sdkPath, true);
+            Utils.LogAndWriteLine("Suppression du SDK Android finie");
+        }
+        else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
+    }
 }
     

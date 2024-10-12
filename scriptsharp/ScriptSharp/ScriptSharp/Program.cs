@@ -45,7 +45,7 @@ namespace ScriptSharp
             //clear the log file
             File.WriteAllText(Utils.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Execution du script commencee");
-            await InstallJava();
+            
             if (!Directory.Exists(localCache) && isWindows)
             {
                 Utils.LogAndWriteLine(
@@ -77,6 +77,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("8. supprimer le .gradle");
 
             string choice = Console.ReadLine();
+            await InstallJava();
             switch (choice)
             {
                 case "0": await CacheCreation.HandleCache(); break;
@@ -86,7 +87,7 @@ namespace ScriptSharp
                 case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
                 case "5": await Script5N6.Handle5N6FlutterAsync(); break;
                 case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-                case "7": deleteSDK(); break;
+                case "7": Utils.deleteSDK(); break;
                 case "8": Utils.DeleteGradle(); break;
                 default:
                     Utils.LogAndWriteLine(
@@ -94,7 +95,7 @@ namespace ScriptSharp
                     break;
             }
             Utils.LogAndWriteLine("Installation finie");
-            Utils.LogAndWriteLine("Appuyer sur une touche pour quitter, on a fini ...");
+            Utils.LogAndWriteLine("Appuyer sur une touche 2 fois pour quitter, on a fini ...");
             Console.ReadLine();
         }
 
@@ -121,18 +122,6 @@ namespace ScriptSharp
                 Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
             }
         }
-        
-        private static void deleteSDK()
-        {
-            Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
-            string sdkPath = Utils.GetSDKPath();
-            if (Directory.Exists(sdkPath))
-            {
-                Directory.Delete(sdkPath, true);
-                Utils.LogAndWriteLine("Suppression du SDK Android finie");
-            }
-            else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
-        }
 
         public static async Task DownloadRepoKMB() { await DownloadRepo(URL_KMB, "KMB"); }
 
@@ -142,9 +131,8 @@ namespace ScriptSharp
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string zipFilePath = Path.Combine(desktopPath, name + ".zip");
             await Utils.DownloadFileAsync(url, zipFilePath);
-            Utils.LogAndWriteLine("Dézippage de " + zipFilePath + " vers " + desktopPath);
-            ZipFile.ExtractToDirectory(zipFilePath, desktopPath);
-            // delete the zip file
+            Utils.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
+            ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
             File.Delete(zipFilePath);
         }
 
@@ -154,9 +142,10 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("Installation Android SDK démarré");
             string zipPath = Path.Combine(localCache, "Sdk.7z");
             await Utils.CopyFileFromNetworkShareAsync(zipPath, "Sdk.7z");
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string destinationFolder = Path.Combine(desktopPath, "sdk");
-            await Utils.Unzip7zFileAsync("Sdk.7z", destinationFolder);
+            string sdkPath = Utils.GetSDKPath();
+            // get the parent directory of the SDK path
+            string sdkParentPath = Directory.GetParent(sdkPath).FullName;
+            await Utils.Unzip7zFileAsync("Sdk.7z", sdkParentPath);
             Utils.LogAndWriteLine("Installation Android SDK fini");
         }
 
