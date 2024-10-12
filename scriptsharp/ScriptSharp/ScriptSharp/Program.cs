@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 // .gradle pour un projet kotlin avec un projet android     = 4.06 Go
 // faut croire que c'est la meme taille mais pas les memes librairies
 
+// Sdk de base apres install de Labybug : 5.01 Go
+
 // TODO bug pour les shortcut 
 // TODO mettre le Sdk a la bonne place
 
@@ -177,9 +179,10 @@ namespace ScriptSharp
             await Utils.CopyFileFromNetworkShareAsync(ideaZipPath, "android-studio-plugins.7z");
             //await DownloadFileAsync(STUDIO_URL, "studio.zip");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string destinationFolder = Path.Combine(desktopPath, "android-studio");
+            string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync("android-studio-plugins.7z", destinationFolder);
             Utils.LogAndWriteLine("Installation Android Studio fini");
+            // TODO add shortcut
         }
 
 
