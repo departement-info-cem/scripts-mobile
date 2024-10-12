@@ -56,17 +56,17 @@ public class CacheCreation
 
         Utils.LogAndWriteLine("Creation du Android Studio avec plugins");
         string localTempPath = Path.Combine(tempcache, "studio.zip");
-        ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache, "android-studio"));
+        ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache));
 
         localTempPath = Path.Combine(tempcache, "plugin-dart-android-studio.zip");
         ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
+            Path.Combine(tempcache, "android-studio", "plugins"));
         localTempPath = Path.Combine(tempcache, "plugin-flutter-android-studio.zip");
         ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
+            Path.Combine(tempcache,  "android-studio", "plugins"));
         localTempPath = Path.Combine(tempcache, "plugin-flutter-intl-android-studio.zip");
         ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempcache, "android-studio", "android-studio", "plugins"));
+            Path.Combine(tempcache,"android-studio", "plugins"));
         // create android-studio.7z from the folder with plugins
         await Utils.CompressFolderTo7zAsync("android-studio", "android-studio.7z");
 
@@ -74,7 +74,7 @@ public class CacheCreation
         var convertTasks = new[]
         {
             Utils.ConvertZipTo7zAsync("idea.zip", "idea.7z"),
-            Utils.ConvertZipTo7zAsync("corretto.zip", "corretto.7z"),
+            Utils.ConvertZipTo7zAsync("corretto.zip", "jdk.7z"),
             Utils.ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
         };
 
@@ -82,6 +82,7 @@ public class CacheCreation
         Utils.LogAndWriteLine("Copie des 7z dans le cache " + cachePath);
         // copy the 7z files to the cache folder
         File.Copy("idea.7z", Path.Combine(cachePath, "idea.7z"), true);
+        File.Copy("jdk.7z", Path.Combine(cachePath, "jdk.7z"), true);
         File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
         File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
         // get the size of the .gradle folder
