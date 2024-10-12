@@ -27,7 +27,7 @@ namespace ScriptSharp
         public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
         static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
 
-        static Boolean isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        static Boolean isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         static async Task Main(string[] args)
         {
@@ -41,8 +41,6 @@ namespace ScriptSharp
                 Utils.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
                 return;
             }
-
-            // confirm the local cache folder is accessible
             Utils.LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
@@ -55,7 +53,6 @@ namespace ScriptSharp
                 {
                     Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
                 }
-
             }
             Utils.LogAndWriteLine("Veuillez choisir une option:");
             Utils.LogAndWriteLine("1. 3N5 console kotlin");
@@ -68,7 +65,6 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("8. supprimer le .gradle");
 
             string choice = Console.ReadLine();
-
             switch (choice)
             {
                 case "0": await CacheCreation.HandleCache(); break;
@@ -85,9 +81,7 @@ namespace ScriptSharp
                         "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
                     break;
             }
-
-            Utils.LogAndWriteLine("Main arrêté");
-            // Keep the console window open
+            Utils.LogAndWriteLine("Installation finie");
             Utils.LogAndWriteLine("Appuyer sur une touche pour quitter, on a fini ...");
             Console.ReadLine();
         }
@@ -106,7 +100,6 @@ namespace ScriptSharp
                 Utils.LogAndWriteLine("Le SDK Android n'existe pas.");
             }
         }
-
 
         public static async Task DownloadRepoKMB()
         {
