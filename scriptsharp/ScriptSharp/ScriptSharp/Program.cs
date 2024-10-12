@@ -16,7 +16,13 @@ using System.Threading.Tasks;
 //  gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
 
 
-// .gradle pour un projet kotlin tout court = 2.03 Go
+// .gradle pour un projet kotlin tout court                 = 2.03 Go
+// .gradle pour un projet Android                           = 2.03 Go
+// .gradle pour un projet kotlin avec un projet android     = 4.06 Go
+// faut croire que c'est la meme taille mais pas les memes librairies
+
+// TODO bug pour les shortcut 
+// TODO mettre le Sdk a la bonne place
 
 namespace ScriptSharp
 {
