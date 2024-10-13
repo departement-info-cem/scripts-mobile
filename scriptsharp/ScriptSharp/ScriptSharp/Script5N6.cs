@@ -36,7 +36,9 @@ public class Script5N6
             DownloadRepo5N6());
         Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
-        
+        Utils.RunCommand("studio64.exe installPlugins io.flutter");
+        Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
+        Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
         await Utils.StartAndroidStudio();
         await InstallFlutter();
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
@@ -58,10 +60,7 @@ public class Script5N6
         Utils.RunCommand("flutter precache");
         Utils.RunCommand("flutter pub global activate devtools");
         // create a fake project to initialize flutter
-        Utils.RunCommand("flutter create fake_start");
-        // cd to the fake project and run "flutter run"
-        Utils.RunCommand("cd fake_start");
-        Utils.RunCommand("flutter run");
+        Utils.RunCommand("flutter create fake_start;cd fake_start;flutter run");
         Utils.LogAndWriteLine("   FAIT Installation Flutter complet");
     }
 
