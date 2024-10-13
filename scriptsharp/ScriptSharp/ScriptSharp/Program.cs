@@ -88,7 +88,6 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("8. supprimer le .gradle");
 
             string choice = Console.ReadLine();
-            await InstallJava();
             switch (choice)
             {
                 case "0": await CacheCreation.HandleCache(); break;
@@ -100,6 +99,7 @@ namespace ScriptSharp
                 case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
                 case "7": Utils.deleteSDK(); break;
                 case "8": Utils.DeleteGradle(); break;
+                case "9": Utils.DeleteAll(); break;
                 default:
                     Utils.LogAndWriteLine(
                         "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
@@ -110,7 +110,7 @@ namespace ScriptSharp
             Console.ReadLine();
         }
 
-        private static async Task InstallJava()
+        public static async Task InstallJava()
         {
             Utils.LogAndWriteLine("Copie de Java commencee");
             string javaPath = Path.Combine(Config.localCache, "jdk.7z");

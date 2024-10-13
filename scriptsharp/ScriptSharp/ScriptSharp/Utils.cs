@@ -368,5 +368,24 @@ public class Utils
             Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
         }
     }
+
+    public static void DeleteAll()
+    {
+        Utils.deleteSDK();
+        Utils.DeleteGradle();
+        // delete everything recursively on the desktop
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        try
+        {
+            if (Directory.Exists(desktopPath))
+            {
+                Directory.Delete(desktopPath, true);
+            }
+        }
+        catch (Exception ex)
+        {
+            Utils.LogAndWriteLine($"An error occurred while deleting the directory: {ex.Message}");
+        }
+    }
 }
     

@@ -7,6 +7,7 @@ public class Script4N6
     public static async Task Handle4N6AndroidSpringAsync()
     {
         Utils.LogAndWriteLine("Installation de 4N6 Android + Spring...");
+        await Program.InstallJava();
         await Program.HandleAndroidSDK();
         await Program.HandleAndroidStudio();
         await DownloadRepo4N6();
@@ -22,6 +23,7 @@ public class Script4N6
     public static async Task Handle4N6AndroidAsync()
     {
         Utils.LogAndWriteLine("Gestion de 4N6 Android...");
+        await Program.InstallJava();
         // Add your specific logic here
         await Program.HandleAndroidSDK();
         await Program.HandleAndroidStudio();
