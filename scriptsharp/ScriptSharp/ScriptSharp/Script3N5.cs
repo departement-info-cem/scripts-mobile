@@ -41,35 +41,28 @@ public class Script3N5
      * 9h01
      * 9h03 cree projet
      * 9h05 run
+     *
+     * C'est en fait plus rapide si je n'essaie pas de reprendre un .gradle deja existant
      */
     public static async Task Handle3N5KotlinConsoleAsync()
     {
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5...");
-        await Program.InstallJava();
         await Task.WhenAll(
-            Utils.CopyFileFromNetworkShareAsync(Path.Combine(Config.localCache, "idea.7z"), "idea.7z")
-           // Utils.CopyFileFromNetworkShareAsync(Path.Combine(Config.localCache, ".gradle-kotlin.7z"), ".gradle.7z")
+            Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.localCache, "idea.7z"), 
+                "idea.7z")
         );
         await Task.WhenAll(
-            Utils.Unzip7zFileAsync("idea.7z", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea"))
-            //Utils.Unzip7zFileAsync(".gradle.7z", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
-            //Utils.InstallGradleAsync("8.10.2",".")
-            );
+            Utils.Unzip7zFileAsync(
+                "idea.7z", 
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                    "idea")
+                ),
+            Program.InstallJava() );
         Utils.CreateDesktopShortcut("IntelliJ3N5", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
-        // add bin to the path
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
-        
-        // then create a directory in C:\EspaceLabo\fakotlin
-        //Directory.CreateDirectory("C:\\EspaceLabo\\fakotlin");
-        // mv working directory to C:\EspaceLabo\fakotlin
-        //Directory.SetCurrentDirectory("C:\\EspaceLabo\\fakotlin");
-        // execute gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
-        //Utils.RunCommand("gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 8 --incubating --overwrite");
         Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
-        // open this project in IntelliJ from the command line
-        //Utils.RunCommand("idea64.exe");
-        //Utils.RunCommand("gradle run");
-
         await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
         Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij vous propose de configurer defender automatique, faites le");
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5");
