@@ -54,14 +54,14 @@ public class Utils
     
     
     public static readonly object logLock = new object();
-    public static string logFilePath = "log.txt";
+
     
     public static void LogAndWriteLine(string message)
     {
         lock (logLock)
         {
             Console.WriteLine(message);
-            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            using (StreamWriter writer = new StreamWriter(Config.logFilePath, true))
             {
                 writer.WriteLine($"{DateTime.Now}: {message}");
             }
@@ -206,10 +206,9 @@ public class Utils
         }
         catch (Exception ex)
         {
-            Utils.LogAndWriteLine($"Copie du fichier Une erreur est survenue: {ex.Message}");
+            LogAndWriteLine($"        ERREUR Copie du fichier Une erreur est survenue: {ex.Message}");
         }
-
-        Utils.LogAndWriteLine("Copie du fichier finie");
+        LogAndWriteLine("               FAIT Copie du fichier "+localFilePath);
     }
     
     public static string GetSDKPath()
@@ -303,7 +302,7 @@ public class Utils
         LogAndWriteLine("Suppression du .gradle finie");
     }
 
-    public static void deleteSDK()
+    public static void DeleteSDK()
     {
         Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
         string sdkPath = Utils.GetSDKPath();
@@ -371,9 +370,19 @@ public class Utils
 
     public static void DeleteAll()
     {
-        Utils.deleteSDK();
-        Utils.DeleteGradle();
-        // delete everything recursively on the desktop
+        DeleteSDK();
+        DeleteGradle();
+        DeleteDesktopContent();
+        // delete all content of the .android folder in the user's home directory
+        string androidPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android");
+        if (Directory.Exists(androidPath))
+        {
+            Directory.Delete(androidPath, true);
+        }
+    }
+
+    private static void DeleteDesktopContent()
+    {
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         try
         {

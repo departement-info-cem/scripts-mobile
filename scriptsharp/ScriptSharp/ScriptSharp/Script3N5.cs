@@ -10,12 +10,22 @@ public class Script3N5
     public static async Task Handle3N5AndroidAsync()
     {
         Utils.LogAndWriteLine("Installation pour 3N5 Android...");
-        await Utils.CopyFileFromNetworkShareAsync( Path.Combine(Config.localCache, "Sdk.7z"), "Sdk.7z");
+        await Utils.CopyFileFromNetworkShareAsync( 
+            Path.Combine(Config.localCache, "Sdk.7z"), 
+            "Sdk.7z");
         await Task.WhenAll(
             Program.HandleAndroidSDK(), 
+            Utils.CopyFileFromNetworkShareAsync( 
+                Path.Combine(Config.localCache, ".gradle.7z"), 
+                ".gradle.7z"),
             Program.InstallJava(),
-            Utils.CopyFileFromNetworkShareAsync(Path.Combine(Config.localCache, "android-studio.7z"), "android-studio.7z"));
+            Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.localCache, "android-studio.7z"), 
+                "android-studio.7z"));
         await Task.WhenAll(
+            Utils.Unzip7zFileAsync(
+                ".gradle.7z", 
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Program.HandleAndroidStudio(), 
             DownloadRepo3N5());
         // start android studio

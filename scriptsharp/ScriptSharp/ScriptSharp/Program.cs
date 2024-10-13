@@ -44,6 +44,8 @@ using System.Threading.Tasks;
  * En tout 12 minutes
  *
  * Install avec appli. Sdk=on emu=off .gradle=on
+ * le gradle sync passe de 7 min a 30 sec
+ * 3 minutes pour l'installation
  */   
 
 namespace ScriptSharp
@@ -55,7 +57,7 @@ namespace ScriptSharp
         static async Task Main(string[] args)
         {
             //clear the log file
-            File.WriteAllText(Utils.logFilePath, string.Empty);
+            File.WriteAllText(Config.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
             
             if (!Directory.Exists(Config.localCache) && isWindows)
@@ -86,7 +88,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("6. 5N6 flutter + firebase");
             Utils.LogAndWriteLine("7. supprimer le SDK Android");
             Utils.LogAndWriteLine("8. supprimer le .gradle");
-
+            Utils.LogAndWriteLine("9. supprimer  .gradle SDK .android  bureau");
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -97,7 +99,7 @@ namespace ScriptSharp
                 case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
                 case "5": await Script5N6.Handle5N6FlutterAsync(); break;
                 case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-                case "7": Utils.deleteSDK(); break;
+                case "7": Utils.DeleteSDK(); break;
                 case "8": Utils.DeleteGradle(); break;
                 case "9": Utils.DeleteAll(); break;
                 default:

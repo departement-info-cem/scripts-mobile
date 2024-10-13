@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ScriptSharp;
 
@@ -16,7 +17,9 @@ public class Config
     public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
 
     //create a temp folder on the Destkop
-    public static string localTemp = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\temp\\";
+    public static string localTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "temp");
+    
+    public static string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "installation-log.txt");
     
     public static string STUDIO_URL =
         "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-windows.zip";
