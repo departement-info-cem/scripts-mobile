@@ -121,6 +121,8 @@ public class Utils
 
         using (Process process = Process.Start(processStartInfo))
         {
+            process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+            process.BeginOutputReadLine();
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
@@ -251,17 +253,16 @@ public class Utils
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
     {
-        var commande = "$WshShell = New-Object -ComObject WScript.Shell\n" +
-                       "    $Shortcut = $WshShell.CreateShortcut(\""+shortcutName+".lnk\")\n  " +
-                       "    $Shortcut.TargetPath = \""+targetPath+"\"\n " +
-                       "    $Shortcut.Save()";
+        var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        var linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
+        var commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
+                       "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
+                       "$Shortcut.TargetPath = '"+targetPath+"'; " +
+                       "$Shortcut.Save();";
         LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
         //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
         LogAndWriteLine("path "+ commande);
-        // run the command in a powershell process
-        
-        
-        RunCommand(commande);
+        RunPowerShellCommand(commande);
         LogAndWriteLine("Raccourci ajouté sur le bureau pour " + targetPath);
     }
     
@@ -278,6 +279,8 @@ public class Utils
 
         using (Process process = Process.Start(processStartInfo))
         {
+            process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+            process.BeginOutputReadLine();
             process.WaitForExit();
             if (process.ExitCode != 0)
             {

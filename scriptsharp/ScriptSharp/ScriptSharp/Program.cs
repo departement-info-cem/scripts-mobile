@@ -152,14 +152,14 @@ namespace ScriptSharp
         public static async Task HandleAndroidStudio()
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
-            string ideaZipPath = Path.Combine(localCache, "android-studio-plugins.7z");
-            await Utils.CopyFileFromNetworkShareAsync(ideaZipPath, "android-studio-plugins.7z");
-            //await DownloadFileAsync(STUDIO_URL, "studio.zip");
+            string zipPath = Path.Combine(localCache, "android-studio-plugins.7z");
+            await Utils.CopyFileFromNetworkShareAsync(zipPath, "android-studio-plugins.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync("android-studio-plugins.7z", destinationFolder);
+            // TODO add shortcut    
+            Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.LogAndWriteLine("Installation Android Studio fini");
-            // TODO add shortcut
         }
         
         public static void AddDesktopToDefenderExclusion()
