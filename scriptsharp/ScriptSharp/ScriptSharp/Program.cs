@@ -148,11 +148,11 @@ namespace ScriptSharp
         public static async Task HandleAndroidStudio()
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
-            string zipPath = Path.Combine(CacheCreation.localCache, "android-studio-plugins.7z");
-            await Utils.CopyFileFromNetworkShareAsync(zipPath, "android-studio-plugins.7z");
+            string zipPath = Path.Combine(CacheCreation.localCache, "android-studio.7z");
+            await Utils.CopyFileFromNetworkShareAsync(zipPath, "android-studio.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath);
-            await Utils.Unzip7zFileAsync("android-studio-plugins.7z", destinationFolder);
+            await Utils.Unzip7zFileAsync("android-studio.7z", destinationFolder);
             // TODO add shortcut    
             Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.LogAndWriteLine("Installation Android Studio fini");

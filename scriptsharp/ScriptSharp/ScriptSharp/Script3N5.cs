@@ -14,6 +14,8 @@ public class Script3N5
             Program.HandleAndroidSDK(), 
             Program.HandleAndroidStudio(), 
             DownloadRepo3N5());
+        // start android studio
+        await Utils.StartAndroidStudio();
         Utils.LogAndWriteLine("3N5 Android fini");
     }
 
@@ -29,18 +31,22 @@ public class Script3N5
         await Utils.CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string destinationFolder = Path.Combine(desktopPath, "idea");
-        await Utils.Unzip7zFileAsync("idea.7z", destinationFolder);
+        
+        await Task.WhenAll(
+            Utils.Unzip7zFileAsync("idea.7z", destinationFolder),
+            Utils.InstallGradleAsync("8.10.2",".")
+            );
         Utils.CreateDesktopShortcut("IntelliJ3N5", Path.Combine(desktopPath, "idea", "bin", "idea64.exe"));
-        await Utils.InstallGradleAsync("8.10.2",".");
         // then create a directory in C:\EspaceLabo\fakotlin
         Directory.CreateDirectory("C:\\EspaceLabo\\fakotlin");
         // mv working directory to C:\EspaceLabo\fakotlin
         Directory.SetCurrentDirectory("C:\\EspaceLabo\\fakotlin");
         // execute gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
-        Utils.RunCommand("gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17");
+        Utils.RunCommand("gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 8 --incubating --overwrite");
+        Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         Utils.RunCommand("gradle run");
 
-        await Script3N5.DownloadRepo3N5();
+        await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5");
     }
 }

@@ -257,7 +257,7 @@ public class Utils
                        "$Shortcut.Save();";
         LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
         //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
-        LogAndWriteLine("path "+ commande);
+        //LogAndWriteLine("path "+ commande);
         RunPowerShellCommand(commande);
         LogAndWriteLine("Raccourci ajouté sur le bureau pour " + targetPath);
     }
@@ -307,6 +307,49 @@ public class Utils
             Utils.LogAndWriteLine("Suppression du SDK Android finie");
         }
         else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
+    }
+
+    
+    public static async Task StartIntellij()
+    {
+        // start android studio
+        LogAndWriteLine("Démarrage d'Intellij IDEA");
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string path = Path.Combine(desktopPath, "idea","bin","idea64.exe");
+        if (File.Exists(path))
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = path,
+                UseShellExecute = true
+            };
+            Process.Start(processStartInfo);
+        }
+        else
+        {
+            LogAndWriteLine("Intellij n'est pas installé");
+        }
+    }
+    public static async Task StartAndroidStudio()
+    {
+        // start android studio
+        LogAndWriteLine("Démarrage d'Android Studio");
+        // Path to Android Studio executable is Desktop/android-studio/bin/studio64.exe
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string androidStudioPath = Path.Combine(desktopPath, "android-studio","bin","studio64.exe");
+        if (File.Exists(androidStudioPath))
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = androidStudioPath,
+                UseShellExecute = true
+            };
+            Process.Start(processStartInfo);
+        }
+        else
+        {
+            LogAndWriteLine("Android Studio n'est pas installé");
+        }
     }
 }
     
