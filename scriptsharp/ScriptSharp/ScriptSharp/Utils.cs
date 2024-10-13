@@ -119,9 +119,11 @@ public class Utils
         using (Process process = Process.Start(processStartInfo))
         {
             string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            string outputFilePath = $"Commande-{currentTime}.txt";
+            string outputFilePath = Path.Combine(Config.logPath, $"Commande-{currentTime}.txt");
             using (StreamWriter writer = new StreamWriter(outputFilePath))
             {
+                writer.WriteLine("Trace de l'exeuction de la commande:");
+                writer.WriteLine(command);
                 writer.WriteLine(process.StandardOutput.ReadToEnd());
                 writer.WriteLine(process.StandardError.ReadToEnd());
                 writer.Close();
@@ -193,7 +195,7 @@ public class Utils
 
     public static async Task CopyFileFromNetworkShareAsync(string networkFilePath, string localFilePath)
     {
-        Utils.LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
+        LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
         try
         {
             using (FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read,
@@ -206,9 +208,9 @@ public class Utils
         }
         catch (Exception ex)
         {
-            LogAndWriteLine($"        ERREUR Copie du fichier Une erreur est survenue: {ex.Message}");
+            LogAndWriteLine($"   ERREUR Copie du fichier Une erreur est survenue: {ex.Message}");
         }
-        LogAndWriteLine("               FAIT Copie du fichier "+localFilePath);
+        LogAndWriteLine("    FAIT Copie du fichier "+localFilePath);
     }
     
     public static string GetSDKPath()
@@ -244,11 +246,11 @@ public class Utils
             string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
             LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
             AddToPath(gradleBinPath);
-            LogAndWriteLine($"      FAIT Gradle {gradleVersion} installe ici {extractPath}");
+            LogAndWriteLine($"    FAIT Gradle {gradleVersion} installe ici {extractPath}");
         }
         catch (Exception ex)
         {
-            LogAndWriteLine($"  ERREUR Une erreur est survenue: {ex.Message}");
+            LogAndWriteLine($"    ERREUR Une erreur est survenue: {ex.Message}");
         }
     }
 
@@ -264,7 +266,7 @@ public class Utils
         //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
         //LogAndWriteLine("path "+ commande);
         RunPowerShellCommand(commande);
-        LogAndWriteLine("       FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
     }
     
     public static void RunPowerShellCommand(string command)
@@ -299,7 +301,7 @@ public class Utils
         {
             Directory.Delete(gradlePath, true);
         }
-        LogAndWriteLine("       FAIT Suppression du .gradle");
+        LogAndWriteLine("    FAIT Suppression du .gradle");
     }
 
     public static void DeleteSDK()
@@ -309,7 +311,7 @@ public class Utils
         if (Directory.Exists(sdkPath))
         {
             Directory.Delete(sdkPath, true);
-            Utils.LogAndWriteLine("     FAIT Suppression du SDK Android finie");
+            Utils.LogAndWriteLine("    FAIT Suppression du SDK Android finie");
         }
         else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
     }
@@ -359,15 +361,22 @@ public class Utils
 
     public static void AddToPath(string binPath)
     {
-        string currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
-        if (!currentPath.Contains(binPath))
+        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        if (currentPath == null)
         {
-            Utils.LogAndWriteLine("Ajout au Path de "+binPath);
-            string updatedPath = currentPath + ";" + binPath;
-            Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("PATH", binPath, EnvironmentVariableTarget.User);
         }
+        else if (!currentPath.Contains(binPath))
+        {
+            LogAndWriteLine("Ajout au Path de "+binPath);
+            string updatedPath = currentPath + ";" + binPath;
+            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
+        }
+        // forcer le rechargement de la variable d'environnement
+        //Environment.SetEnvironmentVariable("Path", null, EnvironmentVariableTarget.User);
+        //RunCommand("$env:Path = [System.Environment]::GetEnvironmentVariable(\"Path\", \"Machine\") + \";\" + [System.Environment]::GetEnvironmentVariable(\"Path\", \"User\")\n    ");
     }
-
+    
     public static void DeleteAll()
     {
         DeleteSDK();

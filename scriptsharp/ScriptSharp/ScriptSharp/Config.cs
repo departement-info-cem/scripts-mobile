@@ -19,7 +19,8 @@ public class Config
     //create a temp folder on the Destkop
     public static string localTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "temp");
     
-    public static string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "installation-log.txt");
+    public static string logPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    public static string logFilePath = Path.Combine(logPath, "installation-log.txt");
     
     public static string STUDIO_URL =
         "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-windows.zip";

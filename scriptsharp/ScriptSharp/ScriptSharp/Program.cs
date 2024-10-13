@@ -227,16 +227,6 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("SetEnvironmentVariable arrêté");
         }
 
-        static void AddToPathEnvironmentVariable(string newPath)
-        {
-            Utils.LogAndWriteLine("AddToPathEnvironmentVariable démarré");
-            string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-            if (!currentPath.Contains(newPath))
-            {
-                string updatedPath = currentPath + ";" + newPath;
-                Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
-            }
-            Utils.LogAndWriteLine("     FAIT AddToPathEnvironmentVariable arrêté");
-        }
+        
     }
 }
