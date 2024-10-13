@@ -155,7 +155,7 @@ namespace ScriptSharp
             // get the parent directory of the SDK path
             string sdkParentPath = Directory.GetParent(sdkPath).FullName;
             await Utils.Unzip7zFileAsync("Sdk.7z", sdkParentPath);
-            Utils.LogAndWriteLine("     FAIT Installation Android SDK complet");
+            Utils.LogAndWriteLine("    FAIT Installation Android SDK complet");
         }
 
         public static async Task InstallAndroidStudio()
