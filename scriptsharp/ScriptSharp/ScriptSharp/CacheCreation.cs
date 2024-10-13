@@ -55,7 +55,6 @@ public class CacheCreation
         {
             Directory.Delete(Path.Combine(tempcache, "android-studio"), true);
         }
-
         Utils.LogAndWriteLine("Creation du Android Studio avec plugins");
         string localTempPath = Path.Combine(tempcache, "studio.zip");
         ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempcache));
@@ -71,7 +70,6 @@ public class CacheCreation
             Path.Combine(tempcache,"android-studio", "plugins"));
         // create android-studio.7z from the folder with plugins
         await Utils.CompressFolderTo7zAsync("android-studio", "android-studio.7z");
-
         Utils.LogAndWriteLine("Conversions des zip en 7z");
         var convertTasks = new[]
         {
@@ -79,7 +77,6 @@ public class CacheCreation
             Utils.ConvertZipTo7zAsync("corretto.zip", "jdk.7z"),
             Utils.ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
         };
-
         await Task.WhenAll(convertTasks);
         Utils.LogAndWriteLine("Copie des 7z dans le cache " + cachePath);
         // copy the 7z files to the cache folder
@@ -101,7 +98,6 @@ public class CacheCreation
         Console.WriteLine(
             "Merci de partir Android Studio  creer un projet et le partir sur un emulateur pour constituer le SDK et le .gradle");
         var s = Console.ReadLine();
-
         Utils.LogAndWriteLine("Creation de la cache finie");
     }
 }

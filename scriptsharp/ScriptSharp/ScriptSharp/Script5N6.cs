@@ -22,8 +22,6 @@ public class Script5N6
         // TODO remove this in favor of cache flutter
         string zipPath = Path.Combine(CacheCreation.localCache, "flutter.7z");
         await Utils.CopyFileFromNetworkShareAsync(zipPath, "flutter.7z");
-
-
         // execute "flutter doctor --android-licenses"
         Utils.RunCommand("flutter doctor --android-licenses");
         Utils.RunCommand("flutter doctor --verbose");
@@ -40,8 +38,6 @@ public class Script5N6
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
         Utils.LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
-        // Add your specific logic here
-
         await DownloadRepo5N6();
         Utils.LogAndWriteLine("5N6 Flutter + Firebase fini");
     }

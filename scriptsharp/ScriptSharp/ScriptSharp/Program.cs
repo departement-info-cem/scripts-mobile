@@ -138,8 +138,6 @@ namespace ScriptSharp
         public static async Task HandleAndroidSDK()
         {
             Utils.LogAndWriteLine("Installation Android SDK démarré");
-            string zipPath = Path.Combine(CacheCreation.localCache, "Sdk.7z");
-            await Utils.CopyFileFromNetworkShareAsync(zipPath, "Sdk.7z");
             string sdkPath = Utils.GetSDKPath();
             // get the parent directory of the SDK path
             string sdkParentPath = Directory.GetParent(sdkPath).FullName;
