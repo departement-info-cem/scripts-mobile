@@ -86,7 +86,7 @@ public class CacheCreation
         File.Copy("idea.7z", Path.Combine(cachePath, "idea.7z"), true);
         File.Copy("idea.zip", Path.Combine(cachePath, "idea.zip"), true);
         File.Copy("jdk.7z", Path.Combine(cachePath, "jdk.7z"), true);
-        File.Copy("jdk.zip", Path.Combine(cachePath, "jdk.zip"), true);
+        File.Copy("corretto.zip", Path.Combine(cachePath, "jdk.zip"), true);
         File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
         File.Copy("flutter.zip", Path.Combine(cachePath, "flutter.zip"), true);
         File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
