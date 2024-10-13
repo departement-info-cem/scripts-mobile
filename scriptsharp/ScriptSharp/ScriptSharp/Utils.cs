@@ -101,38 +101,45 @@ public class Utils
                 }
             }
         }
-        LogAndWriteLine("Téléchargement du fichier fini " + url);
+        LogAndWriteLine("    FAIT Téléchargement du fichier " + url);
     }
 
     public static void RunCommand(string command)
     {
-        ProcessStartInfo processStartInfo = new ProcessStartInfo
+        LogAndWriteLine("Execution de la commande: " + command);
+        try
         {
-            FileName = "cmd.exe",
-            Arguments = $"/c {command}",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/c {command}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        using (Process process = Process.Start(processStartInfo))
+            using (Process process = Process.Start(processStartInfo))
+            {
+                string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+                string outputFilePath = Path.Combine(Config.logPath, $"Commande-{currentTime}.txt");
+                using (StreamWriter writer = new StreamWriter(outputFilePath))
+                {
+                    writer.WriteLine("Trace de l'exeuction de la commande:");
+                    writer.WriteLine(command);
+                    writer.WriteLine(process.StandardOutput.ReadToEnd());
+                    writer.WriteLine(process.StandardError.ReadToEnd());
+                    writer.Close();
+                }
+                process.WaitForExit();
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"Command exited with code {process.ExitCode}");
+                }
+            }
+        }catch (Exception ex)
         {
-            string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            string outputFilePath = Path.Combine(Config.logPath, $"Commande-{currentTime}.txt");
-            using (StreamWriter writer = new StreamWriter(outputFilePath))
-            {
-                writer.WriteLine("Trace de l'exeuction de la commande:");
-                writer.WriteLine(command);
-                writer.WriteLine(process.StandardOutput.ReadToEnd());
-                writer.WriteLine(process.StandardError.ReadToEnd());
-                writer.Close();
-            }
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new Exception($"Command exited with code {process.ExitCode}");
-            }
+            LogAndWriteLine($"    ERREUR Une erreur est survenue en executant : {command} :: {ex.Message}");
         }
     }
 
@@ -361,16 +368,16 @@ public class Utils
 
     public static void AddToPath(string binPath)
     {
-        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        string currentPath = Environment.GetEnvironmentVariable("PATH");
         if (currentPath == null)
         {
-            Environment.SetEnvironmentVariable("PATH", binPath, EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("PATH", binPath);
         }
         else if (!currentPath.Contains(binPath))
         {
             LogAndWriteLine("Ajout au Path de "+binPath);
             string updatedPath = currentPath + ";" + binPath;
-            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("PATH", updatedPath);
         }
         // forcer le rechargement de la variable d'environnement
         //Environment.SetEnvironmentVariable("Path", null, EnvironmentVariableTarget.User);

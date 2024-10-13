@@ -117,13 +117,13 @@ namespace ScriptSharp
 
         public static async Task InstallJava()
         {
-            Utils.LogAndWriteLine("Copie de Java commencee");
+            Utils.LogAndWriteLine("Installation de Java Dev Kit");
             string javaPath = Path.Combine(Config.localCache, "jdk.7z");
             await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "jdk");
             await Utils.Unzip7zFileAsync("jdk.7z", destinationFolder);
-            Utils.LogAndWriteLine("Copie de Java finie");
+            
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string jdkPath = Path.Combine(desktop, "jdk");
             DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
@@ -131,6 +131,7 @@ namespace ScriptSharp
             string javaHome = Path.Combine(jdkPath, jdkVersion);
             Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
             Utils.AddToPath(Path.Combine(javaHome, "bin"));
+            Utils.LogAndWriteLine("    FAIT Installation Java");
         }
 
         public static async Task DownloadRepoKMB() { await DownloadRepo(Config.URL_KMB, "KMB"); }
@@ -147,7 +148,7 @@ namespace ScriptSharp
         }
 
         // TODO split copy and unzip to start other download while unzipping
-        public static async Task HandleAndroidSDK()
+        public static async Task InstallAndroidSDK()
         {
             Utils.LogAndWriteLine("Installation Android SDK démarré");
             string sdkPath = Utils.GetSDKPath();
@@ -157,7 +158,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("     FAIT Installation Android SDK complet");
         }
 
-        public static async Task HandleAndroidStudio()
+        public static async Task InstallAndroidStudio()
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -166,7 +167,7 @@ namespace ScriptSharp
             // TODO add shortcut    
             Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
-            Utils.LogAndWriteLine("     FAIT Installation Android Studio fini");
+            Utils.LogAndWriteLine("    FAIT Installation Android Studio fini");
         }
         
         public static void AddDesktopToDefenderExclusion()

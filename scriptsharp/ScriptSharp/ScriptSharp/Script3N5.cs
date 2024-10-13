@@ -14,7 +14,7 @@ public class Script3N5
             Path.Combine(Config.localCache, "Sdk.7z"), 
             "Sdk.7z");
         await Task.WhenAll(
-            Program.HandleAndroidSDK(), 
+            Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
                 ".gradle.7z"),
@@ -26,7 +26,7 @@ public class Script3N5
             Utils.Unzip7zFileAsync(
                 ".gradle.7z", 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
-            Program.HandleAndroidStudio(), 
+            Program.InstallAndroidStudio(), 
             DownloadRepo3N5());
         // start android studio
         await Utils.StartAndroidStudio();
@@ -76,6 +76,7 @@ public class Script3N5
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");
         // Utils.RunCommand("idea64.exe installPlugins com.github.copilot");
+        // Utils.RunCommand("idea64.exe installPlugins com.localizely.flutter-intl");
         await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
         Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
         Utils.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
