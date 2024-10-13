@@ -30,7 +30,7 @@ public class Script3N5
             DownloadRepo3N5());
         // start android studio
         await Utils.StartAndroidStudio();
-        Utils.LogAndWriteLine("3N5 Android fini");
+        Utils.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
     }
 
     public static async Task DownloadRepo3N5()
@@ -70,11 +70,11 @@ public class Script3N5
                     "idea")
                 ),
             Program.InstallJava() );
-        Utils.CreateDesktopShortcut("IntelliJ3N5", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
+        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
-        Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij vous propose de configurer defender automatique, faites le");
-        Utils.LogAndWriteLine("Installation de kotlin (console) 3N5");
+        Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
+        Utils.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
     }
 }

@@ -32,14 +32,14 @@ public class Script5N6
         // cd to the fake project and run "flutter run"
         Utils.RunCommand("cd fake_start");
         Utils.RunCommand("flutter run");
-        Utils.LogAndWriteLine("Installation Flutter  fini");
+        Utils.LogAndWriteLine("   FAIT Installation Flutter complet");
     }
 
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
-        Utils.LogAndWriteLine("Gestion de 5N6 flutter + firebase...");
+        Utils.LogAndWriteLine("Installation de 5N6 flutter + firebase...");
         await DownloadRepo5N6();
-        Utils.LogAndWriteLine("5N6 Flutter + Firebase fini");
+        Utils.LogAndWriteLine("    FAIT 5N6 Flutter + Firebase fini");
     }
 
     public static async Task DownloadRepo5N6()

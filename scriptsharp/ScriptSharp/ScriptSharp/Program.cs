@@ -2,10 +2,13 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
+// quelques choix editoriaux,
+// - ne pas creer d'emulateur mais avoir une image system dans le sdk
+// - tout mettre au niveau du bureau, vu qu'ils sont fan du bureau les etudiants
+// - mesurer l'impact de chaque opti pour voir si ca vaut la peine
 
 // dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
 // permet de generer un seul gros .exe avec tout ce qu'il faut dedans
@@ -151,7 +154,7 @@ namespace ScriptSharp
             // get the parent directory of the SDK path
             string sdkParentPath = Directory.GetParent(sdkPath).FullName;
             await Utils.Unzip7zFileAsync("Sdk.7z", sdkParentPath);
-            Utils.LogAndWriteLine("Installation Android SDK fini");
+            Utils.LogAndWriteLine("     FAIT Installation Android SDK complet");
         }
 
         public static async Task HandleAndroidStudio()
@@ -163,7 +166,7 @@ namespace ScriptSharp
             // TODO add shortcut    
             Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
-            Utils.LogAndWriteLine("Installation Android Studio fini");
+            Utils.LogAndWriteLine("     FAIT Installation Android Studio fini");
         }
         
         public static void AddDesktopToDefenderExclusion()
@@ -188,15 +191,15 @@ namespace ScriptSharp
                         throw new Exception($"Command exited with code {process.ExitCode}");
                     }
                 }
-                Console.WriteLine("Desktop folder added to Windows Defender exclusion list successfully.");
+                Console.WriteLine("     FAIT Desktop folder added to Windows Defender exclusion list successfully.");
             }
             catch (Exception ex)
-            { Console.WriteLine($"An error occurred: {ex.Message}"); }
+            { Console.WriteLine($"      ERREUR Defender An error occurred: {ex.Message}"); }
         }
 
         static void DisableWindowsDefender()
         {
-            Utils.LogAndWriteLine("DisableWindowsDefender commencement");
+            Utils.LogAndWriteLine("Desactivation du Defender en cours");
             string command = "powershell -Command \"Set-MpPreference -DisableRealtimeMonitoring $true\"";
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
@@ -214,7 +217,7 @@ namespace ScriptSharp
                     throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
                 }
             }
-            Utils.LogAndWriteLine("DisableWindowsDefender fini");
+            Utils.LogAndWriteLine("     FAIT Defender inactif");
         }
 
         static void SetEnvironmentVariable(string variable, string value)
@@ -233,7 +236,7 @@ namespace ScriptSharp
                 string updatedPath = currentPath + ";" + newPath;
                 Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
             }
-            Utils.LogAndWriteLine("AddToPathEnvironmentVariable arrêté");
+            Utils.LogAndWriteLine("     FAIT AddToPathEnvironmentVariable arrêté");
         }
     }
 }

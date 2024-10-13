@@ -244,11 +244,11 @@ public class Utils
             string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
             LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
             AddToPath(gradleBinPath);
-            LogAndWriteLine($"Gradle {gradleVersion} installed successfully at {extractPath}");
+            LogAndWriteLine($"      FAIT Gradle {gradleVersion} installe ici {extractPath}");
         }
         catch (Exception ex)
         {
-            LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
+            LogAndWriteLine($"  ERREUR Une erreur est survenue: {ex.Message}");
         }
     }
 
@@ -264,7 +264,7 @@ public class Utils
         //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
         //LogAndWriteLine("path "+ commande);
         RunPowerShellCommand(commande);
-        LogAndWriteLine("Raccourci ajouté sur le bureau pour " + targetPath);
+        LogAndWriteLine("       FAIT Raccourci ajouté sur le bureau pour " + targetPath);
     }
     
     public static void RunPowerShellCommand(string command)
@@ -285,7 +285,7 @@ public class Utils
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
-                throw new Exception($"PowerShell command exited with code {process.ExitCode}");
+                throw new Exception($"      ERREUR PowerShell erreur avec code {process.ExitCode}");
             }
         }
     }
@@ -299,7 +299,7 @@ public class Utils
         {
             Directory.Delete(gradlePath, true);
         }
-        LogAndWriteLine("Suppression du .gradle finie");
+        LogAndWriteLine("       FAIT Suppression du .gradle");
     }
 
     public static void DeleteSDK()
@@ -309,7 +309,7 @@ public class Utils
         if (Directory.Exists(sdkPath))
         {
             Directory.Delete(sdkPath, true);
-            Utils.LogAndWriteLine("Suppression du SDK Android finie");
+            Utils.LogAndWriteLine("     FAIT Suppression du SDK Android finie");
         }
         else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
     }
@@ -338,7 +338,7 @@ public class Utils
     public static async Task StartAndroidStudio()
     {
         // start android studio
-        LogAndWriteLine("Démarrage d'Android Studio");
+        LogAndWriteLine("Lancement d'Android Studio");
         // Path to Android Studio executable is Desktop/android-studio/bin/studio64.exe
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string androidStudioPath = Path.Combine(desktopPath, "android-studio","bin","studio64.exe");
@@ -353,7 +353,7 @@ public class Utils
         }
         else
         {
-            LogAndWriteLine("Android Studio n'est pas installé");
+            LogAndWriteLine("       ERREUR Android Studio n'est pas installé");
         }
     }
 
