@@ -70,19 +70,17 @@ public class Utils
 
     public static async Task DownloadFileAsync(string url, string filePath)
     {
-        Utils.LogAndWriteLine("Téléchargement du fichier démarré " + url);
+        LogAndWriteLine("Téléchargement du fichier démarré " + url);
         using (HttpClient client = new HttpClient())
         {
             client.Timeout = TimeSpan.FromMinutes(10); // Set timeout to 10 minutes
             HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
-
             long totalBytes = response.Content.Headers.ContentLength ?? -1;
             long totalRead = 0L;
             byte[] buffer = new byte[8192];
             int bytesRead;
             double lastReportedProgress = 0;
-
             using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
                    fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192,
                        true))
@@ -91,21 +89,19 @@ public class Utils
                 {
                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                     totalRead += bytesRead;
-
                     if (totalBytes != -1)
                     {
                         double progress = (double)totalRead / totalBytes * 100;
                         if (progress - lastReportedProgress >= 10)
                         {
-                            Utils.LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
+                            LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
                             lastReportedProgress = progress;
                         }
                     }
                 }
             }
         }
-
-        Utils.LogAndWriteLine("Téléchargement du fichier fini " + url);
+        LogAndWriteLine("Téléchargement du fichier fini " + url);
     }
 
     public static void RunCommand(string command)

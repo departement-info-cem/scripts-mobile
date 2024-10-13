@@ -31,8 +31,6 @@ namespace ScriptSharp
 {
     class Program
     {
-        public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cache";
-        
         public static string URL_3N5 = "https://github.com/departement-info-cem/3N5-Prog3/archive/refs/heads/main.zip";
         public static string URL_4N6 = "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
         public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
@@ -46,7 +44,7 @@ namespace ScriptSharp
             File.WriteAllText(Utils.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Execution du script commencee");
             
-            if (!Directory.Exists(localCache) && isWindows)
+            if (!Directory.Exists(CacheCreation.localCache) && isWindows)
             {
                 Utils.LogAndWriteLine(
                     "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
@@ -102,7 +100,7 @@ namespace ScriptSharp
         private static async Task InstallJava()
         {
             Utils.LogAndWriteLine("Copie de Java commencee");
-            string javaPath = Path.Combine(localCache, "jdk.7z");
+            string javaPath = Path.Combine(CacheCreation.localCache, "jdk.7z");
             await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "jdk");
@@ -140,7 +138,7 @@ namespace ScriptSharp
         public static async Task HandleAndroidSDK()
         {
             Utils.LogAndWriteLine("Installation Android SDK démarré");
-            string zipPath = Path.Combine(localCache, "Sdk.7z");
+            string zipPath = Path.Combine(CacheCreation.localCache, "Sdk.7z");
             await Utils.CopyFileFromNetworkShareAsync(zipPath, "Sdk.7z");
             string sdkPath = Utils.GetSDKPath();
             // get the parent directory of the SDK path
@@ -152,7 +150,7 @@ namespace ScriptSharp
         public static async Task HandleAndroidStudio()
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
-            string zipPath = Path.Combine(localCache, "android-studio-plugins.7z");
+            string zipPath = Path.Combine(CacheCreation.localCache, "android-studio-plugins.7z");
             await Utils.CopyFileFromNetworkShareAsync(zipPath, "android-studio-plugins.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath);

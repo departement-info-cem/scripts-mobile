@@ -8,6 +8,9 @@ namespace ScriptSharp;
 
 public class CacheCreation
 {
+    public static string cachePath  = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
+    public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";  
+    
     public static string STUDIO_URL =
         "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-windows.zip";
 
@@ -32,7 +35,6 @@ public class CacheCreation
     public static async Task HandleCache()
     {
         Utils.LogAndWriteLine("Creation de la cache ...");
-        var cachePath = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
         var downloadTasks = new[]
         {
             Utils.DownloadFileAsync(IDEA_URL, "idea.zip"), 
@@ -82,8 +84,11 @@ public class CacheCreation
         Utils.LogAndWriteLine("Copie des 7z dans le cache " + cachePath);
         // copy the 7z files to the cache folder
         File.Copy("idea.7z", Path.Combine(cachePath, "idea.7z"), true);
+        File.Copy("idea.zip", Path.Combine(cachePath, "idea.zip"), true);
         File.Copy("jdk.7z", Path.Combine(cachePath, "jdk.7z"), true);
+        File.Copy("jdk.zip", Path.Combine(cachePath, "jdk.zip"), true);
         File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
+        File.Copy("flutter.zip", Path.Combine(cachePath, "flutter.zip"), true);
         File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
         // get the size of the .gradle folder
         var gradleSize = new DirectoryInfo(Path.Combine(home, ".gradle"))

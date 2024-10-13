@@ -23,7 +23,7 @@ public class Script3N5
     public static async Task Handle3N5KotlinConsoleAsync()
     {
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5...");
-        string ideaZipPath = Path.Combine(Program.localCache, "idea.7z");
+        string ideaZipPath = Path.Combine(CacheCreation.localCache, "idea.7z");
         await Utils.CopyFileFromNetworkShareAsync(ideaZipPath, "idea.7z");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string destinationFolder = Path.Combine(desktopPath, "idea");

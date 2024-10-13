@@ -20,7 +20,7 @@ public class Script5N6
     {
         Utils.LogAndWriteLine("Installation Flutter démarré");
         // TODO remove this in favor of cache flutter
-        string zipPath = Path.Combine(Program.localCache, "flutter.7z");
+        string zipPath = Path.Combine(CacheCreation.localCache, "flutter.7z");
         await Utils.CopyFileFromNetworkShareAsync(zipPath, "flutter.7z");
 
 
