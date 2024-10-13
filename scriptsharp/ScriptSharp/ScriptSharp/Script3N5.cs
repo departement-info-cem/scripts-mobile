@@ -75,6 +75,7 @@ public class Script3N5
         Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");
+        // Utils.RunCommand("idea64.exe installPlugins com.github.copilot");
         await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
         Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
         Utils.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
