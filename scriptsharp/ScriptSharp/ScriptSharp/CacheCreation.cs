@@ -8,42 +8,19 @@ namespace ScriptSharp;
 
 public class CacheCreation
 {
-    public static string cachePath  = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
-    public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";  
     
-    public static string STUDIO_URL =
-        "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-windows.zip";
-
-    public static string FLUTTER_PLUGIN_URL_STUDIO =
-        "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=582965";
-
-    public static string DART_PLUGIN_URL_STUDIO = "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=573248";
-
-    public static string FLUTTER_INTL_PLUGIN_URL_STUDIO =
-        "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=541419";
-
-    // Android SDK and sdkmanager
-    public static string CORRETTO_URL = "https://corretto.aws/downloads/latest/amazon-corretto-17-x64-windows-jdk.zip";
-
-    // IntelliJ
-    public static string IDEA_URL = "https://download.jetbrains.com/idea/ideaIC-2024.2.1.win.zip";
-
-    // Flutter
-    public static string FLUTTER_SDK =
-        "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
-
     public static async Task HandleCache()
     {
         Utils.LogAndWriteLine("Creation de la cache ...");
         var downloadTasks = new[]
         {
-            Utils.DownloadFileAsync(IDEA_URL, "idea.zip"), 
-            Utils.DownloadFileAsync(STUDIO_URL, "studio.zip"), 
-            Utils.DownloadFileAsync(FLUTTER_SDK, "flutter.zip"), 
-            Utils.DownloadFileAsync(CORRETTO_URL, "corretto.zip"), 
-            Utils.DownloadFileAsync(FLUTTER_PLUGIN_URL_STUDIO, "plugin-flutter-android-studio.zip"), 
-            Utils.DownloadFileAsync(DART_PLUGIN_URL_STUDIO, "plugin-dart-android-studio.zip"), 
-            Utils.DownloadFileAsync(FLUTTER_INTL_PLUGIN_URL_STUDIO, "plugin-flutter-intl-android-studio.zip")
+            Utils.DownloadFileAsync(Config.IDEA_URL, "idea.zip"), 
+            Utils.DownloadFileAsync(Config.STUDIO_URL, "studio.zip"), 
+            Utils.DownloadFileAsync(Config.FLUTTER_SDK, "flutter.zip"), 
+            Utils.DownloadFileAsync(Config.CORRETTO_URL, "corretto.zip"), 
+            Utils.DownloadFileAsync(Config.FLUTTER_PLUGIN_URL_STUDIO, "plugin-flutter-android-studio.zip"), 
+            Utils.DownloadFileAsync(Config.DART_PLUGIN_URL_STUDIO, "plugin-dart-android-studio.zip"), 
+            Utils.DownloadFileAsync(Config.FLUTTER_INTL_PLUGIN_URL_STUDIO, "plugin-flutter-intl-android-studio.zip")
         };
 
         await Task.WhenAll(downloadTasks);
@@ -78,15 +55,15 @@ public class CacheCreation
             Utils.ConvertZipTo7zAsync("flutter.zip", "flutter.7z")
         };
         await Task.WhenAll(convertTasks);
-        Utils.LogAndWriteLine("Copie des 7z dans le cache " + cachePath);
+        Utils.LogAndWriteLine("Copie des 7z dans le cache " + Config.cachePath);
         // copy the 7z files to the cache folder
-        File.Copy("idea.7z", Path.Combine(cachePath, "idea.7z"), true);
-        File.Copy("idea.zip", Path.Combine(cachePath, "idea.zip"), true);
-        File.Copy("jdk.7z", Path.Combine(cachePath, "jdk.7z"), true);
-        File.Copy("corretto.zip", Path.Combine(cachePath, "jdk.zip"), true);
-        File.Copy("flutter.7z", Path.Combine(cachePath, "flutter.7z"), true);
-        File.Copy("flutter.zip", Path.Combine(cachePath, "flutter.zip"), true);
-        File.Copy("android-studio.7z", Path.Combine(cachePath, "android-studio.7z"), true);
+        File.Copy("idea.7z", Path.Combine(Config.cachePath, "idea.7z"), true);
+        File.Copy("idea.zip", Path.Combine(Config.cachePath, "idea.zip"), true);
+        File.Copy("jdk.7z", Path.Combine(Config.cachePath, "jdk.7z"), true);
+        File.Copy("corretto.zip", Path.Combine(Config.cachePath, "jdk.zip"), true);
+        File.Copy("flutter.7z", Path.Combine(Config.cachePath, "flutter.7z"), true);
+        File.Copy("flutter.zip", Path.Combine(Config.cachePath, "flutter.zip"), true);
+        File.Copy("android-studio.7z", Path.Combine(Config.cachePath, "android-studio.7z"), true);
         // get the size of the .gradle folder
         var gradleSize = new DirectoryInfo(Path.Combine(home, ".gradle"))
             .EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);

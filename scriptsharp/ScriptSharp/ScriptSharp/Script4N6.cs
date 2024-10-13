@@ -16,7 +16,7 @@ public class Script4N6
 
     public static async Task DownloadRepo4N6()
     {
-        await Program.DownloadRepo(Program.URL_4N6, "4N6");
+        await Program.DownloadRepo(Config.URL_4N6, "4N6");
     }
 
     public static async Task Handle4N6AndroidAsync()

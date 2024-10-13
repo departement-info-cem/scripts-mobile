@@ -20,7 +20,7 @@ public class Script5N6
     {
         Utils.LogAndWriteLine("Installation Flutter démarré");
         // TODO remove this in favor of cache flutter
-        string zipPath = Path.Combine(CacheCreation.localCache, "flutter.7z");
+        string zipPath = Path.Combine(Config.localCache, "flutter.7z");
         await Utils.CopyFileFromNetworkShareAsync(zipPath, "flutter.7z");
         // execute "flutter doctor --android-licenses"
         Utils.RunCommand("flutter doctor --android-licenses");
@@ -44,6 +44,6 @@ public class Script5N6
 
     public static async Task DownloadRepo5N6()
     {
-        await Program.DownloadRepo(Program.URL_5N6, "5N6");
+        await Program.DownloadRepo(Config.URL_5N6, "5N6");
     }
 }

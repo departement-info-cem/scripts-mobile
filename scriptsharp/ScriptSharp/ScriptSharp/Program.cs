@@ -24,34 +24,40 @@ using System.Threading.Tasks;
 // Sdk de base apres install de Labybug : 5.01 Go
 // Sdk de ed5depinfo                    : 7.52 Go
 
+// TODO https://www.jetbrains.com/help/idea/install-plugins-from-the-command-line.html
+
 // TODO bug pour les shortcut 
 // TODO mettre le Sdk a la bonne place
+
+/** Install JetBrains 8h10 debut
+ * 1 min 8h11 debut SDK
+ * 7 min 8h14 debut sync gradle (on parle essentiellement de plein de tout petit telechargement)
+ * 2 min 8h21 debut creation emulateur qui doit telecharger une image android 8h23
+ * 2 min 8h23 premier run du projet vide 8h25
+ * En tout 15 minutes depuis toolbox jusqu'au projet parti avec plusieurs manip
+ *
+ * Install avec appli.
+ */   
 
 namespace ScriptSharp
 {
     class Program
     {
-        public static string URL_3N5 = "https://github.com/departement-info-cem/3N5-Prog3/archive/refs/heads/main.zip";
-        public static string URL_4N6 = "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
-        public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
-        public static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
-
         static Boolean isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         static async Task Main(string[] args)
         {
             //clear the log file
             File.WriteAllText(Utils.logFilePath, string.Empty);
-            Utils.LogAndWriteLine("Execution du script commencee");
+            Utils.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
             
-            if (!Directory.Exists(CacheCreation.localCache) && isWindows)
+            if (!Directory.Exists(Config.localCache) && isWindows)
             {
                 Utils.LogAndWriteLine(
                     "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
                 Utils.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
                 return;
             }
-            Utils.LogAndWriteLine("Le dossier de cache local est accessible.");
             if (isWindows)
             {
                 try
@@ -100,7 +106,7 @@ namespace ScriptSharp
         private static async Task InstallJava()
         {
             Utils.LogAndWriteLine("Copie de Java commencee");
-            string javaPath = Path.Combine(CacheCreation.localCache, "jdk.7z");
+            string javaPath = Path.Combine(Config.localCache, "jdk.7z");
             await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "jdk");
@@ -112,16 +118,10 @@ namespace ScriptSharp
             string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
             string javaHome = Path.Combine(jdkPath, jdkVersion);
             Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
-            string javaBinPath = Path.Combine(javaHome, "bin");
-            string currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
-            if (!currentPath.Contains(javaBinPath))
-            {
-                string updatedPath = currentPath + ";" + javaBinPath;
-                Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
-            }
+            Utils.AddToPath(Path.Combine(javaHome, "bin"));
         }
 
-        public static async Task DownloadRepoKMB() { await DownloadRepo(URL_KMB, "KMB"); }
+        public static async Task DownloadRepoKMB() { await DownloadRepo(Config.URL_KMB, "KMB"); }
 
         public static async Task DownloadRepo(string url, string name)
         {
@@ -148,13 +148,12 @@ namespace ScriptSharp
         public static async Task HandleAndroidStudio()
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
-            string zipPath = Path.Combine(CacheCreation.localCache, "android-studio.7z");
-            await Utils.CopyFileFromNetworkShareAsync(zipPath, "android-studio.7z");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync("android-studio.7z", destinationFolder);
             // TODO add shortcut    
             Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
+            Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
             Utils.LogAndWriteLine("Installation Android Studio fini");
         }
         

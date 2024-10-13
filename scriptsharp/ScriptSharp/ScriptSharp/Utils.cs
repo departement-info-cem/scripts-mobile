@@ -111,14 +111,21 @@ public class Utils
             FileName = "cmd.exe",
             Arguments = $"/c {command}",
             RedirectStandardOutput = true,
+            RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
         };
 
         using (Process process = Process.Start(processStartInfo))
         {
-            process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
-            process.BeginOutputReadLine();
+            string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string outputFilePath = $"Commande-{currentTime}.txt";
+            using (StreamWriter writer = new StreamWriter(outputFilePath))
+            {
+                writer.WriteLine(process.StandardOutput.ReadToEnd());
+                writer.WriteLine(process.StandardError.ReadToEnd());
+                writer.Close();
+            }
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
@@ -216,35 +223,34 @@ public class Utils
     public static async Task InstallGradleAsync(string gradleVersion, string installPath)
     {
         LogAndWriteLine("Installation de Gradle commencée");
-        string gradleUrl = $"https://services.gradle.org/distributions/gradle-{gradleVersion}-bin.zip";
-        string zipFilePath = Path.Combine(Path.GetTempPath(), $"gradle-{gradleVersion}-bin.zip");
-        string extractPath = Path.Combine(installPath);
-
-        using (HttpClient client = new HttpClient())
+        try
         {
-            HttpResponseMessage response = await client.GetAsync(gradleUrl);
-            response.EnsureSuccessStatusCode();
-            using (FileStream fs = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            string gradleUrl = $"https://services.gradle.org/distributions/gradle-{gradleVersion}-bin.zip";
+            string zipFilePath = Path.Combine(Path.GetTempPath(), $"gradle-{gradleVersion}-bin.zip");
+            string extractPath = Path.Combine(installPath, "gradle");
+
+            using (HttpClient client = new HttpClient())
             {
-                await response.Content.CopyToAsync(fs);
+                HttpResponseMessage response = await client.GetAsync(gradleUrl);
+                response.EnsureSuccessStatusCode();
+                using (FileStream fs = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await response.Content.CopyToAsync(fs);
+                }
             }
-        }
-        // if extractPath exists, delete it with all its contents
-        var targetDirectory = Path.Combine(extractPath, $"gradle-{gradleVersion}");
-        
-        ZipFile.ExtractToDirectory(zipFilePath, extractPath, true);
-        File.Delete(zipFilePath);
+            var targetDirectory = Path.Combine(extractPath, $"gradle-{gradleVersion}");
+            ZipFile.ExtractToDirectory(zipFilePath, extractPath, true);
+            File.Delete(zipFilePath);
 
-        string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
-        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-        LogAndWriteLine("gradle bin path: " + gradleBinPath);
-        if (!currentPath.Contains(gradleBinPath))
+            string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
+            LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
+            AddToPath(gradleBinPath);
+            LogAndWriteLine($"Gradle {gradleVersion} installed successfully at {extractPath}");
+        }
+        catch (Exception ex)
         {
-            string updatedPath = currentPath + ";" + gradleBinPath;
-            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
+            LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
         }
-
-        LogAndWriteLine($"Gradle {gradleVersion} installed successfully at {extractPath}");
     }
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
@@ -349,6 +355,17 @@ public class Utils
         else
         {
             LogAndWriteLine("Android Studio n'est pas installé");
+        }
+    }
+
+    public static void AddToPath(string binPath)
+    {
+        string currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User);
+        if (!currentPath.Contains(binPath))
+        {
+            Utils.LogAndWriteLine("Ajout au Path de "+binPath);
+            string updatedPath = currentPath + ";" + binPath;
+            Environment.SetEnvironmentVariable("Path", updatedPath, EnvironmentVariableTarget.User);
         }
     }
 }
