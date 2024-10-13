@@ -30,13 +30,20 @@ using System.Threading.Tasks;
 // TODO mettre le Sdk a la bonne place
 
 /** Install JetBrains 8h10 debut
- * 1 min 8h11 debut SDK
+ * 3 min 8h11 debut SDK
  * 7 min 8h14 debut sync gradle (on parle essentiellement de plein de tout petit telechargement)
  * 2 min 8h21 debut creation emulateur qui doit telecharger une image android 8h23
  * 2 min 8h23 premier run du projet vide 8h25
- * En tout 15 minutes depuis toolbox jusqu'au projet parti avec plusieurs manip
+ * En tout 14 minutes depuis toolbox jusqu'au projet parti avec plusieurs manip
  *
- * Install avec appli.
+ * Install avec appli. Sdk=on emu=off .gradle=off
+ * 2 min 8h31 debut install 8h33
+ * 7 min 8h33 sync gradle 8h40
+ * 1 min 8h40 creation emulateur (image est deja dans le SDK) 8h41
+ * 2 min build et run 8h43
+ * En tout 12 minutes
+ *
+ * Install avec appli. Sdk=on emu=off .gradle=on
  */   
 
 namespace ScriptSharp
