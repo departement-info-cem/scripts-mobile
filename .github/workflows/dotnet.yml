@@ -1,0 +1,26 @@
+name: dotnet executable
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mise en place de dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Installer les dépendances
+        working-directory: ./scriptsharp
+        run: dotnet restore
+      - run: dotnet build --configuration Release scriptcsharp
+        working-directory: ./scriptsharp
+      - name: Créer le package
+        working-directory: ./scriptsharp
+        run: dotnet pack --configuration Release scriptcsharp
+      - name: Publier le package vers GitHub Package Registry (GPR)
+        working-directory: ./scriptsharp
+        run: dotnet nuget push scriptcsharp/bin/Release/*.nupkg
