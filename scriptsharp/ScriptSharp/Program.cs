@@ -60,6 +60,7 @@ namespace ScriptSharp
         static async Task Main(string[] args)
         {
             //clear the log file
+            Directory.CreateDirectory(Config.logPath);
             File.WriteAllText(Config.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
             

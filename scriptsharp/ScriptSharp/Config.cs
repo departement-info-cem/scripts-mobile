@@ -19,7 +19,7 @@ public class Config
     //create a temp folder on the Destkop
     public static string localTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "temp");
     
-    public static string logPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+    public static string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "log");
     public static string logFilePath = Path.Combine(logPath, "installation-log.txt");
     
     public static string STUDIO_URL =
