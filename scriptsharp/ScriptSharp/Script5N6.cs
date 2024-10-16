@@ -11,7 +11,7 @@ public class Script5N6
         Utils.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
-            "Sdk.7z");
+            Path.Combine(Config.localTemp, "Sdk.7z") );
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
