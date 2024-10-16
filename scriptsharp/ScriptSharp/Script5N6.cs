@@ -39,9 +39,9 @@ public class Script5N6
         Utils.RunCommand("studio64.exe installPlugins io.flutter");
         Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
         Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
-        await Utils.StartAndroidStudio();
         await InstallFlutter();
         Utils.StartKMB();
+        await Utils.StartAndroidStudio();
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
 
@@ -102,13 +102,13 @@ public class Script5N6
         Utils.RunCommand("studio64.exe installPlugins io.flutter");
         Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
         Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
-        await Utils.StartAndroidStudio();
         await InstallFlutter();
         Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
             "Local", "Pub", "Cache", "bin"));
         Utils.RunCommand("npm install -g firebase-tools");
         Utils.RunCommand("dart pub global activate flutterfire_cli");
+        await Utils.StartAndroidStudio();
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
     }
 

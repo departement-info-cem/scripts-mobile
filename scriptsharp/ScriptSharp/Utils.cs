@@ -305,6 +305,7 @@ public class Utils
         LogAndWriteLine("Démarrage d'Intellij IDEA");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string path = Path.Combine(desktopPath, "idea","bin","idea64.exe");
+        CreateDesktopShortcut("Intellij", path);
         if (File.Exists(path))
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -328,6 +329,7 @@ public class Utils
         string androidStudioPath = Path.Combine(desktopPath, "android-studio","bin","studio64.exe");
         if (File.Exists(androidStudioPath))
         {
+            CreateDesktopShortcut("Android-Studio", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio", "bin", "studio64.exe"));
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = androidStudioPath,
@@ -381,6 +383,8 @@ public class Utils
         DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
+        // quit the app
+        System.Environment.Exit(0);
     }
 
     private static void DeleteThis(string path)
@@ -390,7 +394,7 @@ public class Utils
             { Directory.Delete(path, true); }
         }
         catch (Exception ex)
-        { LogAndWriteLine($"An error occurred while deleting the directory: {ex.Message}"); }
+        { Console.WriteLine($"An error occurred while deleting the directory {path}: {ex.Message}  {ex.Data}"); }
     }
 }
     
