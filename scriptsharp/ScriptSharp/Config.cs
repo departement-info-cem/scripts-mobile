@@ -23,7 +23,7 @@ public class Config
     public static string logFilePath = Path.Combine(logPath, "installation-log.txt");
     
     public static string STUDIO_URL =
-        "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-windows.zip";
+        "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.2.1.10/android-studio-2024.2.1.10-windows.zip";
 
     public static string FLUTTER_PLUGIN_URL_STUDIO =
         "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=582965";
