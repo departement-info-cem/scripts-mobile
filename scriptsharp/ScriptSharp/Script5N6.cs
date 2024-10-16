@@ -16,7 +16,7 @@ public class Script5N6
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.localCache, ".gradle.7z"), 
+                Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
@@ -79,7 +79,7 @@ public class Script5N6
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.localCache, ".gradle.7z"), 
+                Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
