@@ -118,14 +118,13 @@ namespace ScriptSharp
         public static async Task InstallJava()
         {
             Utils.LogAndWriteLine("Installation de Java Dev Kit");
-            string javaPath = Path.Combine(Config.localCache, "jdk.7z");
-            await Utils.CopyFileFromNetworkShareAsync(javaPath, "jdk.7z");
+            await Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.localCache, "jdk.7z"), 
+                Path.Combine(Config.localTemp, "jdk.7z"));
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath, "jdk");
-            await Utils.Unzip7zFileAsync("jdk.7z", destinationFolder);
-            
-            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string jdkPath = Path.Combine(desktop, "jdk");
+            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp, "jdk.7z"), destinationFolder);
+            string jdkPath = Path.Combine(desktopPath, "jdk");
             DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
             string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
             string javaHome = Path.Combine(jdkPath, jdkVersion);
@@ -155,7 +154,7 @@ namespace ScriptSharp
             string sdkPath = Utils.GetSDKPath();
             // get the parent directory of the SDK path
             string sdkParentPath = Directory.GetParent(sdkPath).FullName;
-            await Utils.Unzip7zFileAsync("Sdk.7z", sdkParentPath);
+            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"Sdk.7z"), sdkParentPath);
             // Add environment variables
             string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
             SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
@@ -172,7 +171,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("Installation Android Studio démarré");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string destinationFolder = Path.Combine(desktopPath);
-            await Utils.Unzip7zFileAsync("android-studio.7z", destinationFolder);
+            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
             // TODO add shortcut    
             Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));

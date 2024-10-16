@@ -16,20 +16,20 @@ public class Script5N6
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
-                ".gradle.7z"),
+                Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "idea.7z"), 
-                "idea.7z"),
+                Path.Combine(Config.localTemp, "idea.7z")),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "android-studio.7z"), 
-                "android-studio.7z"));
+                Path.Combine(Config.localTemp, "android-studio.7z")));
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
-                ".gradle.7z", 
+                Path.Combine(Config.localTemp, ".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Utils.Unzip7zFileAsync(
-                "idea.7z", 
+                Path.Combine(Config.localTemp, "idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             Program.InstallAndroidStudio(), 
             Program.DownloadRepoKMB(),
@@ -49,8 +49,12 @@ public class Script5N6
     {
         Utils.LogAndWriteLine("Installation Flutter démarré");
         // TODO remove this in favor of cache flutter
-        await Utils.CopyFileFromNetworkShareAsync(Path.Combine(Config.localCache, "flutter.7z"), "flutter.7z");
-        await Utils.Unzip7zFileAsync("flutter.7z", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+        await Utils.CopyFileFromNetworkShareAsync(
+            Path.Combine(Config.localCache, "flutter.7z"), 
+            Path.Combine(Config.localTemp, "flutter.7z"));
+        await Utils.Unzip7zFileAsync(
+            Path.Combine(Config.localTemp, "flutter.7z"), 
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         // ajouter flutter au path
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // execute "flutter doctor --android-licenses"

@@ -11,19 +11,19 @@ public class Script3N5
         Utils.LogAndWriteLine("Installation pour 3N5 Android...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
-            "Sdk.7z");
+            Path.Combine(Config.localTemp,"Sdk.7z"));
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
-                ".gradle.7z"),
+                Path.Combine(Config.localTemp,".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "android-studio.7z"), 
                 "android-studio.7z"));
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
-                ".gradle.7z", 
+                Path.Combine(Config.localTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Program.InstallAndroidStudio(), 
             DownloadRepo3N5());
@@ -59,11 +59,11 @@ public class Script3N5
         await Task.WhenAll(
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "idea.7z"), 
-                "idea.7z")
+                Path.Combine(Config.localTemp, "idea.7z"))
         );
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
-                "idea.7z", 
+                Path.Combine(Config.localTemp, "idea.7z"), 
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
                     "idea")

@@ -17,7 +17,7 @@ public class Config
     public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
 
     //create a temp folder on the Destkop
-    public static string localTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "temp");
+    public static string localTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
     
     public static string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "log");
     public static string logFilePath = Path.Combine(logPath, "installation-log.txt");
