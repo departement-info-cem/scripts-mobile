@@ -10,7 +10,7 @@ public class Script5N6
     {
         Utils.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
         await Utils.CopyFileFromNetworkShareAsync( 
-            Path.Combine(Config.localCache, "Sdk.7z"), 
+            Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
@@ -71,9 +71,45 @@ public class Script5N6
 
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
-        Utils.LogAndWriteLine("Installation de 5N6 flutter + firebase...");
-        await DownloadRepo5N6();
-        Utils.LogAndWriteLine("    FAIT 5N6 Flutter + Firebase fini");
+        Utils.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
+        await Utils.CopyFileFromNetworkShareAsync( 
+            Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
+            Path.Combine(Config.localTemp, "Sdk.7z") );
+        await Task.WhenAll(
+            Program.InstallAndroidSDK(), 
+            Utils.CopyFileFromNetworkShareAsync( 
+                Path.Combine(Config.localCache, ".gradle.7z"), 
+                Path.Combine(Config.localTemp, ".gradle.7z")),
+            Program.InstallJava(),
+            Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.localCache, "idea.7z"), 
+                Path.Combine(Config.localTemp, "idea.7z")),
+            Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.localCache, "android-studio.7z"), 
+                Path.Combine(Config.localTemp, "android-studio.7z")));
+        await Task.WhenAll(
+            Utils.Unzip7zFileAsync(
+                Path.Combine(Config.localTemp, ".gradle.7z"), 
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
+            Utils.Unzip7zFileAsync(
+                Path.Combine(Config.localTemp, "idea.7z"), 
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
+            Program.InstallAndroidStudio(), 
+            Program.DownloadRepoKMB(),
+            DownloadRepo5N6());
+        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        Utils.RunCommand("studio64.exe installPlugins io.flutter");
+        Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
+        Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
+        await Utils.StartAndroidStudio();
+        await InstallFlutter();
+        Utils.StartKMB();
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
+            "Local", "Pub", "Cache", "bin"));
+        Utils.RunCommand("npm install -g firebase-tools");
+        Utils.RunCommand("dart pub global activate flutterfire_cli");
+        Utils.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
     }
 
     public static async Task DownloadRepo5N6()
