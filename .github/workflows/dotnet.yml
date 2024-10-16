@@ -16,7 +16,6 @@ jobs:
           source-url: https://nuget.pkg.github.com/departement-info-cem/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - run : pwd && ls
       - name: Installer les dépendances
         working-directory: ./scriptsharp
         run: dotnet restore
@@ -25,5 +24,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe
+          files: scriptsharp/ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe
           tag_name: Script
