@@ -1,4 +1,4 @@
-name: dotnet executable
+name: Exécutable dotnet
 
 on: [push]
 
@@ -21,9 +21,7 @@ jobs:
         run: dotnet restore
       - run: dotnet publish --configuration Release -r win-x64 -p:PublishSingleFile=true --self-contained true
         working-directory: ./scriptsharp
-#      - name: Créer le package
-#        working-directory: ./scriptsharp
-#        run: dotnet pack --configuration Release ScriptSharp
-      - name: Publier le package vers GitHub Package Registry (GPR)
-        working-directory: ./scriptsharp
-        run: dotnet nuget push ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe
