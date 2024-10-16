@@ -111,7 +111,7 @@ namespace ScriptSharp
                     break;
             }
             Utils.LogAndWriteLine("Installation finie");
-            Utils.LogAndWriteLine("Appuyer sur une touche 2 fois pour quitter, on a fini ...");
+            Utils.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
             Console.ReadLine();
         }
 
