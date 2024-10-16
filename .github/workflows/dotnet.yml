@@ -22,7 +22,7 @@ jobs:
       - name: Installer les dépendances
         working-directory: ./scriptsharp
         run: dotnet restore
-      - run: dotnet publish --configuration Release -r win-x64 -p:PublishSingleFile=true --self-contained true
+      - run: dotnet publish
         working-directory: ./scriptsharp
       - name: Release
         uses: softprops/action-gh-release@v2
