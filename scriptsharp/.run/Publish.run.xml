@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" produce_single_file="true" ready_to_run="true" runtime="win-x64" self_contained="true" target_folder="$PROJECT_DIR$/ScriptSharp/bin/Release/net8.0/win-x64/publish" target_framework="net8.0" trim_unused_assemblies="true" uuid_high="-2493210824986898542" uuid_low="-7325557407234454431" />
+    <method v="2" />
+  </configuration>
+</component>
