@@ -66,6 +66,7 @@ namespace ScriptSharp
             File.WriteAllText(Config.logFilePath, string.Empty);
             Utils.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
             Utils.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
+            Utils.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
             Utils.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
             if (!Directory.Exists(Config.localCache) && isWindows)
             {
