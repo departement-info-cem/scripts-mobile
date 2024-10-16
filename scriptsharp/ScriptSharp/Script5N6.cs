@@ -9,6 +9,7 @@ public class Script5N6
     public static async Task Handle5N6FlutterAsync()
     {
         Utils.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
@@ -35,7 +36,7 @@ public class Script5N6
             Program.DownloadRepoKMB(),
             DownloadRepo5N6());
         Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        
         Utils.RunCommand("studio64.exe installPlugins io.flutter");
         Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
         Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");

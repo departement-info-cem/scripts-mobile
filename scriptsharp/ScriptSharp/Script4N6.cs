@@ -9,6 +9,7 @@ public class Script4N6
     public static async Task Handle4N6AndroidSpringAsync()
     {
         Utils.LogAndWriteLine("Installation pour 4N6 Android + serveur Spring ...");
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp,"Sdk.7z"));
@@ -36,8 +37,7 @@ public class Script4N6
             DownloadRepo4N6());
         // start android studio
         Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
-
+        
         await Utils.StartAndroidStudio();
         Utils.StartKMB();
         Utils.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");

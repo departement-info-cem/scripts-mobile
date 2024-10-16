@@ -129,8 +129,9 @@ namespace ScriptSharp
             DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
             string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
             string javaHome = Path.Combine(jdkPath, jdkVersion);
-            Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
             Utils.AddToPath(Path.Combine(javaHome, "bin"));
+            Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
+            
             Utils.LogAndWriteLine("    FAIT Installation Java");
         }
 
