@@ -48,6 +48,8 @@ public class Script5N6
     private static async Task InstallFlutter()
     {
         Utils.LogAndWriteLine("Installation Flutter démarré");
+        // ajouter flutter au path
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // TODO remove this in favor of cache flutter
         await Utils.CopyFileFromNetworkShareAsync(
             Path.Combine(Config.localCache, "flutter.7z"), 
@@ -55,8 +57,6 @@ public class Script5N6
         await Utils.Unzip7zFileAsync(
             Path.Combine(Config.localTemp, "flutter.7z"), 
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        // ajouter flutter au path
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // execute "flutter doctor --android-licenses"
         Utils.RunCommand("flutter config --android-sdk "+Utils.GetSDKPath());
         Utils.RunCommand("flutter config --android-studio-dir "+Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio"));

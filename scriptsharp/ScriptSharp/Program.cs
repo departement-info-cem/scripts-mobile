@@ -153,17 +153,18 @@ namespace ScriptSharp
             // fix ANDROID_SDK_ROOT and ANDROID_HOME with GetSDKPath
             Utils.LogAndWriteLine("Installation Android SDK démarré");
             string sdkPath = Utils.GetSDKPath();
+            string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
+            Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
+            Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
             // get the parent directory of the SDK path
             string sdkParentPath = Directory.GetParent(sdkPath).FullName;
             await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"Sdk.7z"), sdkParentPath);
             // Add environment variables
-            string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
             SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
             SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
 
             // Append to PATH
-            Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
-            Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
+            
             Utils.LogAndWriteLine("    FAIT Installation Android SDK complet");
         }
 
@@ -171,10 +172,11 @@ namespace ScriptSharp
         {
             Utils.LogAndWriteLine("Installation Android Studio démarré");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
             string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
             // TODO add shortcut    
-            Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
+            
             Utils.LogAndWriteLine("    FAIT Installation Android Studio fini");
         }
         
