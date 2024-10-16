@@ -10,9 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Mise en place de dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+          source-url: https://nuget.pkg.github.com/departement-info-cem/index.json
       - name: Installer les dépendances
         working-directory: ./scriptsharp
         run: dotnet restore
