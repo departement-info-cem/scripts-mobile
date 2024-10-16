@@ -36,7 +36,7 @@ public class Script4N6
             Program.DownloadRepoKMB(),
             DownloadRepo4N6());
         // start android studio
-        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
+        Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
         
         await Utils.StartAndroidStudio();
         Utils.StartKMB();

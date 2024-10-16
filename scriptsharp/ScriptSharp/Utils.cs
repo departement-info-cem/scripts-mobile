@@ -304,8 +304,7 @@ public class Utils
     {
         // start android studio
         LogAndWriteLine("Démarrage d'Intellij IDEA");
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string path = Path.Combine(desktopPath, "idea","bin","idea64.exe");
+        string path = Program.PathToIntellij();
         CreateDesktopShortcut("Intellij", path);
         if (File.Exists(path))
         {

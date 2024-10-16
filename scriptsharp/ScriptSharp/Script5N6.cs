@@ -42,7 +42,7 @@ public class Script5N6
         await InstallFlutter();
         Utils.StartKMB();
         await Utils.StartAndroidStudio();
-        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
+        Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
 
@@ -98,7 +98,7 @@ public class Script5N6
             Program.InstallAndroidStudio(), 
             Program.DownloadRepoKMB(),
             DownloadRepo5N6());
-        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
+        Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins io.flutter");
         Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.github.copilot");
