@@ -104,7 +104,7 @@ public class Script5N6
         Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.github.copilot");
         Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
         await InstallFlutter();
-        Utils.StartKmb();
+        //Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
             "Local", "Pub", "Cache", "bin"));
         Utils.RunCommand("npm install -g firebase-tools");

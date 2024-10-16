@@ -240,7 +240,7 @@ public class Utils
     {
         ProcessStartInfo processStartInfo = new ProcessStartInfo
         {
-            FileName = "powershell.exe",
+            FileName = "pwsh.exe",
             Arguments = $"-Command \"{command}\"",
             RedirectStandardOutput = true,
             UseShellExecute = false,
