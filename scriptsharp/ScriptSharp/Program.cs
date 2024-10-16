@@ -47,7 +47,7 @@ using System.Threading.Tasks;
  * Install avec appli. Sdk=on emu=off .gradle=on
  * le gradle sync passe de 7 min a 30 sec
  * 3 minutes pour l'installation
- */   
+ */
 
 // C:\Users\joris.deguet\AppData\Local\Google\AndroidStudio2024.2
 
@@ -60,10 +60,11 @@ static class Program
     {
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
+        Environment.Exit(0);
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
         LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
         LogSingleton.Get.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
-        if (!Directory.Exists(Config.localCache))
+        if (!Directory.Exists(Config.LocalCache))
         {
             LogSingleton.Get.LogAndWriteLine(
                 "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
@@ -82,14 +83,30 @@ static class Program
         string choice = Console.ReadLine();
         switch (choice)
         {
-            case "0": await CacheCreation.HandleCache(); break;
-            case "1": await Script3N5.Handle3N5KotlinConsoleAsync(); break;
-            case "2": await Script3N5.Handle3N5AndroidAsync(); break;
-            case "3": await Script4N6.Handle4N6AndroidAsync(); break;
-            case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
-            case "5": await Script5N6.Handle5N6FlutterAsync(); break;
-            case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-            case "7": Utils.Reset(); break;
+            case "0":
+                await CacheCreation.HandleCache();
+                break;
+            case "1":
+                await Script3N5.Handle3N5KotlinConsoleAsync();
+                break;
+            case "2":
+                await Script3N5.Handle3N5AndroidAsync();
+                break;
+            case "3":
+                await Script4N6.Handle4N6AndroidAsync();
+                break;
+            case "4":
+                await Script4N6.Handle4N6AndroidSpringAsync();
+                break;
+            case "5":
+                await Script5N6.Handle5N6FlutterAsync();
+                break;
+            case "6":
+                await Script5N6.Handle5N6FlutterFirebaseAsync();
+                break;
+            case "7":
+                Utils.Reset();
+                break;
             default:
                 LogSingleton.Get.LogAndWriteLine(
                     "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
@@ -104,22 +121,22 @@ static class Program
     {
         LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
         await Utils.CopyFileFromNetworkShareAsync(
-            Path.Combine(Config.localCache, "jdk.7z"), 
-            Path.Combine(Config.localTemp, "jdk.7z"));
+            Path.Combine(Config.LocalCache, "jdk.7z"),
+            Path.Combine(Config.LocalTemp, "jdk.7z"));
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string destinationFolder = Path.Combine(desktopPath, "jdk");
-        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp, "jdk.7z"), destinationFolder);
+        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "jdk.7z"), destinationFolder);
         string jdkPath = Path.Combine(desktopPath, "jdk");
         DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
         string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
         string javaHome = Path.Combine(jdkPath, jdkVersion);
         Utils.AddToPath(Path.Combine(javaHome, "bin"));
         Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
-            
+
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
     }
 
-    public static async Task DownloadRepoKmb() { await DownloadRepo(Config.URL_KMB, "KMB"); }
+    public static async Task DownloadRepoKmb() { await DownloadRepo(Config.UrlKmb, "KMB"); }
 
     public static async Task DownloadRepo(string url, string name)
     {
@@ -146,13 +163,13 @@ static class Program
         Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
         // get the parent directory of the SDK path
         string sdkParentPath = Directory.GetParent(sdkPath)?.FullName;
-        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"Sdk.7z"), sdkParentPath);
+        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "Sdk.7z"), sdkParentPath);
         // Add environment variables
         SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
         SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
 
         // Append to PATH
-            
+
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android SDK complet");
     }
 
@@ -162,9 +179,9 @@ static class Program
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
         string destinationFolder = Path.Combine(desktopPath);
-        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
+        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "android-studio.7z"), destinationFolder);
         // TODO add shortcut    
-            
+
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
     }
 
@@ -179,20 +196,20 @@ static class Program
     public static string PathToAndroidStudio()
     {
         return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             "android-studio", "bin", "studio64.exe");
     }
-        
+
     public static string PathToIntellij()
     {
         return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             "idea", "bin", "idea64.exe");
     }
     public static string PathToFlutter()
     {
         return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             "flutter", "bin", "flutter");
     }
 }

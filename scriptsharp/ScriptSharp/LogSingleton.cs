@@ -8,16 +8,19 @@ public sealed class LogSingleton
     private static LogSingleton _instance;
     private static readonly object Padlock = new object();
 
+    private StreamWriter writer;
 
     private LogSingleton()
     {
         Initialize();
     }
-    
-    private static void Initialize()
+
+    private void Initialize()
     {
-        Directory.CreateDirectory(Config.logPath);
-        File.WriteAllText(Config.logFilePath, string.Empty);
+        Directory.CreateDirectory(Config.LogPath);
+        File.WriteAllText(Config.LogFilePath, string.Empty);
+        writer = new(Config.LogFilePath, true);
+        AppDomain.CurrentDomain.ProcessExit += (s, e) => writer.Close();
     }
 
     public static LogSingleton Get
@@ -37,7 +40,6 @@ public sealed class LogSingleton
     public void LogAndWriteLine(string message)
     {
         Console.WriteLine(message);
-        using StreamWriter writer = new(Config.logFilePath, true);
         writer.WriteLine($"{DateTime.Now}: {message}");
     }
 }

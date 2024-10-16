@@ -5,10 +5,13 @@
 		<Configuration>Release</Configuration>
 		<TargetFramework>net8.0</TargetFramework>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<PublishSingleFile>true</PublishSingleFile>
 		<PublishTrimmed>true</PublishTrimmed>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<SelfContained>true</SelfContained>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+		<PublishSingleFile>true</PublishSingleFile>
 	</PropertyGroup>
 
 </Project>

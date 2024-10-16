@@ -4,27 +4,27 @@ using System.Threading.Tasks;
 
 namespace ScriptSharp;
 
-public class Script3N5
+public static class Script3N5
 {
     public static async Task Handle3N5AndroidAsync()
     {
         LogSingleton.Get.LogAndWriteLine("Installation pour 3N5 Android...");
         await Utils.CopyFileFromNetworkShareAsync( 
-            Path.Combine(Config.localCache, "Sdk.7z"), 
-            Path.Combine(Config.localTemp,"Sdk.7z"));
+            Path.Combine(Config.LocalCache, "Sdk.7z"), 
+            Path.Combine(Config.LocalTemp,"Sdk.7z"));
         await Task.WhenAll(
             Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.localCache, ".gradle.7z"), 
-                Path.Combine(Config.localTemp,".gradle.7z")),
+                Path.Combine(Config.LocalCache, ".gradle.7z"), 
+                Path.Combine(Config.LocalTemp,".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
-                Path.Combine(Config.localCache, "android-studio.7z"), 
-                Path.Combine(Config.localTemp, "android-studio.7z") )
+                Path.Combine(Config.LocalCache, "android-studio.7z"), 
+                Path.Combine(Config.LocalTemp, "android-studio.7z") )
             );
         await Task.WhenAll(
-            Utils.Unzip7zFileAsync(
-                Path.Combine(Config.localTemp,".gradle.7z"), 
+            Utils.Unzip7ZFileAsync(
+                Path.Combine(Config.LocalTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Program.InstallAndroidStudio(), 
             DownloadRepo3N5());
@@ -33,9 +33,9 @@ public class Script3N5
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
     }
 
-    public static async Task DownloadRepo3N5()
+    private static async Task DownloadRepo3N5()
     {
-        await Program.DownloadRepo(Config.URL_3N5, "3N5");
+        await Program.DownloadRepo(Config.Url3N5, "3N5");
     }
 
     /**
@@ -58,14 +58,12 @@ public class Script3N5
     {
         LogSingleton.Get.LogAndWriteLine("Installation de kotlin (console) 3N5...");
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        await Utils.CopyFileFromNetworkShareAsync(
+                Path.Combine(Config.LocalCache, "idea.7z"), 
+                Path.Combine(Config.LocalTemp, "idea.7z"));
         await Task.WhenAll(
-            Utils.CopyFileFromNetworkShareAsync(
-                Path.Combine(Config.localCache, "idea.7z"), 
-                Path.Combine(Config.localTemp, "idea.7z"))
-        );
-        await Task.WhenAll(
-            Utils.Unzip7zFileAsync(
-                Path.Combine(Config.localTemp, "idea.7z"), 
+            Utils.Unzip7ZFileAsync(
+                Path.Combine(Config.LocalTemp, "idea.7z"), 
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
                     "idea")

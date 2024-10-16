@@ -11,7 +11,7 @@ namespace ScriptSharp;
 
 public class Utils
 {
-    public static async Task ConvertZipTo7zAsync(string zipFilePath, string output7zFilePath)
+    public static async Task ConvertZipTo7ZAsync(string zipFilePath, string output7ZFilePath)
     {
         LogSingleton.Get.LogAndWriteLine("Conversion de ZIP en 7z commencée pour " + zipFilePath);
         string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -26,7 +26,7 @@ public class Utils
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = sevenZipPath,
-                Arguments = $"a \"{output7zFilePath}\" \"{tempDir}\\*\"",
+                Arguments = $"a \"{output7ZFilePath}\" \"{tempDir}\\*\"",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
@@ -54,7 +54,7 @@ public class Utils
     }
     
     
-    public static readonly object logLock = new object();
+    public static readonly object LogLock = new object();
 
     public static async Task DownloadFileAsync(string url, string filePath)
     {
@@ -110,7 +110,7 @@ public class Utils
             using (Process process = Process.Start(processStartInfo))
             {
                 string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-                string outputFilePath = Path.Combine(Config.logPath, $"Commande-{currentTime}.txt");
+                string outputFilePath = Path.Combine(Config.LogPath, $"Commande-{currentTime}.txt");
                 using (StreamWriter writer = new StreamWriter(outputFilePath))
                 {
                     writer.WriteLine("Trace de l'exeuction de la commande:");
@@ -131,14 +131,14 @@ public class Utils
         }
     }
 
-    public static async Task CompressFolderTo7zAsync(string folderPath, string output7zFilePath)
+    public static async Task CompressFolderTo7ZAsync(string folderPath, string output7ZFilePath)
     {
         string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe"; // Adjust the path if necessary
 
         ProcessStartInfo processStartInfo = new ProcessStartInfo
         {
             FileName = sevenZipPath,
-            Arguments = $"a \"{output7zFilePath}\" \"{folderPath}\\*\"",
+            Arguments = $"a \"{output7ZFilePath}\" \"{folderPath}\\*\"",
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true
@@ -155,7 +155,7 @@ public class Utils
         }
     }
 
-    public static async Task Unzip7zFileAsync(string sourceFile, string destinationFolder)
+    public static async Task Unzip7ZFileAsync(string sourceFile, string destinationFolder)
     {
         LogSingleton.Get.LogAndWriteLine("Dézippage avec 7z commencé pour " + sourceFile + " dans " + destinationFolder);
         try
@@ -332,7 +332,7 @@ public class Utils
         SetEnvironmentVariable("PATH", updatedPath);
     }
     
-    public static void StartKMB()
+    public static void StartKmb()
     {
         RunCommand(Program.PathToIntellij()+ " " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
     }
