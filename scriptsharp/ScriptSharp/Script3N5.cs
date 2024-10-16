@@ -57,6 +57,7 @@ public class Script3N5
     public static async Task Handle3N5KotlinConsoleAsync()
     {
         Utils.LogAndWriteLine("Installation de kotlin (console) 3N5...");
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Task.WhenAll(
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "idea.7z"), 
@@ -70,7 +71,6 @@ public class Script3N5
                     "idea")
                 ),
             Program.InstallJava() );
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");

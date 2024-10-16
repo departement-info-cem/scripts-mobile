@@ -9,13 +9,14 @@ public class Script5N6
     public static async Task Handle5N6FlutterAsync()
     {
         Utils.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.localCache, ".gradle.7z"), 
+                Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
@@ -34,20 +35,22 @@ public class Script5N6
             Program.InstallAndroidStudio(), 
             Program.DownloadRepoKMB(),
             DownloadRepo5N6());
-        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        
         Utils.RunCommand("studio64.exe installPlugins io.flutter");
         Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
         Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
         await InstallFlutter();
         Utils.StartKMB();
         await Utils.StartAndroidStudio();
+        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
 
     private static async Task InstallFlutter()
     {
         Utils.LogAndWriteLine("Installation Flutter démarré");
+        // ajouter flutter au path
+        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // TODO remove this in favor of cache flutter
         await Utils.CopyFileFromNetworkShareAsync(
             Path.Combine(Config.localCache, "flutter.7z"), 
@@ -55,8 +58,6 @@ public class Script5N6
         await Utils.Unzip7zFileAsync(
             Path.Combine(Config.localTemp, "flutter.7z"), 
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        // ajouter flutter au path
-        Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // execute "flutter doctor --android-licenses"
         Utils.RunCommand("flutter config --android-sdk "+Utils.GetSDKPath());
         Utils.RunCommand("flutter config --android-studio-dir "+Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio"));
@@ -78,7 +79,7 @@ public class Script5N6
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.localCache, ".gradle.7z"), 
+                Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(

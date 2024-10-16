@@ -8,7 +8,27 @@ namespace ScriptSharp;
 
 public class CacheCreation
 {
-    
+    /**
+     * 2 ensembles de sdk / .gradle pour android studio kotlin ET android studio flutter
+     *
+     * Une fois une version de Android Studio, on va
+     * - créer un projet avec le wizard
+     * - le partir sur un émulateur
+     * - quand tout est beau on ferme Android Studio et on supprime le .gradle puis le Sdk
+     * - on ouvre le projet et on crée un émulateur avec la version Android de notre choix
+     * - on laisse le SDK et le .gradle se remplir en sync compile execute
+     * - on fait le .gradle.7z et le Sdk.7z
+     * - on dépose le tout sur ##ed5depinfo
+     *
+     * Pour Flutter:
+     * - on crée un projet et on l'exécute
+     * - on ferme l'IDE
+     * - on supprime le .gradle
+     * - on ouvre le projet et on laisse flutter run
+     * - on fait .gradle-flutter.7z et Sdk-Android-Flutter.7z
+     * - hop sur \\ed5depinfo
+     * 
+     */
     public static async Task HandleCache()
     {
         Utils.LogAndWriteLine("Creation de la cache ...");
