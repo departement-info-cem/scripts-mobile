@@ -13,7 +13,7 @@ public class Script3N5
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp,"Sdk.7z"));
         await Task.WhenAll(
-            Program.InstallAndroidSDK(), 
+            Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
                 Path.Combine(Config.localTemp,".gradle.7z")),

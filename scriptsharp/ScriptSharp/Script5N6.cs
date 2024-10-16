@@ -14,7 +14,7 @@ public class Script5N6
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
         await Task.WhenAll(
-            Program.InstallAndroidSDK(), 
+            Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
@@ -33,7 +33,7 @@ public class Script5N6
                 Path.Combine(Config.localTemp, "idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             Program.InstallAndroidStudio(), 
-            Program.DownloadRepoKMB(),
+            Program.DownloadRepoKmb(),
             DownloadRepo5N6());
         
         Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins io.flutter");
@@ -59,7 +59,7 @@ public class Script5N6
             Path.Combine(Config.localTemp, "flutter.7z"), 
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         // execute "flutter doctor --android-licenses"
-        Utils.RunCommand(Program.PathToFlutter() +" config --android-sdk "+Utils.GetSDKPath());
+        Utils.RunCommand(Program.PathToFlutter() +" config --android-sdk "+Utils.GetSdkPath());
         Utils.RunCommand(Program.PathToFlutter() +" config --android-studio-dir "+Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio"));
         Utils.RunCommand(Program.PathToFlutter() +" doctor --android-licenses");
         Utils.RunCommand(Program.PathToFlutter() +" doctor --verbose");
@@ -77,7 +77,7 @@ public class Script5N6
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
         await Task.WhenAll(
-            Program.InstallAndroidSDK(), 
+            Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),
@@ -96,7 +96,7 @@ public class Script5N6
                 Path.Combine(Config.localTemp, "idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             Program.InstallAndroidStudio(), 
-            Program.DownloadRepoKMB(),
+            Program.DownloadRepoKmb(),
             DownloadRepo5N6());
         Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));

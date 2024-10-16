@@ -193,13 +193,12 @@ public class Utils
         LogSingleton.Get.LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
         try
         {
-            using (FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read,
-                       FileShare.Read, 4096, useAsync: true))
-            using (FileStream destinationStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write,
-                       FileShare.None, 4096, useAsync: true))
-            {
-                await sourceStream.CopyToAsync(destinationStream);
-            }
+            await using FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read,
+                FileShare.Read, 4096, useAsync: true);
+            
+            await using FileStream destinationStream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write,
+                FileShare.None, 4096, useAsync: true);
+            await sourceStream.CopyToAsync(destinationStream);
         }
         catch (Exception ex)
         {
@@ -208,30 +207,27 @@ public class Utils
         LogSingleton.Get.LogAndWriteLine("    FAIT Copie du fichier "+localFilePath);
     }
     
-    public static string GetSDKPath()
+    public static string GetSdkPath()
     {
-        //C:\Users\joris.deguet\AppData\Local\Android\Sdk
         string sdkPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
-        Console.WriteLine("Chemin vers le SDK Android: " + sdkPath);
+        LogSingleton.Get.LogAndWriteLine("Chemin vers le SDK Android: " + sdkPath);
         return sdkPath;
     }
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
     {
-        var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        var linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
-        var commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
-                       "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
-                       "$Shortcut.TargetPath = '"+targetPath+"'; " +
-                       "$Shortcut.Save();";
+        string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
+        string commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
+                          "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
+                          "$Shortcut.TargetPath = '"+targetPath+"'; " +
+                          "$Shortcut.Save();";
         LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
-        //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
-        //LogSingleton.Get.LogAndWriteLine("path "+ commande);
         RunPowerShellCommand(commande);
         LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
     }
-    
-    public static void RunPowerShellCommand(string command)
+
+    private static void RunPowerShellCommand(string command)
     {
         ProcessStartInfo processStartInfo = new ProcessStartInfo
         {
@@ -242,19 +238,19 @@ public class Utils
             CreateNoWindow = true
         };
 
-        using (Process process = Process.Start(processStartInfo))
+        using Process process = Process.Start(processStartInfo)!;
+        
+        process.OutputDataReceived += (sender, e) => LogSingleton.Get.LogAndWriteLine(e.Data);
+        process.BeginOutputReadLine();
+        process.WaitForExit();
+        
+        if (process.ExitCode != 0)
         {
-            process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
-            process.BeginOutputReadLine();
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new Exception($"      ERREUR PowerShell erreur avec code {process.ExitCode}");
-            }
+            throw new Exception($"      ERREUR PowerShell erreur avec code {process.ExitCode}");
         }
     }
     
-    public static async Task StartIntellij()
+    public static Task StartIntellij()
     {
         // start android studio
         LogSingleton.Get.LogAndWriteLine("Démarrage d'Intellij IDEA");
@@ -273,8 +269,9 @@ public class Utils
         {
             LogSingleton.Get.LogAndWriteLine("Intellij n'est pas installé");
         }
+        return Task.CompletedTask;
     }
-    public static async Task StartAndroidStudio()
+    public static Task StartAndroidStudio()
     {
         // start android studio
         LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
@@ -293,6 +290,7 @@ public class Utils
         {
             LogSingleton.Get.LogAndWriteLine("       ERREUR Android Studio n'est pas installé");
         }
+        return Task.CompletedTask;
     }
 
     public static void AddToPath(string binPath)
@@ -310,7 +308,7 @@ public class Utils
         }
     }
 
-    public static void RemoveFromPath(string pattern)
+    private static void RemoveFromPath(string pattern)
     {
         string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         
@@ -336,10 +334,10 @@ public class Utils
         DeleteAll();
         Environment.Exit(0);
     }
-    
-    public static void DeleteAll()
+
+    private static void DeleteAll()
     {
-        DeleteThis(GetSDKPath());
+        DeleteThis(GetSdkPath());
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "AppData", "Local", "Android"));
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -393,7 +391,7 @@ public class Utils
         }
         catch (Exception)
         {
-            Console.WriteLine("Not found: " + path);
+            LogSingleton.Get.LogAndWriteLine("Not found: " + path);
         }
     }
 }

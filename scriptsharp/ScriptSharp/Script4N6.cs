@@ -14,7 +14,7 @@ public class Script4N6
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp,"Sdk.7z"));
         await Task.WhenAll(
-            Program.InstallAndroidSDK(), 
+            Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
                 Path.Combine(Config.localTemp,".gradle.7z")),
@@ -33,7 +33,7 @@ public class Script4N6
                 Path.Combine(Config.localTemp,"idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             Program.InstallAndroidStudio(), 
-            Program.DownloadRepoKMB(),
+            Program.DownloadRepoKmb(),
             DownloadRepo4N6());
         // start android studio
         Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
@@ -56,7 +56,7 @@ public class Script4N6
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z")  );
         await Task.WhenAll(
-            Program.InstallAndroidSDK(), 
+            Program.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
                 Path.Combine(Config.localTemp, ".gradle.7z")),

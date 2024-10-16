@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 // quelques choix editoriaux,
@@ -53,211 +51,148 @@ using System.Threading.Tasks;
 
 // C:\Users\joris.deguet\AppData\Local\Google\AndroidStudio2024.2
 
-namespace ScriptSharp
+namespace ScriptSharp;
+
+static class Program
 {
-    class Program
+
+    private static async Task Main()
     {
-        static Boolean isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-        static async Task Main(string[] args)
+        //clear the log file
+        LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
+        LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
+        LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
+        LogSingleton.Get.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
+        if (!Directory.Exists(Config.localCache))
         {
-            //clear the log file
-            Directory.CreateDirectory(Config.logPath);
-            File.WriteAllText(Config.logFilePath, string.Empty);
-            LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
-            LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
-            LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
-            LogSingleton.Get.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
-            if (!Directory.Exists(Config.localCache) && isWindows)
-            {
+            LogSingleton.Get.LogAndWriteLine(
+                "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
+            LogSingleton.Get.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
+            return;
+        }
+
+        LogSingleton.Get.LogAndWriteLine("Veuillez choisir une option:");
+        LogSingleton.Get.LogAndWriteLine("1. 3N5 console kotlin");
+        LogSingleton.Get.LogAndWriteLine("2. 3N5 Android");
+        LogSingleton.Get.LogAndWriteLine("3. 4N6 Android");
+        LogSingleton.Get.LogAndWriteLine("4. 4N6 Android + Spring");
+        LogSingleton.Get.LogAndWriteLine("5. 5N6 flutter");
+        LogSingleton.Get.LogAndWriteLine("6. 5N6 flutter + firebase");
+        LogSingleton.Get.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
+        string choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "0": await CacheCreation.HandleCache(); break;
+            case "1": await Script3N5.Handle3N5KotlinConsoleAsync(); break;
+            case "2": await Script3N5.Handle3N5AndroidAsync(); break;
+            case "3": await Script4N6.Handle4N6AndroidAsync(); break;
+            case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
+            case "5": await Script5N6.Handle5N6FlutterAsync(); break;
+            case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
+            case "7": Utils.Reset(); break;
+            default:
                 LogSingleton.Get.LogAndWriteLine(
-                    "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
-                LogSingleton.Get.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
-                return;
-            }
-            if (isWindows)
-            {
-                // try
-                // {
-                //     AddDesktopToDefenderExclusion();
-                //     DisableWindowsDefender();
-                // }
-                // catch (Exception e)
-                // {
-                //     Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
-                // }
-            }
-            LogSingleton.Get.LogAndWriteLine("Veuillez choisir une option:");
-            LogSingleton.Get.LogAndWriteLine("1. 3N5 console kotlin");
-            LogSingleton.Get.LogAndWriteLine("2. 3N5 Android");
-            LogSingleton.Get.LogAndWriteLine("3. 4N6 Android");
-            LogSingleton.Get.LogAndWriteLine("4. 4N6 Android + Spring");
-            LogSingleton.Get.LogAndWriteLine("5. 5N6 flutter");
-            LogSingleton.Get.LogAndWriteLine("6. 5N6 flutter + firebase");
-            LogSingleton.Get.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
-            string choice = Console.ReadLine();
-            switch (choice)
-            {
-                case "0": await CacheCreation.HandleCache(); break;
-                case "1": await Script3N5.Handle3N5KotlinConsoleAsync(); break;
-                case "2": await Script3N5.Handle3N5AndroidAsync(); break;
-                case "3": await Script4N6.Handle4N6AndroidAsync(); break;
-                case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
-                case "5": await Script5N6.Handle5N6FlutterAsync(); break;
-                case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-                case "7": Utils.Reset(); break;
-                default:
-                    LogSingleton.Get.LogAndWriteLine(
-                        "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
-                    break;
-            }
-            LogSingleton.Get.LogAndWriteLine("Installation finie");
-            LogSingleton.Get.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
-            Console.ReadLine();
+                    "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
+                break;
         }
+        LogSingleton.Get.LogAndWriteLine("Installation finie");
+        LogSingleton.Get.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
+        Console.ReadLine();
+    }
 
-        public static async Task InstallJava()
-        {
-            LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
-            await Utils.CopyFileFromNetworkShareAsync(
-                Path.Combine(Config.localCache, "jdk.7z"), 
-                Path.Combine(Config.localTemp, "jdk.7z"));
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string destinationFolder = Path.Combine(desktopPath, "jdk");
-            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp, "jdk.7z"), destinationFolder);
-            string jdkPath = Path.Combine(desktopPath, "jdk");
-            DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
-            string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
-            string javaHome = Path.Combine(jdkPath, jdkVersion);
-            Utils.AddToPath(Path.Combine(javaHome, "bin"));
-            Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
+    public static async Task InstallJava()
+    {
+        LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
+        await Utils.CopyFileFromNetworkShareAsync(
+            Path.Combine(Config.localCache, "jdk.7z"), 
+            Path.Combine(Config.localTemp, "jdk.7z"));
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string destinationFolder = Path.Combine(desktopPath, "jdk");
+        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp, "jdk.7z"), destinationFolder);
+        string jdkPath = Path.Combine(desktopPath, "jdk");
+        DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
+        string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
+        string javaHome = Path.Combine(jdkPath, jdkVersion);
+        Utils.AddToPath(Path.Combine(javaHome, "bin"));
+        Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
             
-            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
-        }
+        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
+    }
 
-        public static async Task DownloadRepoKMB() { await DownloadRepo(Config.URL_KMB, "KMB"); }
+    public static async Task DownloadRepoKmb() { await DownloadRepo(Config.URL_KMB, "KMB"); }
 
-        public static async Task DownloadRepo(string url, string name)
+    public static async Task DownloadRepo(string url, string name)
+    {
+        // download URL_3N5 to the Desktop and unzip it
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string zipFilePath = Path.Combine(desktopPath, name + ".zip");
+        await Utils.DownloadFileAsync(url, zipFilePath);
+        LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
+        ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
+        try { File.Delete(zipFilePath); }
+        catch
         {
-            // download URL_3N5 to the Desktop and unzip it
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string zipFilePath = Path.Combine(desktopPath, name + ".zip");
-            await Utils.DownloadFileAsync(url, zipFilePath);
-            LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
-            ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
-            try { File.Delete(zipFilePath); }catch { }
+            // ignored
         }
+    }
 
-        // TODO split copy and unzip to start other download while unzipping
-        public static async Task InstallAndroidSDK()
-        {
-            // fix ANDROID_SDK_ROOT and ANDROID_HOME with GetSDKPath
-            LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");
-            string sdkPath = Utils.GetSDKPath();
-            string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
-            Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
-            Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
-            // get the parent directory of the SDK path
-            string sdkParentPath = Directory.GetParent(sdkPath).FullName;
-            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"Sdk.7z"), sdkParentPath);
-            // Add environment variables
-            SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
-            SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
+    // TODO split copy and unzip to start other download while unzipping
+    public static async Task InstallAndroidSdk()
+    {
+        LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");
+        string sdkPath = Utils.GetSdkPath();
+        string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
+        Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
+        Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
+        // get the parent directory of the SDK path
+        string sdkParentPath = Directory.GetParent(sdkPath)?.FullName;
+        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"Sdk.7z"), sdkParentPath);
+        // Add environment variables
+        SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
+        SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
 
-            // Append to PATH
+        // Append to PATH
             
-            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android SDK complet");
-        }
+        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android SDK complet");
+    }
 
-        public static async Task InstallAndroidStudio()
-        {
-            LogSingleton.Get.LogAndWriteLine("Installation Android Studio démarré");
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
-            string destinationFolder = Path.Combine(desktopPath);
-            await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
-            // TODO add shortcut    
+    public static async Task InstallAndroidStudio()
+    {
+        LogSingleton.Get.LogAndWriteLine("Installation Android Studio démarré");
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
+        string destinationFolder = Path.Combine(desktopPath);
+        await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
+        // TODO add shortcut    
             
-            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
-        }
+        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
+    }
+
+    private static void SetEnvironmentVariable(string variable, string value)
+    {
+        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
+        Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
+        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
+    }
+
+
+    public static string PathToAndroidStudio()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            "android-studio", "bin", "studio64.exe");
+    }
         
-        public static void AddDesktopToDefenderExclusion()
-        {
-            try
-            {
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string command = $"powershell -Command \"Add-MpPreference -ExclusionPath '{desktopPath}'\"";
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c {command}",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-                using (Process process = Process.Start(processStartInfo))
-                {
-                    process.WaitForExit();
-                    if (process.ExitCode != 0)
-                    {
-                        throw new Exception($"Command exited with code {process.ExitCode}");
-                    }
-                }
-                Console.WriteLine("     FAIT Desktop folder added to Windows Defender exclusion list successfully.");
-            }
-            catch (Exception ex)
-            { Console.WriteLine($"      ERREUR Defender An error occurred: {ex.Message}"); }
-        }
-
-        static void DisableWindowsDefender()
-        {
-            LogSingleton.Get.LogAndWriteLine("Desactivation du Defender en cours");
-            string command = "powershell -Command \"Set-MpPreference -DisableRealtimeMonitoring $true\"";
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c {command}",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            using (Process process = Process.Start(processStartInfo))
-            {
-                process.WaitForExit();
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
-                }
-            }
-            LogSingleton.Get.LogAndWriteLine("     FAIT Defender inactif");
-        }
-
-        static void SetEnvironmentVariable(string variable, string value)
-        {
-            LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
-            Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
-            LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
-        }
-
-
-        public static string PathToAndroidStudio()
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-                "android-studio", "bin", "studio64.exe");
-        }
-        
-        public static string PathToIntellij()
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-                "idea", "bin", "idea64.exe");
-        }
-        public static string PathToFlutter()
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-                "flutter", "bin", "flutter");
-        }
+    public static string PathToIntellij()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            "idea", "bin", "idea64.exe");
+    }
+    public static string PathToFlutter()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+            "flutter", "bin", "flutter");
     }
 }

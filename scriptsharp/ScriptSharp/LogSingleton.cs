@@ -6,11 +6,18 @@ namespace ScriptSharp;
 public sealed class LogSingleton
 {
     private static LogSingleton _instance;
-    private static readonly object Padlock = new();
+    private static readonly object Padlock = new object();
 
 
     private LogSingleton()
     {
+        Initialize();
+    }
+    
+    private static void Initialize()
+    {
+        Directory.CreateDirectory(Config.logPath);
+        File.WriteAllText(Config.logFilePath, string.Empty);
     }
 
     public static LogSingleton Get
