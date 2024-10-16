@@ -299,31 +299,6 @@ public class Utils
         }
     }
     
-    public static void DeleteGradle()
-    {
-        LogAndWriteLine("Suppression du .gradle commencee");
-        // delete the .gradle folder in the user's home directory
-        string gradlePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle");
-        if (Directory.Exists(gradlePath))
-        {
-            Directory.Delete(gradlePath, true);
-        }
-        LogAndWriteLine("    FAIT Suppression du .gradle");
-    }
-
-    public static void DeleteSDK()
-    {
-        Utils.LogAndWriteLine("Suppression du SDK Android démarrée");
-        string sdkPath = Utils.GetSDKPath();
-        if (Directory.Exists(sdkPath))
-        {
-            Directory.Delete(sdkPath, true);
-            Utils.LogAndWriteLine("    FAIT Suppression du SDK Android finie");
-        }
-        else { Utils.LogAndWriteLine("Le SDK Android n'existe pas."); }
-    }
-
-    
     public static async Task StartIntellij()
     {
         // start android studio
@@ -386,46 +361,26 @@ public class Utils
     
     public static void DeleteAll()
     {
-        try { DeleteSDK(); }catch { }
-
-        try { DeleteGradle(); }catch { }
-        try { DeleteDesktopContent(); }catch { }
-
-        try
-        {
-            // delete all content of the .android folder in the user's home directory
-            string androidPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".android");
-            if (Directory.Exists(androidPath))
-            {
-                Directory.Delete(androidPath, true);
-            }
-
-            string androidStudio = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "AppData", "Local", "Google", "AndroidStudio2024.2");
-            if (Directory.Exists(androidStudio))
-            {
-                Directory.Delete(androidStudio, true);
-            }
-        }
-        catch
-        { }
+        DeleteThis(GetSDKPath());
+        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "AppData", "Local", "Android"));
+        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "AppData", "Local", "Google", "AndroidStudio2024.2"));
+        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "AppData", "Roaming", "Google", "AndroidStudio2024.2"));
+        DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
+        DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
+        DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
     }
 
-    private static void DeleteDesktopContent()
+    private static void DeleteThis(string path)
     {
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        try
-        {
-            if (Directory.Exists(desktopPath))
-            {
-                Directory.Delete(desktopPath, true);
-            }
+        try {
+            if (Directory.Exists(path))
+            { Directory.Delete(path, true); }
         }
         catch (Exception ex)
-        {
-            Utils.LogAndWriteLine($"An error occurred while deleting the directory: {ex.Message}");
-        }
+        { LogAndWriteLine($"An error occurred while deleting the directory: {ex.Message}"); }
     }
 }
     

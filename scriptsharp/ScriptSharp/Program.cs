@@ -92,9 +92,7 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("4. 4N6 Android + Spring");
             Utils.LogAndWriteLine("5. 5N6 flutter");
             Utils.LogAndWriteLine("6. 5N6 flutter + firebase");
-            Utils.LogAndWriteLine("7. supprimer le SDK Android");
-            Utils.LogAndWriteLine("8. supprimer le .gradle");
-            Utils.LogAndWriteLine("9. supprimer  .gradle SDK .android  bureau");
+            Utils.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -105,9 +103,7 @@ namespace ScriptSharp
                 case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
                 case "5": await Script5N6.Handle5N6FlutterAsync(); break;
                 case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-                case "7": Utils.DeleteSDK(); break;
-                case "8": Utils.DeleteGradle(); break;
-                case "9": Utils.DeleteAll(); break;
+                case "7": Utils.DeleteAll(); break;
                 default:
                     Utils.LogAndWriteLine(
                         "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
