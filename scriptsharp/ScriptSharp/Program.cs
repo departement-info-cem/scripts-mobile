@@ -239,6 +239,25 @@ namespace ScriptSharp
             Utils.LogAndWriteLine("SetEnvironmentVariable arrêté");
         }
 
+
+        public static string PathToAndroidStudio()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                "android-studio", "bin", "studio64.exe");
+        }
         
+        public static string PathToIntellij()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                "idea", "bin", "idea64.exe");
+        }
+        public static string PathToFlutter()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                "flutter", "bin", "flutter");
+        }
     }
 }

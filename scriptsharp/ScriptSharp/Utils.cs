@@ -325,12 +325,10 @@ public class Utils
     {
         // start android studio
         LogAndWriteLine("Lancement d'Android Studio");
-        // Path to Android Studio executable is Desktop/android-studio/bin/studio64.exe
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string androidStudioPath = Path.Combine(desktopPath, "android-studio","bin","studio64.exe");
+        string androidStudioPath = Program.PathToAndroidStudio();
         if (File.Exists(androidStudioPath))
         {
-            CreateDesktopShortcut("Android-Studio", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio", "bin", "studio64.exe"));
+            CreateDesktopShortcut("Android-Studio", Program.PathToAndroidStudio());
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = androidStudioPath,
@@ -364,7 +362,7 @@ public class Utils
     
     public static void StartKMB()
     {
-        RunCommand("idea64.exe " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
+        RunCommand(Program.PathToIntellij()+ " " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
     }
 
     

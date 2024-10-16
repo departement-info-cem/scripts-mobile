@@ -36,9 +36,9 @@ public class Script5N6
             Program.DownloadRepoKMB(),
             DownloadRepo5N6());
         
-        Utils.RunCommand("studio64.exe installPlugins io.flutter");
-        Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
-        Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins io.flutter");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.github.copilot");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
         await InstallFlutter();
         Utils.StartKMB();
         await Utils.StartAndroidStudio();
@@ -59,14 +59,14 @@ public class Script5N6
             Path.Combine(Config.localTemp, "flutter.7z"), 
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         // execute "flutter doctor --android-licenses"
-        Utils.RunCommand("flutter config --android-sdk "+Utils.GetSDKPath());
-        Utils.RunCommand("flutter config --android-studio-dir "+Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio"));
-        Utils.RunCommand("flutter doctor --android-licenses");
-        Utils.RunCommand("flutter doctor --verbose");
-        Utils.RunCommand("flutter precache");
-        Utils.RunCommand("flutter pub global activate devtools");
+        Utils.RunCommand(Program.PathToFlutter() +" config --android-sdk "+Utils.GetSDKPath());
+        Utils.RunCommand(Program.PathToFlutter() +" config --android-studio-dir "+Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio"));
+        Utils.RunCommand(Program.PathToFlutter() +" doctor --android-licenses");
+        Utils.RunCommand(Program.PathToFlutter() +" doctor --verbose");
+        Utils.RunCommand(Program.PathToFlutter() +" precache");
+        Utils.RunCommand(Program.PathToFlutter() +" pub global activate devtools");
         // create a fake project to initialize flutter
-        Utils.RunCommand("flutter create fake_start;cd fake_start;flutter run");
+        Utils.RunCommand(Program.PathToFlutter() +" create fake_start;cd fake_start;flutter run");
         Utils.LogAndWriteLine("   FAIT Installation Flutter complet");
     }
 
@@ -100,9 +100,9 @@ public class Script5N6
             DownloadRepo5N6());
         Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
-        Utils.RunCommand("studio64.exe installPlugins io.flutter");
-        Utils.RunCommand("studio64.exe installPlugins com.github.copilot");
-        Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins io.flutter");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.github.copilot");
+        Utils.RunCommand(Program.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
         await InstallFlutter();
         Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
