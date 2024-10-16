@@ -1,12 +1,12 @@
 name: Exécutable dotnet
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest 
-
+    runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
       - name: Mise en place de dotnet
@@ -26,3 +26,5 @@ jobs:
         with:
           files: scriptsharp/ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe
           tag_name: Script
+          body: Script d'installation pour les cours de la suite mobile du programme technique d'informatique du CÉGEP Édouard-Montpetit.
+          make_latest: true
