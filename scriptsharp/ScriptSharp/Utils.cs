@@ -359,6 +359,12 @@ public class Utils
         //RunCommand("$env:Path = [System.Environment]::GetEnvironmentVariable(\"Path\", \"Machine\") + \";\" + [System.Environment]::GetEnvironmentVariable(\"Path\", \"User\")\n    ");
     }
     
+    public static void StartKMB()
+    {
+        RunCommand("idea64.exe " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
+    }
+
+    
     public static void DeleteAll()
     {
         DeleteThis(GetSDKPath());

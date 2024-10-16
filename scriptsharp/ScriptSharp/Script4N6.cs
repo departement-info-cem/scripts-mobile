@@ -39,9 +39,11 @@ public class Script4N6
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
 
         await Utils.StartAndroidStudio();
+        Utils.StartKMB();
         Utils.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
     }
 
+    
     public static async Task DownloadRepo4N6()
     {
         await Program.DownloadRepo(Config.URL_4N6, "4N6");

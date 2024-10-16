@@ -41,6 +41,7 @@ public class Script5N6
         Utils.RunCommand("studio64.exe installPlugins com.localizely.flutter-intl");
         await Utils.StartAndroidStudio();
         await InstallFlutter();
+        Utils.StartKMB();
         Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
 
