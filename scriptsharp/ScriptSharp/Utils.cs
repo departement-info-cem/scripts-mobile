@@ -359,12 +359,12 @@ public class Utils
         SetEnvironmentVariable("ANDROID_NDK_HOME", null);
         SetEnvironmentVariable("ANDROID_AVD_HOME", null);
         SetEnvironmentVariable("ANDROID_SDK_HOME", null);
-        RemoveFromPath(@"C:\Users\po.brillant\Desktop\flutter\bin");
-        RemoveFromPath(@"C:\Users\po.brillant\Desktop\android-studio\bin");
-        RemoveFromPath(@"C:\Users\po.brillant\AppData\Local\Android\Sdk\emulator");
-        RemoveFromPath(@"C:\Users\po.brillant\AppData\Local\Android\Sdk\cmdline-tools\latest\bin");
-        RemoveFromPath(@"C:\Users\po.brillant\Desktop\idea\bin");
-        RemoveFromPath(@"C:\Users\po.brillant\Desktop\jdk");
+        RemoveFromPath(@"Desktop\flutter\bin");
+        RemoveFromPath(@"Desktop\android-studio\bin");
+        RemoveFromPath(@"AppData\Local\Android\Sdk\emulator");
+        RemoveFromPath(@"AppData\Local\Android\Sdk\cmdline-tools\latest\bin");
+        RemoveFromPath(@"Desktop\idea\bin");
+        RemoveFromPath(@"Desktop\jdk");
     }
 
     private static void SetEnvironmentVariable(string name, string value)
