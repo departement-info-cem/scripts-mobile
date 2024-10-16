@@ -305,6 +305,7 @@ public class Utils
         LogAndWriteLine("Démarrage d'Intellij IDEA");
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string path = Path.Combine(desktopPath, "idea","bin","idea64.exe");
+        CreateDesktopShortcut("Intellij", path);
         if (File.Exists(path))
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -328,6 +329,7 @@ public class Utils
         string androidStudioPath = Path.Combine(desktopPath, "android-studio","bin","studio64.exe");
         if (File.Exists(androidStudioPath))
         {
+            CreateDesktopShortcut("Android-Studio", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "android-studio", "bin", "studio64.exe"));
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = androidStudioPath,

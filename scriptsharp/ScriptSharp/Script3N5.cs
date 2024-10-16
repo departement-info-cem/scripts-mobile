@@ -70,7 +70,6 @@ public class Script3N5
                     "idea")
                 ),
             Program.InstallJava() );
-        Utils.CreateDesktopShortcut("IntelliJ", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin", "idea64.exe"));
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?

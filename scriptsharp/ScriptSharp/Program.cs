@@ -144,7 +144,7 @@ namespace ScriptSharp
             await Utils.DownloadFileAsync(url, zipFilePath);
             Utils.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
             ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
-            File.Delete(zipFilePath);
+            try { File.Delete(zipFilePath); }catch { }
         }
 
         // TODO split copy and unzip to start other download while unzipping
@@ -174,7 +174,6 @@ namespace ScriptSharp
             string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
             // TODO add shortcut    
-            Utils.CreateDesktopShortcut("Android-Studio", Path.Combine(desktopPath, "android-studio", "bin", "studio64.exe"));
             Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
             Utils.LogAndWriteLine("    FAIT Installation Android Studio fini");
         }
