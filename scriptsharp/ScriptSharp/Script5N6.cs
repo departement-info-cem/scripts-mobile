@@ -64,7 +64,7 @@ public class Script5N6
         Utils.RunCommand(Program.PathToFlutter() +" doctor --android-licenses");
         Utils.RunCommand(Program.PathToFlutter() +" doctor --verbose");
         Utils.RunCommand(Program.PathToFlutter() +" precache");
-        Utils.RunCommand(Program.PathToFlutter() +" pub global activate devtools");
+        // Utils.RunCommand(Program.PathToFlutter() +" pub global activate devtools"); Obsolete depuis nouvelles version flutter
         // create a fake project to initialize flutter
         Utils.RunCommand(Program.PathToFlutter() +" create fake_start;cd fake_start;flutter run");
         LogSingleton.Get.LogAndWriteLine("   FAIT Installation Flutter complet");
