@@ -383,6 +383,8 @@ public class Utils
         DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
+        // quit the app
+        System.Environment.Exit(0);
     }
 
     private static void DeleteThis(string path)
@@ -392,7 +394,7 @@ public class Utils
             { Directory.Delete(path, true); }
         }
         catch (Exception ex)
-        { LogAndWriteLine($"An error occurred while deleting the directory: {ex.Message}"); }
+        { Console.WriteLine($"An error occurred while deleting the directory {path}: {ex.Message}  {ex.Data}"); }
     }
 }
     
