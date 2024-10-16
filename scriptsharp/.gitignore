@@ -69,3 +69,7 @@ $RECYCLE.BIN/
 .idea/misc.xml
 .idea/modules.xml
 .idea/scopes
+
+# Sign
+.store/
+sign.exe
