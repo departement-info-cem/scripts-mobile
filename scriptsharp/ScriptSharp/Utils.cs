@@ -368,16 +368,16 @@ public class Utils
 
     public static void AddToPath(string binPath)
     {
-        string currentPath = Environment.GetEnvironmentVariable("PATH");
+        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (currentPath == null)
         {
-            Environment.SetEnvironmentVariable("PATH", binPath);
+            Environment.SetEnvironmentVariable("PATH", binPath, EnvironmentVariableTarget.User);
         }
         else if (!currentPath.Contains(binPath))
         {
             LogAndWriteLine("Ajout au Path de "+binPath);
             string updatedPath = currentPath + ";" + binPath;
-            Environment.SetEnvironmentVariable("PATH", updatedPath);
+            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
         }
         // forcer le rechargement de la variable d'environnement
         //Environment.SetEnvironmentVariable("Path", null, EnvironmentVariableTarget.User);
@@ -386,15 +386,30 @@ public class Utils
     
     public static void DeleteAll()
     {
-        DeleteSDK();
-        DeleteGradle();
-        DeleteDesktopContent();
-        // delete all content of the .android folder in the user's home directory
-        string androidPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android");
-        if (Directory.Exists(androidPath))
+        try { DeleteSDK(); }catch { }
+
+        try { DeleteGradle(); }catch { }
+        try { DeleteDesktopContent(); }catch { }
+
+        try
         {
-            Directory.Delete(androidPath, true);
+            // delete all content of the .android folder in the user's home directory
+            string androidPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                ".android");
+            if (Directory.Exists(androidPath))
+            {
+                Directory.Delete(androidPath, true);
+            }
+
+            string androidStudio = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "AppData", "Local", "Google", "AndroidStudio2024.2");
+            if (Directory.Exists(androidStudio))
+            {
+                Directory.Delete(androidStudio, true);
+            }
         }
+        catch
+        { }
     }
 
     private static void DeleteDesktopContent()
