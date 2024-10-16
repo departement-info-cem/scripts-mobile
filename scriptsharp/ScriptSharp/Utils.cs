@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -373,13 +374,9 @@ public class Utils
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "AppData", "Local", "Android"));
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "AppData", "Local", "Google", "AndroidStudio2024.2"));
+            "AppData", "Local", "Google", "AndroidStudio*"));
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "AppData", "Roaming", "Google", "AndroidStudio2024.2"));
-        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "AppData", "Local", "Google", "AndroidStudio2024.1"));
-        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "AppData", "Roaming", "Google", "AndroidStudio2024.1"));
+            "AppData", "Roaming", "Google", "AndroidStudio*"));
         DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
@@ -389,12 +386,24 @@ public class Utils
 
     private static void DeleteThis(string path)
     {
-        try {
-            if (Directory.Exists(path))
-            { Directory.Delete(path, true); }
+        try
+        {
+            DirectoryInfo parent = Directory.GetParent(path)!;
+            string pattern = new DirectoryInfo(path).Name;
+            foreach (string dir in Directory.GetDirectories(parent.FullName, pattern))
+            {
+                Directory.Delete(dir);
+            }
+
+            foreach (string file in Directory.GetFiles(parent.FullName, pattern))
+            {
+                File.Delete(file);
+            }
         }
         catch (Exception ex)
-        { Console.WriteLine($"An error occurred while deleting the directory {path}: {ex.Message}  {ex.Data}"); }
+        {
+            Console.WriteLine($"An error occurred while deleting the directory {path}: {ex.Message}  {ex.Data}");
+        }
     }
 }
     
