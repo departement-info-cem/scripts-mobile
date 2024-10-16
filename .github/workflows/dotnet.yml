@@ -19,11 +19,11 @@ jobs:
       - name: Installer les dépendances
         working-directory: ./scriptsharp
         run: dotnet restore
-      - run: dotnet build --configuration Release ScriptSharp
+      - run: dotnet publish --configuration Release -r win-x64 -p:PublishSingleFile=true --self-contained true
         working-directory: ./scriptsharp
-      - name: Créer le package
-        working-directory: ./scriptsharp
-        run: dotnet pack --configuration Release ScriptSharp
+#      - name: Créer le package
+#        working-directory: ./scriptsharp
+#        run: dotnet pack --configuration Release ScriptSharp
       - name: Publier le package vers GitHub Package Registry (GPR)
         working-directory: ./scriptsharp
-        run: dotnet nuget push ScriptSharp\bin\Release\*.nupkg --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
+        run: dotnet nuget push ScriptSharp\bin\Release\net8.0\win-x64\publish\ScriptSharp.exe --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
