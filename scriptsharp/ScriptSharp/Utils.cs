@@ -216,15 +216,24 @@ public class Utils
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
     {
-        string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
-        string commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
-                          "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
-                          "$Shortcut.TargetPath = '"+targetPath+"'; " +
-                          "$Shortcut.Save();";
-        LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
-        RunPowerShellCommand(commande);
-        LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        try
+        {
+            string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
+            string commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
+                              "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
+                              "$Shortcut.TargetPath = '"+targetPath+"'; " +
+                              "$Shortcut.Save();";
+            LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
+            RunPowerShellCommand(commande);
+            LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        }
+        catch
+        {
+            LogSingleton.Get.LogAndWriteLine("    ERREUR Raccourci pour " + targetPath);
+        }
+
+        
     }
 
     private static void RunPowerShellCommand(string command)
