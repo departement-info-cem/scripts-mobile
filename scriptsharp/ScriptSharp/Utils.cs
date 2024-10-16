@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScriptSharp;
 
-public class Utils
+public static class Utils
 {
     public static async Task ConvertZipTo7ZAsync(string zipFilePath, string output7ZFilePath)
     {
@@ -32,14 +32,15 @@ public class Utils
                 CreateNoWindow = true
             };
 
-            using (Process process = new Process { StartInfo = processStartInfo })
+            using Process process = new Process();
+            
+            process.StartInfo = processStartInfo;
+            process.Start();
+            await process.WaitForExitAsync();
+            
+            if (process.ExitCode != 0)
             {
-                process.Start();
-                await process.WaitForExitAsync();
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"7-Zip exited with code {process.ExitCode}");
-                }
+                throw new Exception($"7-Zip exited with code {process.ExitCode}");
             }
         }
         finally
@@ -67,25 +68,23 @@ public class Utils
             long totalBytes = response.Content.Headers.ContentLength ?? -1;
             long totalRead = 0L;
             byte[] buffer = new byte[8192];
-            int bytesRead;
             double lastReportedProgress = 0;
-            using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
-                   fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192,
-                       true))
+            await using (Stream contentStream = await response.Content.ReadAsStreamAsync(),
+                         fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192,
+                             true))
             {
-                while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                int bytesRead;
+                while ((bytesRead = await contentStream.ReadAsync(buffer)) > 0)
                 {
-                    await fileStream.WriteAsync(buffer, 0, bytesRead);
+                    await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
                     totalRead += bytesRead;
-                    if (totalBytes != -1)
-                    {
-                        double progress = (double)totalRead / totalBytes * 100;
-                        if (progress - lastReportedProgress >= 10)
-                        {
-                            LogSingleton.Get.LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
-                            lastReportedProgress = progress;
-                        }
-                    }
+                    if (totalBytes == -1) continue;
+                    double progress = (double)totalRead / totalBytes * 100;
+                    
+                    if (!(progress - lastReportedProgress >= 10)) continue;
+                    
+                    LogSingleton.Get.LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
+                    lastReportedProgress = progress;
                 }
             }
         }
@@ -107,23 +106,23 @@ public class Utils
                 CreateNoWindow = true
             };
 
-            using (Process process = Process.Start(processStartInfo))
+            using Process process = Process.Start(processStartInfo);
+            
+            string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string outputFilePath = Path.Combine(Config.LogPath, $"Commande-{currentTime}.txt");
+            
+            using (StreamWriter writer = new StreamWriter(outputFilePath))
             {
-                string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-                string outputFilePath = Path.Combine(Config.LogPath, $"Commande-{currentTime}.txt");
-                using (StreamWriter writer = new StreamWriter(outputFilePath))
-                {
-                    writer.WriteLine("Trace de l'exeuction de la commande:");
-                    writer.WriteLine(command);
-                    writer.WriteLine(process.StandardOutput.ReadToEnd());
-                    writer.WriteLine(process.StandardError.ReadToEnd());
-                    writer.Close();
-                }
-                process.WaitForExit();
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"Command exited with code {process.ExitCode}");
-                }
+                writer.WriteLine("Trace de l'exeuction de la commande:");
+                writer.WriteLine(command);
+                writer.WriteLine(process.StandardOutput.ReadToEnd());
+                writer.WriteLine(process.StandardError.ReadToEnd());
+                writer.Close();
+            }
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                throw new Exception($"Command exited with code {process.ExitCode}");
             }
         }catch (Exception ex)
         {
@@ -144,14 +143,15 @@ public class Utils
             CreateNoWindow = true
         };
 
-        using (Process process = new Process { StartInfo = processStartInfo })
+        using Process process = new Process();
+        
+        process.StartInfo = processStartInfo;
+        process.Start();
+        await process.WaitForExitAsync();
+        
+        if (process.ExitCode != 0)
         {
-            process.Start();
-            await process.WaitForExitAsync();
-            if (process.ExitCode != 0)
-            {
-                throw new Exception($"7-Zip exited with code {process.ExitCode}");
-            }
+            throw new Exception($"7-Zip exited with code {process.ExitCode}");
         }
     }
 
@@ -160,7 +160,7 @@ public class Utils
         LogSingleton.Get.LogAndWriteLine("Dézippage avec 7z commencé pour " + sourceFile + " dans " + destinationFolder);
         try
         {
-            string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
+            const string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = sevenZipPath,
@@ -170,14 +170,15 @@ public class Utils
                 CreateNoWindow = true
             };
 
-            using (Process process = new Process { StartInfo = processStartInfo })
+            using Process process = new Process();
+            
+            process.StartInfo = processStartInfo;
+            process.Start();
+            await process.WaitForExitAsync();
+            
+            if (process.ExitCode != 0)
             {
-                process.Start();
-                await process.WaitForExitAsync();
-                if (process.ExitCode != 0)
-                {
-                    throw new Exception($"7-Zip s'est terminé avec le code {process.ExitCode}");
-                }
+                throw new Exception($"7-Zip s'est terminé avec le code {process.ExitCode}");
             }
         }
         catch (Exception ex)
@@ -232,8 +233,6 @@ public class Utils
         {
             LogSingleton.Get.LogAndWriteLine("    ERREUR Raccourci pour " + targetPath);
         }
-
-        
     }
 
     private static void RunPowerShellCommand(string command)
@@ -249,7 +248,7 @@ public class Utils
 
         using Process process = Process.Start(processStartInfo)!;
         
-        process.OutputDataReceived += (sender, e) => LogSingleton.Get.LogAndWriteLine(e.Data);
+        process.OutputDataReceived += (_, e) => LogSingleton.Get.LogAndWriteLine(e.Data);
         process.BeginOutputReadLine();
         process.WaitForExit();
         

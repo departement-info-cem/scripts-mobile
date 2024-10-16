@@ -60,7 +60,6 @@ static class Program
     {
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
-        Environment.Exit(0);
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
         LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
         LogSingleton.Get.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
