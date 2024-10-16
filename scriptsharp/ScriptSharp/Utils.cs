@@ -218,17 +218,26 @@ public class Utils
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
     {
-        var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        var linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
-        var commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
-                       "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
-                       "$Shortcut.TargetPath = '"+targetPath+"'; " +
-                       "$Shortcut.Save();";
-        LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
-        //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
-        //LogSingleton.Get.LogAndWriteLine("path "+ commande);
-        RunPowerShellCommand(commande);
-        LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        try
+        {
+            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var linkPath = Path.Combine(desktopFolder, $"{shortcutName}.lnk");
+            var commande = "$WshShell = New-Object -ComObject WScript.Shell; " +
+                           "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
+                           "$Shortcut.TargetPath = '"+targetPath+"'; " +
+                           "$Shortcut.Save();";
+            LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
+            //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
+            //LogSingleton.Get.LogAndWriteLine("path "+ commande);
+            RunPowerShellCommand(commande);
+            LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        }
+        catch
+        {
+            LogSingleton.Get.LogAndWriteLine("    ERREUR Raccourci pour " + targetPath);
+        }
+
+        
     }
     
     public static void RunPowerShellCommand(string command)
