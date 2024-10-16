@@ -8,7 +8,7 @@ public class Script3N5
 {
     public static async Task Handle3N5AndroidAsync()
     {
-        Utils.LogAndWriteLine("Installation pour 3N5 Android...");
+        LogSingleton.Get.LogAndWriteLine("Installation pour 3N5 Android...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp,"Sdk.7z"));
@@ -30,7 +30,7 @@ public class Script3N5
             DownloadRepo3N5());
         // start android studio
         await Utils.StartAndroidStudio();
-        Utils.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
+        LogSingleton.Get.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
     }
 
     public static async Task DownloadRepo3N5()
@@ -56,7 +56,7 @@ public class Script3N5
      */
     public static async Task Handle3N5KotlinConsoleAsync()
     {
-        Utils.LogAndWriteLine("Installation de kotlin (console) 3N5...");
+        LogSingleton.Get.LogAndWriteLine("Installation de kotlin (console) 3N5...");
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Task.WhenAll(
             Utils.CopyFileFromNetworkShareAsync(
@@ -71,13 +71,13 @@ public class Script3N5
                     "idea")
                 ),
             Program.InstallJava() );
-        Utils.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
+        LogSingleton.Get.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");
         // Utils.RunCommand("idea64.exe installPlugins com.github.copilot");
         // Utils.RunCommand("idea64.exe installPlugins com.localizely.flutter-intl");
         await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
-        Utils.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
-        Utils.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
+        LogSingleton.Get.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
+        LogSingleton.Get.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
     }
 }

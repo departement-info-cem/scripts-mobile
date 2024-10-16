@@ -8,7 +8,7 @@ public class Script4N6
 {
     public static async Task Handle4N6AndroidSpringAsync()
     {
-        Utils.LogAndWriteLine("Installation pour 4N6 Android + serveur Spring ...");
+        LogSingleton.Get.LogAndWriteLine("Installation pour 4N6 Android + serveur Spring ...");
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
@@ -40,7 +40,7 @@ public class Script4N6
         
         await Utils.StartAndroidStudio();
         Utils.StartKMB();
-        Utils.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
+        LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
     }
 
     
@@ -51,7 +51,7 @@ public class Script4N6
 
     public static async Task Handle4N6AndroidAsync()
     {
-        Utils.LogAndWriteLine("Installation pour 4N6 Android...");
+        LogSingleton.Get.LogAndWriteLine("Installation pour 4N6 Android...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z")  );
@@ -73,6 +73,6 @@ public class Script4N6
             DownloadRepo4N6());
         // start android studio
         await Utils.StartAndroidStudio();
-        Utils.LogAndWriteLine("     FAIT Installation 4N6 Android fini");
+        LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android fini");
     }
 }

@@ -9,9 +9,6 @@ public class Config
     public static string URL_4N6 = "https://github.com/departement-info-cem/4N6-Mobile/archive/refs/heads/master.zip";
     public static string URL_5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
     public static string URL_KMB = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
-
-
-    
     
     public static string cachePath  = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";
     public static string localCache = "\\\\ed5depinfo\\Logiciels\\Android\\scripts\\cachecache\\";

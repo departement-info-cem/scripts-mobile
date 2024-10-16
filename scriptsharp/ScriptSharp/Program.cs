@@ -64,15 +64,15 @@ namespace ScriptSharp
             //clear the log file
             Directory.CreateDirectory(Config.logPath);
             File.WriteAllText(Config.logFilePath, string.Empty);
-            Utils.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
-            Utils.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
-            Utils.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
-            Utils.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
+            LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
+            LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
+            LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
+            LogSingleton.Get.LogAndWriteLine("Un fichier de log de l'installation est dispo sur le bureau, dossier log ");
             if (!Directory.Exists(Config.localCache) && isWindows)
             {
-                Utils.LogAndWriteLine(
+                LogSingleton.Get.LogAndWriteLine(
                     "Le dossier de cache local n'existe pas. Veuillez vous assurer que le partage réseau est monté et réessayez.");
-                Utils.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
+                LogSingleton.Get.LogAndWriteLine("Main arrêté car le dossier de cache local n'existe pas");
                 return;
             }
             if (isWindows)
@@ -87,14 +87,14 @@ namespace ScriptSharp
                 //     Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
                 // }
             }
-            Utils.LogAndWriteLine("Veuillez choisir une option:");
-            Utils.LogAndWriteLine("1. 3N5 console kotlin");
-            Utils.LogAndWriteLine("2. 3N5 Android");
-            Utils.LogAndWriteLine("3. 4N6 Android");
-            Utils.LogAndWriteLine("4. 4N6 Android + Spring");
-            Utils.LogAndWriteLine("5. 5N6 flutter");
-            Utils.LogAndWriteLine("6. 5N6 flutter + firebase");
-            Utils.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
+            LogSingleton.Get.LogAndWriteLine("Veuillez choisir une option:");
+            LogSingleton.Get.LogAndWriteLine("1. 3N5 console kotlin");
+            LogSingleton.Get.LogAndWriteLine("2. 3N5 Android");
+            LogSingleton.Get.LogAndWriteLine("3. 4N6 Android");
+            LogSingleton.Get.LogAndWriteLine("4. 4N6 Android + Spring");
+            LogSingleton.Get.LogAndWriteLine("5. 5N6 flutter");
+            LogSingleton.Get.LogAndWriteLine("6. 5N6 flutter + firebase");
+            LogSingleton.Get.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -105,20 +105,20 @@ namespace ScriptSharp
                 case "4": await Script4N6.Handle4N6AndroidSpringAsync(); break;
                 case "5": await Script5N6.Handle5N6FlutterAsync(); break;
                 case "6": await Script5N6.Handle5N6FlutterFirebaseAsync(); break;
-                case "7": Utils.DeleteAll(); break;
+                case "7": Utils.Reset(); break;
                 default:
-                    Utils.LogAndWriteLine(
+                    LogSingleton.Get.LogAndWriteLine(
                         "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
                     break;
             }
-            Utils.LogAndWriteLine("Installation finie");
-            Utils.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
+            LogSingleton.Get.LogAndWriteLine("Installation finie");
+            LogSingleton.Get.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
             Console.ReadLine();
         }
 
         public static async Task InstallJava()
         {
-            Utils.LogAndWriteLine("Installation de Java Dev Kit");
+            LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
             await Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "jdk.7z"), 
                 Path.Combine(Config.localTemp, "jdk.7z"));
@@ -132,7 +132,7 @@ namespace ScriptSharp
             Utils.AddToPath(Path.Combine(javaHome, "bin"));
             Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
             
-            Utils.LogAndWriteLine("    FAIT Installation Java");
+            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
         }
 
         public static async Task DownloadRepoKMB() { await DownloadRepo(Config.URL_KMB, "KMB"); }
@@ -143,7 +143,7 @@ namespace ScriptSharp
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string zipFilePath = Path.Combine(desktopPath, name + ".zip");
             await Utils.DownloadFileAsync(url, zipFilePath);
-            Utils.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
+            LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
             ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
             try { File.Delete(zipFilePath); }catch { }
         }
@@ -152,7 +152,7 @@ namespace ScriptSharp
         public static async Task InstallAndroidSDK()
         {
             // fix ANDROID_SDK_ROOT and ANDROID_HOME with GetSDKPath
-            Utils.LogAndWriteLine("Installation Android SDK démarré");
+            LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");
             string sdkPath = Utils.GetSDKPath();
             string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
             Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
@@ -166,19 +166,19 @@ namespace ScriptSharp
 
             // Append to PATH
             
-            Utils.LogAndWriteLine("    FAIT Installation Android SDK complet");
+            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android SDK complet");
         }
 
         public static async Task InstallAndroidStudio()
         {
-            Utils.LogAndWriteLine("Installation Android Studio démarré");
+            LogSingleton.Get.LogAndWriteLine("Installation Android Studio démarré");
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
             string destinationFolder = Path.Combine(desktopPath);
             await Utils.Unzip7zFileAsync(Path.Combine(Config.localTemp,"android-studio.7z"), destinationFolder);
             // TODO add shortcut    
             
-            Utils.LogAndWriteLine("    FAIT Installation Android Studio fini");
+            LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
         }
         
         public static void AddDesktopToDefenderExclusion()
@@ -211,7 +211,7 @@ namespace ScriptSharp
 
         static void DisableWindowsDefender()
         {
-            Utils.LogAndWriteLine("Desactivation du Defender en cours");
+            LogSingleton.Get.LogAndWriteLine("Desactivation du Defender en cours");
             string command = "powershell -Command \"Set-MpPreference -DisableRealtimeMonitoring $true\"";
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
@@ -229,14 +229,14 @@ namespace ScriptSharp
                     throw new Exception($"La commande s'est terminée avec le code {process.ExitCode}");
                 }
             }
-            Utils.LogAndWriteLine("     FAIT Defender inactif");
+            LogSingleton.Get.LogAndWriteLine("     FAIT Defender inactif");
         }
 
         static void SetEnvironmentVariable(string variable, string value)
         {
-            Utils.LogAndWriteLine("SetEnvironmentVariable démarré");
+            LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
             Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
-            Utils.LogAndWriteLine("SetEnvironmentVariable arrêté");
+            LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
         }
 
 
