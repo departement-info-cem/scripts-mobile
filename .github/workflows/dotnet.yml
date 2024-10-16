@@ -23,6 +23,6 @@ jobs:
         working-directory: ./scriptsharp
       - name: Release
         uses: softprops/action-gh-release@v2
-        tag_name: ${{ github.sha }}
         with:
           files: ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe
+          tag_name: ${{ github.sha }}
