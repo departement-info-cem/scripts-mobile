@@ -13,7 +13,7 @@ public class Utils
 {
     public static async Task ConvertZipTo7zAsync(string zipFilePath, string output7zFilePath)
     {
-        LogAndWriteLine("Conversion de ZIP en 7z commencée pour " + zipFilePath);
+        LogSingleton.Get.LogAndWriteLine("Conversion de ZIP en 7z commencée pour " + zipFilePath);
         string tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
         try
@@ -50,28 +50,15 @@ public class Utils
                 Directory.Delete(tempDir, true);
             }
         }
-        LogAndWriteLine("Conversion de ZIP en 7z fini pour " + zipFilePath);
+        LogSingleton.Get.LogAndWriteLine("Conversion de ZIP en 7z fini pour " + zipFilePath);
     }
     
     
     public static readonly object logLock = new object();
 
-    
-    public static void LogAndWriteLine(string message)
-    {
-        lock (logLock)
-        {
-            Console.WriteLine(message);
-            using (StreamWriter writer = new StreamWriter(Config.logFilePath, true))
-            {
-                writer.WriteLine($"{DateTime.Now}: {message}");
-            }
-        }
-    }
-
     public static async Task DownloadFileAsync(string url, string filePath)
     {
-        LogAndWriteLine("Téléchargement du fichier démarré " + url);
+        LogSingleton.Get.LogAndWriteLine("Téléchargement du fichier démarré " + url);
         using (HttpClient client = new HttpClient())
         {
             client.Timeout = TimeSpan.FromMinutes(10); // Set timeout to 10 minutes
@@ -95,19 +82,19 @@ public class Utils
                         double progress = (double)totalRead / totalBytes * 100;
                         if (progress - lastReportedProgress >= 10)
                         {
-                            LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
+                            LogSingleton.Get.LogAndWriteLine($"Téléchargement de {url} : {progress:F1}%");
                             lastReportedProgress = progress;
                         }
                     }
                 }
             }
         }
-        LogAndWriteLine("    FAIT Téléchargement du fichier " + url);
+        LogSingleton.Get.LogAndWriteLine("    FAIT Téléchargement du fichier " + url);
     }
 
     public static void RunCommand(string command)
     {
-        LogAndWriteLine("Execution de la commande: " + command);
+        LogSingleton.Get.LogAndWriteLine("Execution de la commande: " + command);
         try
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -140,7 +127,7 @@ public class Utils
             }
         }catch (Exception ex)
         {
-            LogAndWriteLine($"    ERREUR Une erreur est survenue en executant : {command} :: {ex.Message}");
+            LogSingleton.Get.LogAndWriteLine($"    ERREUR Une erreur est survenue en executant : {command} :: {ex.Message}");
         }
     }
 
@@ -170,7 +157,7 @@ public class Utils
 
     public static async Task Unzip7zFileAsync(string sourceFile, string destinationFolder)
     {
-        Utils.LogAndWriteLine("Dézippage avec 7z commencé pour " + sourceFile + " dans " + destinationFolder);
+        LogSingleton.Get.LogAndWriteLine("Dézippage avec 7z commencé pour " + sourceFile + " dans " + destinationFolder);
         try
         {
             string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe";
@@ -195,15 +182,15 @@ public class Utils
         }
         catch (Exception ex)
         {
-            Utils.LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
+            LogSingleton.Get.LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
         }
 
-        Utils.LogAndWriteLine("Dézippage avec 7z fini pour " + sourceFile);
+        LogSingleton.Get.LogAndWriteLine("Dézippage avec 7z fini pour " + sourceFile);
     }
 
     public static async Task CopyFileFromNetworkShareAsync(string networkFilePath, string localFilePath)
     {
-        LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
+        LogSingleton.Get.LogAndWriteLine("Copie du fichier " + networkFilePath + " vers " + localFilePath);
         try
         {
             using (FileStream sourceStream = new FileStream(networkFilePath, FileMode.Open, FileAccess.Read,
@@ -216,9 +203,9 @@ public class Utils
         }
         catch (Exception ex)
         {
-            LogAndWriteLine($"   ERREUR Copie du fichier Une erreur est survenue: {ex.Message}");
+            LogSingleton.Get.LogAndWriteLine($"   ERREUR Copie du fichier Une erreur est survenue: {ex.Message}");
         }
-        LogAndWriteLine("    FAIT Copie du fichier "+localFilePath);
+        LogSingleton.Get.LogAndWriteLine("    FAIT Copie du fichier "+localFilePath);
     }
     
     public static string GetSDKPath()
@@ -231,7 +218,7 @@ public class Utils
     
     public static async Task InstallGradleAsync(string gradleVersion, string installPath)
     {
-        LogAndWriteLine("Installation de Gradle commencée");
+        LogSingleton.Get.LogAndWriteLine("Installation de Gradle commencée");
         try
         {
             string gradleUrl = $"https://services.gradle.org/distributions/gradle-{gradleVersion}-bin.zip";
@@ -252,13 +239,13 @@ public class Utils
             File.Delete(zipFilePath);
 
             string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
-            LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
+            LogSingleton.Get.LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
             AddToPath(gradleBinPath);
-            LogAndWriteLine($"    FAIT Gradle {gradleVersion} installe ici {extractPath}");
+            LogSingleton.Get.LogAndWriteLine($"    FAIT Gradle {gradleVersion} installe ici {extractPath}");
         }
         catch (Exception ex)
         {
-            LogAndWriteLine($"    ERREUR Une erreur est survenue: {ex.Message}");
+            LogSingleton.Get.LogAndWriteLine($"    ERREUR Une erreur est survenue: {ex.Message}");
         }
     }
 
@@ -270,11 +257,11 @@ public class Utils
                        "$Shortcut = $WshShell.CreateShortcut('"+linkPath+"'); " +
                        "$Shortcut.TargetPath = '"+targetPath+"'; " +
                        "$Shortcut.Save();";
-        LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
+        LogSingleton.Get.LogAndWriteLine("Création du raccourci sur le bureau pour " + targetPath);
         //string commande = "Add-Desktop-Shortcut  \""+targetPath+"\"  \""+shortcutName+"\"";
-        //LogAndWriteLine("path "+ commande);
+        //LogSingleton.Get.LogAndWriteLine("path "+ commande);
         RunPowerShellCommand(commande);
-        LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
+        LogSingleton.Get.LogAndWriteLine("    FAIT Raccourci ajouté sur le bureau pour " + targetPath);
     }
     
     public static void RunPowerShellCommand(string command)
@@ -303,7 +290,7 @@ public class Utils
     public static async Task StartIntellij()
     {
         // start android studio
-        LogAndWriteLine("Démarrage d'Intellij IDEA");
+        LogSingleton.Get.LogAndWriteLine("Démarrage d'Intellij IDEA");
         string path = Program.PathToIntellij();
         CreateDesktopShortcut("Intellij", path);
         if (File.Exists(path))
@@ -317,13 +304,13 @@ public class Utils
         }
         else
         {
-            LogAndWriteLine("Intellij n'est pas installé");
+            LogSingleton.Get.LogAndWriteLine("Intellij n'est pas installé");
         }
     }
     public static async Task StartAndroidStudio()
     {
         // start android studio
-        LogAndWriteLine("Lancement d'Android Studio");
+        LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
         string androidStudioPath = Program.PathToAndroidStudio();
         if (File.Exists(androidStudioPath))
         {
@@ -337,7 +324,7 @@ public class Utils
         }
         else
         {
-            LogAndWriteLine("       ERREUR Android Studio n'est pas installé");
+            LogSingleton.Get.LogAndWriteLine("       ERREUR Android Studio n'est pas installé");
         }
     }
 
@@ -346,17 +333,29 @@ public class Utils
         string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (currentPath == null)
         {
-            Environment.SetEnvironmentVariable("PATH", binPath, EnvironmentVariableTarget.User);
+            SetEnvironmentVariable("PATH", binPath); 
         }
         else if (!currentPath.Contains(binPath))
         {
-            LogAndWriteLine("Ajout au Path de "+binPath);
+            LogSingleton.Get.LogAndWriteLine("Ajout au Path de " + binPath);
             string updatedPath = currentPath + ";" + binPath;
-            Environment.SetEnvironmentVariable("PATH", updatedPath, EnvironmentVariableTarget.User);
+            SetEnvironmentVariable("PATH", updatedPath);
         }
-        // forcer le rechargement de la variable d'environnement
-        //Environment.SetEnvironmentVariable("Path", null, EnvironmentVariableTarget.User);
-        //RunCommand("$env:Path = [System.Environment]::GetEnvironmentVariable(\"Path\", \"Machine\") + \";\" + [System.Environment]::GetEnvironmentVariable(\"Path\", \"User\")\n    ");
+    }
+
+    public static void RemoveFromPath(string pattern)
+    {
+        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        
+        if (currentPath == null) return;
+        
+        LogSingleton.Get.LogAndWriteLine("Retrait au Path de " + pattern);
+        
+        string[] currentPathArray = currentPath.Split(";");
+        string[] filteredCurrentPathArray = currentPathArray.Where(path => !path.Contains(pattern)).ToArray();
+        string updatedPath = string.Join(";", filteredCurrentPathArray);
+
+        SetEnvironmentVariable("PATH", updatedPath);
     }
     
     public static void StartKMB()
@@ -364,6 +363,11 @@ public class Utils
         RunCommand(Program.PathToIntellij()+ " " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
     }
 
+    public static void Reset()
+    {
+        DeleteAll();
+        RemoveAllEnv();
+    }
     
     public static void DeleteAll()
     {
@@ -374,22 +378,44 @@ public class Utils
             "AppData", "Local", "Google", "AndroidStudio*"));
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "AppData", "Roaming", "Google", "AndroidStudio*"));
-        DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
+        DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "*")); 
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
-        // quit the app
-        System.Environment.Exit(0);
+    }
+    
+    private static void RemoveAllEnv()
+    {
+        SetEnvironmentVariable("ANDROID_HOME", null);
+        SetEnvironmentVariable("JAVA_HOME", null);
+        SetEnvironmentVariable("GRADLE_HOME", null);
+        SetEnvironmentVariable("ANDROID_SDK_ROOT", null);
+        SetEnvironmentVariable("ANDROID_NDK_HOME", null);
+        SetEnvironmentVariable("ANDROID_AVD_HOME", null);
+        SetEnvironmentVariable("ANDROID_SDK_HOME", null);
+        RemoveFromPath(@"C:\Users\po.brillant\Desktop\flutter\bin");
+        RemoveFromPath(@"C:\Users\po.brillant\Desktop\android-studio\bin");
+        RemoveFromPath(@"C:\Users\po.brillant\AppData\Local\Android\Sdk\emulator");
+        RemoveFromPath(@"C:\Users\po.brillant\AppData\Local\Android\Sdk\cmdline-tools\latest\bin");
+        RemoveFromPath(@"C:\Users\po.brillant\Desktop\idea\bin");
+        RemoveFromPath(@"C:\Users\po.brillant\Desktop\jdk");
     }
 
+    private static void SetEnvironmentVariable(string name, string value)
+    {
+        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.User);
+        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
+    }
+    
     private static void DeleteThis(string path)
     {
         try
         {
             DirectoryInfo parent = Directory.GetParent(path)!;
             string pattern = new DirectoryInfo(path).Name;
+            
             foreach (string dir in Directory.GetDirectories(parent.FullName, pattern))
             {
-                Directory.Delete(dir);
+                Directory.Delete(dir, true);
             }
 
             foreach (string file in Directory.GetFiles(parent.FullName, pattern))
@@ -397,9 +423,9 @@ public class Utils
                 File.Delete(file);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"An error occurred while deleting the directory {path}: {ex.Message}  {ex.Data}");
+            Console.WriteLine("Not found: " + path);
         }
     }
 }

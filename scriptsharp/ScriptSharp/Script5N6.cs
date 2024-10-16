@@ -8,7 +8,7 @@ public class Script5N6
 {
     public static async Task Handle5N6FlutterAsync()
     {
-        Utils.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
+        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
@@ -43,12 +43,12 @@ public class Script5N6
         Utils.StartKMB();
         await Utils.StartAndroidStudio();
         Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
-        Utils.LogAndWriteLine("    FAIT 5N6 Flutter complet");
+        LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
 
     private static async Task InstallFlutter()
     {
-        Utils.LogAndWriteLine("Installation Flutter démarré");
+        LogSingleton.Get.LogAndWriteLine("Installation Flutter démarré");
         // ajouter flutter au path
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
         // TODO remove this in favor of cache flutter
@@ -67,12 +67,12 @@ public class Script5N6
         Utils.RunCommand(Program.PathToFlutter() +" pub global activate devtools");
         // create a fake project to initialize flutter
         Utils.RunCommand(Program.PathToFlutter() +" create fake_start;cd fake_start;flutter run");
-        Utils.LogAndWriteLine("   FAIT Installation Flutter complet");
+        LogSingleton.Get.LogAndWriteLine("   FAIT Installation Flutter complet");
     }
 
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
-        Utils.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
+        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.localTemp, "Sdk.7z") );
@@ -110,7 +110,7 @@ public class Script5N6
         Utils.RunCommand("npm install -g firebase-tools");
         Utils.RunCommand("dart pub global activate flutterfire_cli");
         await Utils.StartAndroidStudio();
-        Utils.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
+        LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
     }
 
     public static async Task DownloadRepo5N6()
