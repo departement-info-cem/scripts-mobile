@@ -17,6 +17,7 @@ public class CacheCreation
      * - quand tout est beau on ferme Android Studio et on supprime le .gradle puis le Sdk
      * - on ouvre le projet et on crée un émulateur avec la version Android de notre choix
      * - on laisse le SDK et le .gradle se remplir en sync compile execute
+     * - FERMER TOUS LES PROCESSUS java.exe
      * - on fait le .gradle.7z et le Sdk.7z
      * - on dépose le tout sur ##ed5depinfo
      *
@@ -25,6 +26,8 @@ public class CacheCreation
      * - on ferme l'IDE
      * - on supprime le .gradle
      * - on ouvre le projet et on laisse flutter run
+     * - on ferme l'IDE
+     * - FERMER TOUS LES PROCESSUS java.exe
      * - on fait .gradle-flutter.7z et Sdk-Android-Flutter.7z
      * - hop sur \\ed5depinfo
      * 
