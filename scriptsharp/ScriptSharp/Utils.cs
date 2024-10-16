@@ -215,39 +215,6 @@ public class Utils
         Console.WriteLine("Chemin vers le SDK Android: " + sdkPath);
         return sdkPath;
     }
-    
-    public static async Task InstallGradleAsync(string gradleVersion, string installPath)
-    {
-        LogSingleton.Get.LogAndWriteLine("Installation de Gradle commencée");
-        try
-        {
-            string gradleUrl = $"https://services.gradle.org/distributions/gradle-{gradleVersion}-bin.zip";
-            string zipFilePath = Path.Combine(Path.GetTempPath(), $"gradle-{gradleVersion}-bin.zip");
-            string extractPath = Path.Combine(installPath, "gradle");
-
-            using (HttpClient client = new HttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(gradleUrl);
-                response.EnsureSuccessStatusCode();
-                using (FileStream fs = new FileStream(zipFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    await response.Content.CopyToAsync(fs);
-                }
-            }
-            var targetDirectory = Path.Combine(extractPath, $"gradle-{gradleVersion}");
-            ZipFile.ExtractToDirectory(zipFilePath, extractPath, true);
-            File.Delete(zipFilePath);
-
-            string gradleBinPath = Path.GetFullPath(Path.Combine(extractPath, $"gradle-{gradleVersion}", "bin"));
-            LogSingleton.Get.LogAndWriteLine("Tentative d'ajout de " + gradleBinPath + " au Path");
-            AddToPath(gradleBinPath);
-            LogSingleton.Get.LogAndWriteLine($"    FAIT Gradle {gradleVersion} installe ici {extractPath}");
-        }
-        catch (Exception ex)
-        {
-            LogSingleton.Get.LogAndWriteLine($"    ERREUR Une erreur est survenue: {ex.Message}");
-        }
-    }
 
     public static void CreateDesktopShortcut(string shortcutName, string targetPath)
     {
