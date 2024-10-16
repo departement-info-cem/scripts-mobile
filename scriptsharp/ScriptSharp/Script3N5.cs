@@ -20,7 +20,8 @@ public class Script3N5
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "android-studio.7z"), 
-                "android-studio.7z"));
+                Path.Combine(Config.localTemp, "android-studio.7z") )
+            );
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
                 Path.Combine(Config.localTemp,".gradle.7z"), 
