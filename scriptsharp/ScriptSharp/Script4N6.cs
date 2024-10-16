@@ -11,25 +11,25 @@ public class Script4N6
         Utils.LogAndWriteLine("Installation pour 4N6 Android + serveur Spring ...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
-            "Sdk.7z");
+            Path.Combine(Config.localTemp,"Sdk.7z"));
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
-                ".gradle.7z"),
+                Path.Combine(Config.localTemp,".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "idea.7z"), 
-                "idea.7z"),
+                Path.Combine(Config.localTemp,"idea.7z")),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "android-studio.7z"), 
-                "android-studio.7z"));
+                Path.Combine(Config.localTemp,"android-studio.7z")));
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
-                ".gradle.7z", 
+                Path.Combine(Config.localTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Utils.Unzip7zFileAsync(
-                "idea.7z", 
+                Path.Combine(Config.localTemp,"idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             Program.InstallAndroidStudio(), 
             Program.DownloadRepoKMB(),
@@ -54,19 +54,19 @@ public class Script4N6
         Utils.LogAndWriteLine("Installation pour 4N6 Android...");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.localCache, "Sdk.7z"), 
-            "Sdk.7z");
+            Path.Combine(Config.localTemp, "Sdk.7z")  );
         await Task.WhenAll(
             Program.InstallAndroidSDK(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.localCache, ".gradle.7z"), 
-                ".gradle.7z"),
+                Path.Combine(Config.localTemp, ".gradle.7z")),
             Program.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.localCache, "android-studio.7z"), 
-                "android-studio.7z"));
+                Path.Combine(Config.localTemp, "android-studio.7z")));
         await Task.WhenAll(
             Utils.Unzip7zFileAsync(
-                ".gradle.7z", 
+                Path.Combine(Config.localTemp, ".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             Program.InstallAndroidStudio(), 
             //Program.DownloadRepoKMB(),

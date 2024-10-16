@@ -374,6 +374,10 @@ public class Utils
             "AppData", "Local", "Google", "AndroidStudio2024.2"));
         DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "AppData", "Roaming", "Google", "AndroidStudio2024.2"));
+        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "AppData", "Local", "Google", "AndroidStudio2024.1"));
+        DeleteThis( Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            "AppData", "Roaming", "Google", "AndroidStudio2024.1"));
         DeleteThis(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)); 
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".android"));
         DeleteThis(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".gradle"));
