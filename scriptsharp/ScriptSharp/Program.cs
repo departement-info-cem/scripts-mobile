@@ -76,15 +76,15 @@ namespace ScriptSharp
             }
             if (isWindows)
             {
-                try
-                {
-                    AddDesktopToDefenderExclusion();
-                    DisableWindowsDefender();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
-                }
+                // try
+                // {
+                //     AddDesktopToDefenderExclusion();
+                //     DisableWindowsDefender();
+                // }
+                // catch (Exception e)
+                // {
+                //     Console.WriteLine("Defender toujours actif, pensez a rouler ca en admin");
+                // }
             }
             Utils.LogAndWriteLine("Veuillez choisir une option:");
             Utils.LogAndWriteLine("1. 3N5 console kotlin");
