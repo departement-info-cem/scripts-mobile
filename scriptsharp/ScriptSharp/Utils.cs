@@ -332,8 +332,9 @@ public class Utils
 
     public static void Reset()
     {
-        DeleteAll();
         RemoveAllEnv();
+        DeleteAll();
+        Environment.Exit(0);
     }
     
     public static void DeleteAll()
