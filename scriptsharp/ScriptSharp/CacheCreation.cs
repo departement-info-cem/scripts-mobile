@@ -13,6 +13,7 @@ public class CacheCreation
      *
      * Une fois une version de Android Studio, on va
      * - créer un projet avec le wizard
+     * - dans le SDK manager, installer les cmdline tools
      * - le partir sur un émulateur
      * - quand tout est beau on ferme Android Studio et on supprime le .gradle puis le Sdk
      * - on ouvre le projet et on crée un émulateur avec la version Android de notre choix
