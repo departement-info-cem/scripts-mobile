@@ -10,9 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Mise en place de dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+          source-url: https://nuget.pkg.github.com/departement-info-cem/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Installer les dépendances
         working-directory: ./scriptsharp
         run: dotnet restore
@@ -23,4 +26,4 @@ jobs:
         run: dotnet pack --configuration Release ScriptSharp
       - name: Publier le package vers GitHub Package Registry (GPR)
         working-directory: ./scriptsharp
-        run: dotnet nuget push scriptcsharp/bin/Release/*.nupkg
+        run: dotnet nuget push ScriptSharp\bin\Release\*.nupkg --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
