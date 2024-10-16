@@ -26,4 +26,4 @@ jobs:
 #        run: dotnet pack --configuration Release ScriptSharp
       - name: Publier le package vers GitHub Package Registry (GPR)
         working-directory: ./scriptsharp
-        run: dotnet nuget push ScriptSharp\bin\Release\net8.0\win-x64\publish\ScriptSharp.exe --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
+        run: dotnet nuget push ScriptSharp/bin/Release/net8.0/win-x64/publish/ScriptSharp.exe --api-key ${{secrets.GITHUB_TOKEN }} --skip-duplicate
