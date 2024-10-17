@@ -38,7 +38,7 @@ public static class Script4N6
         // start android studio
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         
-        await Utils.StartAndroidStudio();
+        await UtilsAndroidStudio.StartAndroidStudio();
         Utils.StartKmb();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
     }
@@ -72,7 +72,7 @@ public static class Script4N6
             //Program.DownloadRepoKMB(),
             DownloadRepo4N6());
         // start android studio
-        await Utils.StartAndroidStudio();
+        await UtilsAndroidStudio.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android fini");
     }
 }

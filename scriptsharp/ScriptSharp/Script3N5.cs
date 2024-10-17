@@ -29,7 +29,7 @@ public static class Script3N5
             UtilsAndroidStudio.InstallAndroidStudio(), 
             DownloadRepo3N5());
         // start android studio
-        await Utils.StartAndroidStudio();
+        await UtilsAndroidStudio.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
     }
 
