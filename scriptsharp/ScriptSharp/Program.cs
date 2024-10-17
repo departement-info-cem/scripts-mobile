@@ -5,6 +5,11 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using Sharprompt;
 
+
+// TODO 5N6 firebase, paralléliser install de firebase avec npm et la copie du SDK
+// TODO 5N6 flutter, paralléliser la copie de flutter.7z avec le bloc incluant install de Android Studio
+// TODO compléter l'assistant de création de la cache en incluant la création des .gradle.7z et Sdk.7z
+
 // quelques choix editoriaux,
 // - ne pas creer d'emulateur mais avoir une image system dans le sdk
 // - tout mettre au niveau du bureau, vu qu'ils sont fan du bureau les etudiants
