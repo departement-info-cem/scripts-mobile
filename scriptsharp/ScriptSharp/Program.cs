@@ -107,7 +107,7 @@ static class Program
                 case not null when choixChoisi.Contains("7."):
                     return;
                 case not null when choixChoisi.Contains("8."):
-                    await CacheCreation.HandleCache();
+                    await UtilsCacheCreation.HandleCache();
                     break;
             }
         }
@@ -119,96 +119,5 @@ static class Program
         Utils.CreateDesktopShortcut("gni", "C:\\Program Files\\7-Zip\\plop.exe");
     }
 
-    public static async Task InstallJava()
-    {
-        LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
-        await Utils.CopyFileFromNetworkShareAsync(
-            Path.Combine(Config.LocalCache, "jdk.7z"),
-            Path.Combine(Config.LocalTemp, "jdk.7z"));
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string destinationFolder = Path.Combine(desktopPath, "jdk");
-        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "jdk.7z"), destinationFolder);
-        string jdkPath = Path.Combine(desktopPath, "jdk");
-        DirectoryInfo jdkDirectory = new DirectoryInfo(jdkPath);
-        string jdkVersion = jdkDirectory.GetDirectories()[0].Name;
-        string javaHome = Path.Combine(jdkPath, jdkVersion);
-        Utils.AddToPath(Path.Combine(javaHome, "bin"));
-        Environment.SetEnvironmentVariable("JAVA_HOME", javaHome, EnvironmentVariableTarget.User);
 
-        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
-    }
-
-    public static async Task DownloadRepoKmb() { await DownloadRepo(Config.UrlKmb, "KMB"); }
-
-    public static async Task DownloadRepo(string url, string name)
-    {
-        // download URL_3N5 to the Desktop and unzip it
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string zipFilePath = Path.Combine(desktopPath, name + ".zip");
-        await Utils.DownloadFileAsync(url, zipFilePath);
-        LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
-        ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
-        try { File.Delete(zipFilePath); }
-        catch
-        {
-            // ignored
-        }
-    }
-
-    public static async Task InstallAndroidSdk()
-    {
-        LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");
-        string sdkPath = Utils.GetSdkPath();
-        string androidSdkRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Android", "Sdk");
-        Utils.AddToPath(Path.Combine(androidSdkRoot, "cmdline-tools", "latest", "bin"));
-        Utils.AddToPath(Path.Combine(androidSdkRoot, "emulator"));
-        // get the parent directory of the SDK path
-        string sdkParentPath = Directory.GetParent(sdkPath)?.FullName;
-        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "Sdk.7z"), sdkParentPath);
-        // Add environment variables
-        SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
-        SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
-
-        // Append to PATH
-
-        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android SDK complet");
-    }
-
-    public static async Task InstallAndroidStudio()
-    {
-        LogSingleton.Get.LogAndWriteLine("Installation Android Studio démarré");
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
-        string destinationFolder = Path.Combine(desktopPath);
-        await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "android-studio.7z"), destinationFolder);
-        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
-    }
-
-    private static void SetEnvironmentVariable(string variable, string value)
-    {
-        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
-        Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
-        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
-    }
-
-
-    public static string PathToAndroidStudio()
-    {
-        return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-            "android-studio", "bin", "studio64.exe");
-    }
-
-    public static string PathToIntellij()
-    {
-        return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-            "idea", "bin", "idea64.exe");
-    }
-    public static string PathToFlutter()
-    {
-        return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-            "flutter", "bin", "flutter");
-    }
 }

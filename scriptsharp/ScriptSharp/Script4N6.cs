@@ -14,11 +14,11 @@ public static class Script4N6
             Path.Combine(Config.LocalCache, "Sdk.7z"), 
             Path.Combine(Config.LocalTemp,"Sdk.7z"));
         await Task.WhenAll(
-            Program.InstallAndroidSdk(), 
+            UtilsAndroidSdk.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp,".gradle.7z")),
-            Program.InstallJava(),
+            UtilsJava.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "idea.7z"), 
                 Path.Combine(Config.LocalTemp,"idea.7z")),
@@ -32,11 +32,11 @@ public static class Script4N6
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp,"idea.7z"), 
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
-            Program.InstallAndroidStudio(), 
-            Program.DownloadRepoKmb(),
+            UtilsAndroidStudio.InstallAndroidStudio(), 
+            Utils.DownloadRepoKmb(),
             DownloadRepo4N6());
         // start android studio
-        Utils.CreateDesktopShortcut("IntelliJ", Program.PathToIntellij());
+        Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         
         await Utils.StartAndroidStudio();
         Utils.StartKmb();
@@ -46,7 +46,7 @@ public static class Script4N6
 
     private static async Task DownloadRepo4N6()
     {
-        await Program.DownloadRepo(Config.Url4N6, "4N6");
+        await Utils.DownloadRepo(Config.Url4N6, "4N6");
     }
 
     public static async Task Handle4N6AndroidAsync()
@@ -56,11 +56,11 @@ public static class Script4N6
             Path.Combine(Config.LocalCache, "Sdk.7z"), 
             Path.Combine(Config.LocalTemp, "Sdk.7z")  );
         await Task.WhenAll(
-            Program.InstallAndroidSdk(), 
+            UtilsAndroidSdk.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            Program.InstallJava(),
+            UtilsJava.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z")));
@@ -68,7 +68,7 @@ public static class Script4N6
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp, ".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
-            Program.InstallAndroidStudio(), 
+            UtilsAndroidStudio.InstallAndroidStudio(), 
             //Program.DownloadRepoKMB(),
             DownloadRepo4N6());
         // start android studio

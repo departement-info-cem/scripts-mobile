@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScriptSharp;
 
-public static class CacheCreation
+public static class UtilsCacheCreation
 {
     /**
      * 2 ensembles de sdk / .gradle pour android studio kotlin ET android studio flutter

@@ -13,11 +13,11 @@ public static class Script3N5
             Path.Combine(Config.LocalCache, "Sdk.7z"), 
             Path.Combine(Config.LocalTemp,"Sdk.7z"));
         await Task.WhenAll(
-            Program.InstallAndroidSdk(), 
+            UtilsAndroidSdk.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp,".gradle.7z")),
-            Program.InstallJava(),
+            UtilsJava.InstallJava(),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z") )
@@ -26,7 +26,7 @@ public static class Script3N5
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
-            Program.InstallAndroidStudio(), 
+            UtilsAndroidStudio.InstallAndroidStudio(), 
             DownloadRepo3N5());
         // start android studio
         await Utils.StartAndroidStudio();
@@ -35,7 +35,7 @@ public static class Script3N5
 
     private static async Task DownloadRepo3N5()
     {
-        await Program.DownloadRepo(Config.Url3N5, "3N5");
+        await Utils.DownloadRepo(Config.Url3N5, "3N5");
     }
 
     /**
@@ -68,13 +68,13 @@ public static class Script3N5
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
                     "idea")
                 ),
-            Program.InstallJava() );
+            UtilsJava.InstallJava() );
         LogSingleton.Get.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");
         // Utils.RunCommand("idea64.exe installPlugins com.github.copilot");
         // Utils.RunCommand("idea64.exe installPlugins com.localizely.flutter-intl");
-        await Task.WhenAll(DownloadRepo3N5(), Utils.StartIntellij());
+        await Task.WhenAll(DownloadRepo3N5(), UtilsIntellij.StartIntellij());
         LogSingleton.Get.LogAndWriteLine("IMPORTANT IMPORTANT, Si intellij ou Android Studio vous propose de configurer defender, faites-le et choisissez 'Automatically'");
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation de kotlin (console) 3N5");
     }

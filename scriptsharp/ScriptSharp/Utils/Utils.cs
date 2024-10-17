@@ -263,34 +263,13 @@ public static class Utils
         }
     }
 
-    public static Task StartIntellij()
-    {
-        // start android studio
-        LogSingleton.Get.LogAndWriteLine("Démarrage d'Intellij IDEA");
-        string path = Program.PathToIntellij();
-        CreateDesktopShortcut("Intellij", path);
-        if (File.Exists(path))
-        {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
-            {
-                FileName = path,
-                UseShellExecute = true
-            };
-            Process.Start(processStartInfo);
-        }
-        else
-        {
-            LogSingleton.Get.LogAndWriteLine("Intellij n'est pas installé");
-        }
-        return Task.CompletedTask;
-    }
     public static Task StartAndroidStudio()
     {
         LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
-        string androidStudioPath = Program.PathToAndroidStudio();
+        string androidStudioPath = UtilsAndroidStudio.PathToAndroidStudio();
         if (File.Exists(androidStudioPath))
         {
-            CreateDesktopShortcut("Android-Studio", Program.PathToAndroidStudio());
+            CreateDesktopShortcut("Android-Studio", UtilsAndroidStudio.PathToAndroidStudio());
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = androidStudioPath,
@@ -337,7 +316,7 @@ public static class Utils
 
     public static void StartKmb()
     {
-        RunCommand(Program.PathToIntellij() + " " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
+        RunCommand(UtilsIntellij.PathToIntellij() + " " + Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main"));
     }
 
     public static void Reset()
@@ -362,13 +341,13 @@ public static class Utils
 
     private static void RemoveAllEnv()
     {
-        SetEnvironmentVariable("ANDROID_HOME", null);
-        SetEnvironmentVariable("JAVA_HOME", null);
-        SetEnvironmentVariable("GRADLE_HOME", null);
-        SetEnvironmentVariable("ANDROID_SDK_ROOT", null);
-        SetEnvironmentVariable("ANDROID_NDK_HOME", null);
-        SetEnvironmentVariable("ANDROID_AVD_HOME", null);
-        SetEnvironmentVariable("ANDROID_SDK_HOME", null);
+        SetEnvVariable("ANDROID_HOME", null);
+        SetEnvVariable("JAVA_HOME", null);
+        SetEnvVariable("GRADLE_HOME", null);
+        SetEnvVariable("ANDROID_SDK_ROOT", null);
+        SetEnvVariable("ANDROID_NDK_HOME", null);
+        SetEnvVariable("ANDROID_AVD_HOME", null);
+        SetEnvVariable("ANDROID_SDK_HOME", null);
         RemoveFromPath(@"Desktop\flutter\bin");
         RemoveFromPath(@"Desktop\android-studio\bin");
         RemoveFromPath(@"AppData\Local\Android\Sdk\emulator");
@@ -377,7 +356,7 @@ public static class Utils
         RemoveFromPath(@"Desktop\jdk");
     }
 
-    private static void SetEnvironmentVariable(string name, string value)
+    public static void SetEnvVariable(string name, string value)
     {
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.User);
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
@@ -424,4 +403,26 @@ public static class Utils
             }
         }
     }
+    public static void SetEnvironmentVariable(string variable, string value)
+    {
+        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
+        Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
+        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
+    }
+    public static async Task DownloadRepo(string url, string name)
+    {
+        // download URL_3N5 to the Desktop and unzip it
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string zipFilePath = Path.Combine(desktopPath, name + ".zip");
+        await Utils.DownloadFileAsync(url, zipFilePath);
+        LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
+        ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
+        try { File.Delete(zipFilePath); }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    public static async Task DownloadRepoKmb() { await Utils.DownloadRepo(Config.UrlKmb, "KMB"); }
 }
