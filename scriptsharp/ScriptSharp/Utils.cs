@@ -98,13 +98,15 @@ public static class Utils
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
+                FileName = "C:\\Windows\\System32\\cmd.exe",
                 Arguments = $"/c {command}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WorkingDirectory = Environment.CurrentDirectory
             };
+            processStartInfo.EnvironmentVariables["PATH"] = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
 
             using Process process = Process.Start(processStartInfo);
 
@@ -141,7 +143,8 @@ public static class Utils
             Arguments = $"a \"{output7ZFilePath}\" \"{folderPath}\\*\"",
             RedirectStandardOutput = true,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            WorkingDirectory = Environment.CurrentDirectory
         };
 
         using Process process = new Process();
