@@ -49,6 +49,8 @@ static class Program
 
     private static async Task Main()
     {
+        //LogSingleton.Get.LogAndWriteLine("yo");
+        //TestDebug();
         Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
@@ -115,8 +117,7 @@ static class Program
 
     private static void TestDebug()
     {
-        Utils.CreateDesktopShortcut("gna", "C:\\Program Files\\7-Zip\\7z.exe");
-        Utils.CreateDesktopShortcut("gni", "C:\\Program Files\\7-Zip\\plop.exe");
+        UtilsFirebase.InstallFirebase();
     }
 
 

@@ -93,35 +93,41 @@ public static class Utils
         LogSingleton.Get.LogAndWriteLine("Execution de la commande: " + command);
         try
         {
+            // Récupérer la variable d'environnement PATH
+            //string pathVariable = Environment.GetEnvironmentVariable("PATH");
+            //Console.WriteLine("La variable d'environnement PATH est:");
+            //Console.WriteLine(pathVariable);
+
+            // Configuration de ProcessStartInfo
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
-                FileName = "C:\\Windows\\System32\\cmd.exe",
+                FileName = "C:\\Windows\\system32\\cmd.exe",
                 Arguments = $"/c {command}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = Environment.CurrentDirectory
+                CreateNoWindow = true
             };
-            processStartInfo.EnvironmentVariables["PATH"] = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
 
-            using Process process = Process.Start(processStartInfo);
-
-            string currentTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            string outputFilePath = Path.Combine(Config.LogPath, $"Commande-{currentTime}.txt");
-
-            using (StreamWriter writer = new StreamWriter(outputFilePath))
+            // Exécution du processus
+            using (Process process = new Process { StartInfo = processStartInfo })
             {
-                writer.WriteLine("Trace de l'exeuction de la commande:");
-                writer.WriteLine(command);
-                writer.WriteLine(process.StandardOutput.ReadToEnd());
-                writer.WriteLine(process.StandardError.ReadToEnd());
-                writer.Close();
-            }
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new Exception($"Command exited with code {process.ExitCode}");
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+
+                // Afficher les résultats de la commande exécutée
+                if (string.IsNullOrEmpty(error))
+                {
+                    LogSingleton.Get.LogAndWriteLine("   FAIT Sortie pour  : " + command);
+                    LogSingleton.Get.LogAndWriteLine(output);
+                }
+                else
+                {
+                    LogSingleton.Get.LogAndWriteLine("   ERREUR Sortie pour  : " + command);
+                    LogSingleton.Get.LogAndWriteLine(error);
+                }
             }
         }
         catch (Exception ex)
@@ -187,7 +193,7 @@ public static class Utils
             LogSingleton.Get.LogAndWriteLine($"Une erreur est survenue: {ex.Message}");
         }
 
-        LogSingleton.Get.LogAndWriteLine("Dézippage avec 7z fini pour " + sourceFile);
+        LogSingleton.Get.LogAndWriteLine("    FAIT Dézippage 7z fini pour " + sourceFile);
     }
 
     public static async Task CopyFileFromNetworkShareAsync(string networkFilePath, string localFilePath)
