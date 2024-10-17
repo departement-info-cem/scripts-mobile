@@ -51,7 +51,7 @@ static class Program
     {
         Utils.CopyMachinePath();
         Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        
+
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
@@ -67,9 +67,10 @@ static class Program
 
         List<string> choixEtudiants =
         [
-            "0. Nettoyage", "1. 3N5 console kotlin", "2. 3N5 Android", "3. 4N6 Android", "4. 4N6 Android + Spring", "5. 5N6 flutter", "6. 5N6 flutter + firebase", "7. Quitter"
+            "0. Nettoyage", "1. 3N5 console kotlin", "2. 3N5 Android", "3. 4N6 Android", "4. 4N6 Android + Spring", "5. 5N6 flutter", "6. 5N6 flutter + firebase",
+            "7. (Bonus) Rider", "8. Quitter"
         ];
-        List<string> choixProfs = ["8. Créer la cache"];
+        List<string> choixProfs = ["9. Créer la cache"];
         List<string> choix = [];
 
         choix.AddRange(choixEtudiants);
@@ -82,7 +83,7 @@ static class Program
         while (true)
         {
             string choixChoisi = Prompt.Select("Veuillez choisir une option", choix.ToArray());
-            
+
             switch (choixChoisi)
             {
                 case not null when choixChoisi.Contains("0."):
@@ -107,8 +108,11 @@ static class Program
                     await Script5N6.Handle5N6FlutterFirebaseAsync();
                     break;
                 case not null when choixChoisi.Contains("7."):
-                    return;
+                    await ScriptRider.HandleRiderAsync();
+                    break;
                 case not null when choixChoisi.Contains("8."):
+                    return;
+                case not null when choixChoisi.Contains("9."):
                     await UtilsCacheCreation.HandleCache();
                     break;
             }

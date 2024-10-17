@@ -44,7 +44,8 @@ public static class UtilsCacheCreation
             Utils.DownloadFileAsync(Config.CorrettoUrl, "corretto.zip"),
             Utils.DownloadFileAsync(Config.FlutterPluginUrlStudio, "plugin-flutter-android-studio.zip"),
             Utils.DownloadFileAsync(Config.DartPluginUrlStudio, "plugin-dart-android-studio.zip"),
-            Utils.DownloadFileAsync(Config.FlutterIntlPluginUrlStudio, "plugin-flutter-intl-android-studio.zip")
+            Utils.DownloadFileAsync(Config.FlutterIntlPluginUrlStudio, "plugin-flutter-intl-android-studio.zip"),
+            Utils.DownloadFileAsync(Config.RiderUrl, "rider.zip")
         };
 
         await Task.WhenAll(downloadTasks);

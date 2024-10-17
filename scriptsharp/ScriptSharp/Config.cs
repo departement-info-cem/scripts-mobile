@@ -35,5 +35,8 @@ public static class Config
 
     // Flutter
     public const string FlutterSdk = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
+    
+    // Rider
+    public const string RiderUrl = "https://download.jetbrains.com/rider/JetBrains.Rider-2024.2.6.win.zip";
 
 }
