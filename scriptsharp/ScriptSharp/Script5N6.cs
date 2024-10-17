@@ -41,7 +41,7 @@ public class Script5N6
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         Utils.StartKmb();
-        await Utils.StartAndroidStudio();
+        await UtilsAndroidStudio.StartAndroidStudio();
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter complet");
     }
@@ -85,7 +85,7 @@ public class Script5N6
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
             "Local", "Pub", "Cache", "bin"));
         UtilsFirebase.InstallFlutterFire();
-        await Utils.StartAndroidStudio();
+        await UtilsAndroidStudio.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
     }
 

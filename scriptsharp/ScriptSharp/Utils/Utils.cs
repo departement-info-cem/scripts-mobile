@@ -116,18 +116,18 @@ public static class Utils
                 string output = process.StandardOutput.ReadToEnd();
                 string error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
-
-                // Afficher les résultats de la commande exécutée
-                if (string.IsNullOrEmpty(error))
+                
+                if (!string.IsNullOrEmpty(output))
                 {
                     LogSingleton.Get.LogAndWriteLine("   FAIT Sortie pour  : " + command);
                     LogSingleton.Get.LogAndWriteLine(output);
                 }
-                else
+                if (!string.IsNullOrEmpty(error))
                 {
                     LogSingleton.Get.LogAndWriteLine("   ERREUR Sortie pour  : " + command);
                     LogSingleton.Get.LogAndWriteLine(error);
                 }
+                
             }
         }
         catch (Exception ex)
@@ -267,27 +267,6 @@ public static class Utils
         {
             throw new Exception($"      ERREUR PowerShell erreur avec code {process.ExitCode}");
         }
-    }
-
-    public static Task StartAndroidStudio()
-    {
-        LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
-        string androidStudioPath = UtilsAndroidStudio.PathToAndroidStudio();
-        if (File.Exists(androidStudioPath))
-        {
-            CreateDesktopShortcut("Android-Studio", UtilsAndroidStudio.PathToAndroidStudio());
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
-            {
-                FileName = androidStudioPath,
-                UseShellExecute = true
-            };
-            Process.Start(processStartInfo);
-        }
-        else
-        {
-            LogSingleton.Get.LogAndWriteLine("       ERREUR Android Studio n'est pas installé");
-        }
-        return Task.CompletedTask;
     }
 
     public static void AddToPath(string binPath)
