@@ -11,12 +11,6 @@ using System.Threading.Tasks;
 // dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
 // permet de generer un seul gros .exe avec tout ce qu'il faut dedans
 
-// TODO creer un projet fake en kotlin pour peupler le .gradle Google "gradle init to create new kotlin project"
-// TODO ou la meme chose en maven : https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-archetype-jvm
-// https://books.sonatype.com/mvnex-book/reference/simple-project-sect-create-simple.html#:~:text=To%20start%20a%20new%20Maven,will%20use%20the%20archetype%20org.
-//  gradle init --type kotlin-application --dsl kotlin --test-framework kotlintest --package ca.cem --project-name fake-kotlin  --no-split-project  --java-version 17
-
-
 // .gradle pour un projet kotlin tout court                 = 2.03 Go
 // .gradle pour un projet Android                           = 2.03 Go
 // .gradle pour un projet kotlin avec un projet android     = 4.06 Go
@@ -24,11 +18,6 @@ using System.Threading.Tasks;
 
 // Sdk de base apres install de Labybug : 5.01 Go
 // Sdk de ed5depinfo                    : 7.52 Go
-
-// TODO https://www.jetbrains.com/help/idea/install-plugins-from-the-command-line.html
-
-// TODO bug pour les shortcut 
-// TODO mettre le Sdk a la bonne place
 
 /** Install JetBrains 8h10 debut
  * 3 min 8h11 debut SDK
@@ -162,7 +151,6 @@ static class Program
         }
     }
 
-    // TODO split copy and unzip to start other download while unzipping
     public static async Task InstallAndroidSdk()
     {
         LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");
@@ -189,8 +177,6 @@ static class Program
         Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
         string destinationFolder = Path.Combine(desktopPath);
         await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "android-studio.7z"), destinationFolder);
-        // TODO add shortcut    
-
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
     }
 
