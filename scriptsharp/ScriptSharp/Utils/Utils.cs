@@ -295,13 +295,13 @@ public static class Utils
         string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
         if (currentPath == null)
         {
-            SetEnvironmentVariable("PATH", binPath);
+            SetEnvVariable("PATH", binPath);
         }
         else if (!currentPath.Contains(binPath))
         {
             LogSingleton.Get.LogAndWriteLine("Ajout au Path de " + binPath);
             string updatedPath = currentPath + ";" + binPath;
-            SetEnvironmentVariable("PATH", updatedPath);
+            SetEnvVariable("PATH", updatedPath);
         }
     }
 
@@ -317,7 +317,7 @@ public static class Utils
         string[] filteredCurrentPathArray = currentPathArray.Where(path => !path.Contains(pattern)).ToArray();
         string updatedPath = string.Join(";", filteredCurrentPathArray);
 
-        SetEnvironmentVariable("PATH", updatedPath);
+        SetEnvVariable("PATH", updatedPath);
     }
 
     public static void StartKmb()
@@ -409,12 +409,7 @@ public static class Utils
             }
         }
     }
-    public static void SetEnvironmentVariable(string variable, string value)
-    {
-        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable démarré");
-        Environment.SetEnvironmentVariable(variable, value, EnvironmentVariableTarget.User);
-        LogSingleton.Get.LogAndWriteLine("SetEnvironmentVariable arrêté");
-    }
+
     public static async Task DownloadRepo(string url, string name)
     {
         // download URL_3N5 to the Desktop and unzip it
