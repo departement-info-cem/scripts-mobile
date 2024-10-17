@@ -102,7 +102,7 @@ public static class Utils
                 Arguments = $"/c {command}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                UseShellExecute = true,
+                UseShellExecute = false,
                 CreateNoWindow = true,
                 WorkingDirectory = Environment.CurrentDirectory
             };
