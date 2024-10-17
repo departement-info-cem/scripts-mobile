@@ -58,6 +58,7 @@ static class Program
 
     private static async Task Main()
     {
+        Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
@@ -106,6 +107,9 @@ static class Program
             case "7":
                 Utils.Reset();
                 break;
+            case "9":
+                TestDebug();
+                break;
             default:
                 LogSingleton.Get.LogAndWriteLine(
                     "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
@@ -114,6 +118,12 @@ static class Program
         LogSingleton.Get.LogAndWriteLine("Installation finie");
         LogSingleton.Get.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
         Console.ReadLine();
+    }
+
+    private static void TestDebug()
+    {
+        Utils.CreateDesktopShortcut("gna", "C:\\Program Files\\7-Zip\\7z.exe");
+        Utils.CreateDesktopShortcut("gni", "C:\\Program Files\\7-Zip\\plop.exe");
     }
 
     public static async Task InstallJava()
