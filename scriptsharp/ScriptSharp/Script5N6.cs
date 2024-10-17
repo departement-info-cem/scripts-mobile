@@ -83,8 +83,8 @@ public class Script5N6
         //Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
             "Local", "Pub", "Cache", "bin"));
-        Utils.RunCommand("npm install -g firebase-tools");
-        Utils.RunCommand("dart pub global activate flutterfire_cli");
+        UtilsFirebase.InstallFirebase();
+        UtilsFirebase.InstallFlutterFire();
         await Utils.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
     }
