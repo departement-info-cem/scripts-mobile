@@ -343,8 +343,10 @@ public static class Utils
 
     public static void SetEnvVariable(string name, string value)
     {
+        Environment.SetEnvironmentVariable(name, value);
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.User);
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
+        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Machine);
     }
 
     private static void DeleteThis(string path)
