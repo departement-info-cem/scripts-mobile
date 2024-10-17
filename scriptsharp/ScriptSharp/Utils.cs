@@ -239,7 +239,7 @@ public static class Utils
     {
         ProcessStartInfo processStartInfo = new ProcessStartInfo
         {
-            FileName = "powershell.exe",
+            FileName = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
             Arguments = $"-Command \"{command}\"",
             RedirectStandardOutput = true,
             UseShellExecute = false,
