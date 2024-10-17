@@ -49,6 +49,7 @@ static class Program
 
     private static async Task Main()
     {
+        UtilsFirebase.InstallFlutterFire();
         //LogSingleton.Get.LogAndWriteLine("yo");
         //TestDebug();
         Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
