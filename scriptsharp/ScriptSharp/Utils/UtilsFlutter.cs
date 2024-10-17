@@ -29,4 +29,11 @@ public class UtilsFlutter
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             "flutter", "bin", "flutter");
     }
+    
+    public static string PathToDart()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+            "flutter", "bin", "dart");
+    }
 }

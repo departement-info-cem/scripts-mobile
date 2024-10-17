@@ -9,6 +9,6 @@ public class UtilsFirebase
     }
     public static void InstallFlutterFire()
     {
-        Utils.RunCommand("dart pub global activate flutterfire_cli");
+        Utils.RunCommand(UtilsFlutter.PathToDart()+" pub global activate flutterfire_cli");
     }
 }
