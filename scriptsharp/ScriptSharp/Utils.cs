@@ -54,9 +54,6 @@ public static class Utils
         LogSingleton.Get.LogAndWriteLine("Conversion de ZIP en 7z fini pour " + zipFilePath);
     }
 
-
-    public static readonly object LogLock = new object();
-
     public static async Task DownloadFileAsync(string url, string filePath)
     {
         LogSingleton.Get.LogAndWriteLine("Téléchargement du fichier démarré " + url);
@@ -286,7 +283,6 @@ public static class Utils
     }
     public static Task StartAndroidStudio()
     {
-        // start android studio
         LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
         string androidStudioPath = Program.PathToAndroidStudio();
         if (File.Exists(androidStudioPath))
@@ -345,7 +341,6 @@ public static class Utils
     {
         RemoveAllEnv();
         DeleteAll();
-        Environment.Exit(0);
     }
 
     private static void DeleteAll()
@@ -388,6 +383,9 @@ public static class Utils
     private static void DeleteThis(string path)
     {
         DirectoryInfo parent = Directory.GetParent(path)!;
+
+        if (!Directory.Exists(parent.FullName)) return;
+
         string pattern = new DirectoryInfo(path).Name;
 
         foreach (string dir in Directory.GetDirectories(parent.FullName, pattern))
@@ -395,10 +393,18 @@ public static class Utils
             try
             {
                 Directory.Delete(dir, true);
+                LogSingleton.Get.LogAndWriteLine(dir + " supprimé");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                LogSingleton.Get.LogAndWriteLine("Not found: " + path);
+                if (e.Message.Contains("used by another process"))
+                {
+                    LogSingleton.Get.LogAndWriteLine("Le fichier est en  : " + dir);
+                }
+                else
+                {
+                    LogSingleton.Get.LogAndWriteLine("Impossible de supprimer : " + dir);
+                }
             }
         }
 
@@ -407,10 +413,11 @@ public static class Utils
             try
             {
                 File.Delete(file);
+                LogSingleton.Get.LogAndWriteLine(file + " supprimé");
             }
             catch (Exception)
             {
-                LogSingleton.Get.LogAndWriteLine("Not found: " + path);
+                LogSingleton.Get.LogAndWriteLine("Impossible de supprimer : " + file);
             }
         }
     }

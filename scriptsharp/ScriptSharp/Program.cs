@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using Sharprompt;
 
 // quelques choix editoriaux,
 // - ne pas creer d'emulateur mais avoir une image system dans le sdk
@@ -58,7 +60,6 @@ static class Program
 
     private static async Task Main()
     {
-        //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");
         LogSingleton.Get.LogAndWriteLine("Une fois un projet ouvert, surtout choisir Automatically si on vous propose de configurer Defender");
@@ -71,49 +72,54 @@ static class Program
             return;
         }
 
-        LogSingleton.Get.LogAndWriteLine("Veuillez choisir une option:");
-        LogSingleton.Get.LogAndWriteLine("1. 3N5 console kotlin");
-        LogSingleton.Get.LogAndWriteLine("2. 3N5 Android");
-        LogSingleton.Get.LogAndWriteLine("3. 4N6 Android");
-        LogSingleton.Get.LogAndWriteLine("4. 4N6 Android + Spring");
-        LogSingleton.Get.LogAndWriteLine("5. 5N6 flutter");
-        LogSingleton.Get.LogAndWriteLine("6. 5N6 flutter + firebase");
-        LogSingleton.Get.LogAndWriteLine("7. supprimer  .gradle SDK .android  bureau");
-        string choice = Console.ReadLine();
-        switch (choice)
+        List<string> choixEtudiants =
+        [
+            "0. Nettoyage", "1. 3N5 console kotlin", "2. 3N5 Android", "3. 4N6 Android", "4. 4N6 Android + Spring", "5. 5N6 flutter", "6. 5N6 flutter + firebase", "7. Quitter"
+        ];
+        List<string> choixProfs = ["8. Créer la cache"];
+        List<string> choix = [];
+
+        choix.AddRange(choixEtudiants);
+
+        if (Environment.MachineName.EndsWith("00"))
         {
-            case "0":
-                await CacheCreation.HandleCache();
-                break;
-            case "1":
-                await Script3N5.Handle3N5KotlinConsoleAsync();
-                break;
-            case "2":
-                await Script3N5.Handle3N5AndroidAsync();
-                break;
-            case "3":
-                await Script4N6.Handle4N6AndroidAsync();
-                break;
-            case "4":
-                await Script4N6.Handle4N6AndroidSpringAsync();
-                break;
-            case "5":
-                await Script5N6.Handle5N6FlutterAsync();
-                break;
-            case "6":
-                await Script5N6.Handle5N6FlutterFirebaseAsync();
-                break;
-            case "7":
-                Utils.Reset();
-                break;
-            default:
-                LogSingleton.Get.LogAndWriteLine(
-                    "Choix invalide. Veuillez redémarrer le programme et choisir une option valide.");
-                break;
+            choix.AddRange(choixProfs);
         }
-        LogSingleton.Get.LogAndWriteLine("Installation finie");
-        LogSingleton.Get.LogAndWriteLine("Appuyer sur la touche Entrée pour quitter, on a fini ...");
-        Console.ReadLine();
+
+        while (true)
+        {
+            string choixChoisi = Prompt.Select("Veuillez choisir une option", choix.ToArray());
+            
+            switch (choixChoisi)
+            {
+                case not null when choixChoisi.Contains("0."):
+                    Utils.Reset();
+                    break;
+                case not null when choixChoisi.Contains("1."):
+                    await Script3N5.Handle3N5KotlinConsoleAsync();
+                    break;
+                case not null when choixChoisi.Contains("2."):
+                    await Script3N5.Handle3N5AndroidAsync();
+                    break;
+                case not null when choixChoisi.Contains("3."):
+                    await Script4N6.Handle4N6AndroidAsync();
+                    break;
+                case not null when choixChoisi.Contains("4."):
+                    await Script4N6.Handle4N6AndroidSpringAsync();
+                    break;
+                case not null when choixChoisi.Contains("5."):
+                    await Script5N6.Handle5N6FlutterAsync();
+                    break;
+                case not null when choixChoisi.Contains("6."):
+                    await Script5N6.Handle5N6FlutterFirebaseAsync();
+                    break;
+                case not null when choixChoisi.Contains("7."):
+                    return;
+                case not null when choixChoisi.Contains("8."):
+                    await CacheCreation.HandleCache();
+                    break;
+            }
+        }
     }
 
     public static async Task InstallJava()

@@ -14,4 +14,8 @@
 		<PublishSingleFile>true</PublishSingleFile>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Sharprompt" Version="3.0.0-preview4" />
+	</ItemGroup>
+
 </Project>
