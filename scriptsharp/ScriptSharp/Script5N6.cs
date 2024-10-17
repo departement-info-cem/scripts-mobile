@@ -51,7 +51,6 @@ public class Script5N6
         LogSingleton.Get.LogAndWriteLine("Installation Flutter démarré");
         // ajouter flutter au path
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "flutter", "bin"));
-        // TODO remove this in favor of cache flutter
         await Utils.CopyFileFromNetworkShareAsync(
             Path.Combine(Config.LocalCache, "flutter.7z"), 
             Path.Combine(Config.LocalTemp, "flutter.7z"));
