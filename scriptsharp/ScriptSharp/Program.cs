@@ -102,7 +102,6 @@ static class Program
                     await Script5N6.Handle5N6FlutterAsync();
                     break;
                 case not null when choixChoisi.Contains("6."):
-                    TestDebug();
                     await Script5N6.Handle5N6FlutterFirebaseAsync();
                     break;
                 case not null when choixChoisi.Contains("7."):

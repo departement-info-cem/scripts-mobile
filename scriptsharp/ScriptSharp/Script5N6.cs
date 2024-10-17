@@ -49,6 +49,7 @@ public class Script5N6
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
         LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
+        UtilsFirebase.InstallFirebase();
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.LocalCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.LocalTemp, "Sdk.7z") );
@@ -83,7 +84,6 @@ public class Script5N6
         //Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",
             "Local", "Pub", "Cache", "bin"));
-        UtilsFirebase.InstallFirebase();
         UtilsFirebase.InstallFlutterFire();
         await Utils.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter + firebase complet");
