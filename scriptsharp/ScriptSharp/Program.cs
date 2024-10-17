@@ -49,9 +49,6 @@ static class Program
 
     private static async Task Main()
     {
-        UtilsFirebase.InstallFlutterFire();
-        //LogSingleton.Get.LogAndWriteLine("yo");
-        //TestDebug();
         Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
@@ -105,6 +102,7 @@ static class Program
                     await Script5N6.Handle5N6FlutterAsync();
                     break;
                 case not null when choixChoisi.Contains("6."):
+                    TestDebug();
                     await Script5N6.Handle5N6FlutterFirebaseAsync();
                     break;
                 case not null when choixChoisi.Contains("7."):
