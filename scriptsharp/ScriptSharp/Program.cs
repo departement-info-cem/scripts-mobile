@@ -49,10 +49,9 @@ static class Program
 
     private static async Task Main()
     {
-        UtilsFirebase.InstallFlutterFire();
-        //LogSingleton.Get.LogAndWriteLine("yo");
-        //TestDebug();
+        Utils.CopyMachinePath();
         Directory.SetCurrentDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+        
         //clear the log file
         LogSingleton.Get.LogAndWriteLine("Bienvenue dans l'installeur pour les cours de mobile");
         LogSingleton.Get.LogAndWriteLine("ATTENTION DE BIEN ATTENDRE LA FIN DE L'INSTALLATION AVANT D'OUVRIR UN PROJET");

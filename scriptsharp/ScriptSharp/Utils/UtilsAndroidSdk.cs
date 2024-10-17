@@ -6,7 +6,6 @@ namespace ScriptSharp;
 
 public class UtilsAndroidSdk
 {
-
     public static async Task InstallAndroidSdk()
     {
         LogSingleton.Get.LogAndWriteLine("Installation Android SDK démarré");

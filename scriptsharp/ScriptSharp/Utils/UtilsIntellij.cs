@@ -18,7 +18,7 @@ public class UtilsIntellij
     {
         // start android studio
         LogSingleton.Get.LogAndWriteLine("Démarrage d'Intellij IDEA");
-        string path = UtilsIntellij.PathToIntellij();
+        string path = PathToIntellij();
         Utils.CreateDesktopShortcut("Intellij", path);
         if (File.Exists(path))
         {

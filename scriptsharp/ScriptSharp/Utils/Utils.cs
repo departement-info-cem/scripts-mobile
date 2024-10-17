@@ -415,7 +415,7 @@ public static class Utils
         // download URL_3N5 to the Desktop and unzip it
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string zipFilePath = Path.Combine(desktopPath, name + ".zip");
-        await Utils.DownloadFileAsync(url, zipFilePath);
+        await DownloadFileAsync(url, zipFilePath);
         LogSingleton.Get.LogAndWriteLine("Dézippage du repo " + zipFilePath + " vers " + desktopPath);
         ZipFile.ExtractToDirectory(zipFilePath, desktopPath, true);
         try { File.Delete(zipFilePath); }
@@ -425,5 +425,14 @@ public static class Utils
         }
     }
 
-    public static async Task DownloadRepoKmb() { await Utils.DownloadRepo(Config.UrlKmb, "KMB"); }
+    public static async Task DownloadRepoKmb() { await DownloadRepo(Config.UrlKmb, "KMB"); }
+
+    public static void CopyMachinePath()
+    {
+        string[] machinePaths = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Machine)!.Split(";");
+        string[] userPaths = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User)!.Split(";");
+        string[] allPaths = machinePaths.Concat(userPaths).ToArray();
+        string joinedPaths = string.Join(";", allPaths);
+        SetEnvVariable("Path", joinedPaths);
+    }
 }
