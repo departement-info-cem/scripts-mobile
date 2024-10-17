@@ -18,8 +18,8 @@ public class UtilsAndroidSdk
         string sdkParentPath = Directory.GetParent(sdkPath)?.FullName;
         await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "Sdk.7z"), sdkParentPath);
         // Add environment variables
-        Utils.SetEnvironmentVariable("ANDROID_SDK_ROOT", androidSdkRoot);
-        Utils.SetEnvironmentVariable("ANDROID_HOME", androidSdkRoot);
+        Utils.SetEnvVariable("ANDROID_SDK_ROOT", androidSdkRoot);
+        Utils.SetEnvVariable("ANDROID_HOME", androidSdkRoot);
 
         // Append to PATH
 
