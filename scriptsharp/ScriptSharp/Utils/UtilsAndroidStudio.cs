@@ -7,7 +7,6 @@ namespace ScriptSharp;
 
 public class UtilsAndroidStudio
 {
-
     public static string PathToAndroidStudio()
     {
         return Path.Combine(
@@ -26,10 +25,10 @@ public class UtilsAndroidStudio
     public static Task StartAndroidStudio()
     {
         LogSingleton.Get.LogAndWriteLine("Lancement d'Android Studio");
-        string androidStudioPath = UtilsAndroidStudio.PathToAndroidStudio();
+        string androidStudioPath = PathToAndroidStudio();
         if (File.Exists(androidStudioPath))
         {
-            Utils.CreateDesktopShortcut("Android-Studio", UtilsAndroidStudio.PathToAndroidStudio());
+            Utils.CreateDesktopShortcut("Android-Studio", PathToAndroidStudio());
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = androidStudioPath,
