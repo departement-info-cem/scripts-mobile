@@ -39,7 +39,7 @@ public static class Script4N6
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         
         await UtilsAndroidStudio.StartAndroidStudio();
-        Utils.StartKmb();
+        // Utils.StartKmb();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
     }
 

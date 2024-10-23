@@ -40,7 +40,7 @@ public class Script5N6
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
-        Utils.StartKmb();
+        // Utils.StartKmb();
         await UtilsAndroidStudio.StartAndroidStudio();
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter complet");
