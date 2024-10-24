@@ -335,6 +335,7 @@ public static class Utils
         SetEnvVariable("ANDROID_SDK_HOME", null);
         RemoveFromPath(@"Desktop\flutter\bin");
         RemoveFromPath(@"Desktop\android-studio\bin");
+        RemoveFromPath(@"Desktop\rider\bin");
         RemoveFromPath(@"AppData\Local\Android\Sdk\emulator");
         RemoveFromPath(@"AppData\Local\Android\Sdk\cmdline-tools\latest\bin");
         RemoveFromPath(@"Desktop\idea\bin");
