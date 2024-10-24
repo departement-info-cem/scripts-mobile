@@ -20,6 +20,8 @@ public static class ScriptRider
                 Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 "rider")
             );
+        
+        Utils.RunCommand(UtilsRider.PathToRider() + " installPlugins com.github.copilot");
 
         await UtilsRider.StartRider();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation de Rider complète");
