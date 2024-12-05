@@ -73,7 +73,7 @@ static class Program
         List<string> choixEtudiants =
         [
             "0. Nettoyage", "1. 3N5 console kotlin", "2. 3N5 Android", "3. 4N6 Android", "4. 4N6 Android + Spring", "5. 5N6 flutter", "6. 5N6 flutter + firebase",
-            "7. (Bonus) Rider", "8. Quitter"
+            "7. (Bonus) 3W5, 4W6, 5W5", "8. Quitter"
         ];
         List<string> choixProfs = ["9. Créer la cache"];
         List<string> choix = [];
@@ -113,7 +113,7 @@ static class Program
                     await Script5N6.Handle5N6FlutterFirebaseAsync();
                     break;
                 case not null when choixChoisi.Contains("7."):
-                    await ScriptRider.HandleRiderAsync();
+                    await ScriptWeb.HandleRiderAsync();
                     break;
                 case not null when choixChoisi.Contains("8."):
                     return;
