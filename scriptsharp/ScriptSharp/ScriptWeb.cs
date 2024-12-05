@@ -48,6 +48,7 @@ public static class ScriptWeb
             );
 
         Utils.RunCommand(UtilsWebstorm.PathToWebstorm() + " installPlugins com.github.copilot");
+        Utils.RunCommand(UtilsWebstorm.PathToWebstorm() + " installPlugins com.mallowigi");
 
         await UtilsWebstorm.StartWebstorm();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation de Webstorm complète");
