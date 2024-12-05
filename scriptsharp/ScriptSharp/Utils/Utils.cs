@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -110,22 +111,43 @@ public static class Utils
             };
 
             // Exécution du processus
-            using (Process process = new Process { StartInfo = processStartInfo })
+            using (Process process = new Process())
             {
+                process.StartInfo = processStartInfo;
                 process.Start();
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                
+                var output = new List<string>();
+                var err = new List<string>();
+                
+                process.OutputDataReceived += (sender, args) =>
+                {
+                    output.Add(args.Data);
+                };
+                process.ErrorDataReceived += (sender, args) =>
+                {
+                    err.Add(args.Data);
+                };
+                
                 process.WaitForExit();
                 
-                if (!string.IsNullOrEmpty(output))
+                if (output.Count > 0)
                 {
                     LogSingleton.Get.LogAndWriteLine("   FAIT Sortie pour  : " + command);
-                    LogSingleton.Get.LogAndWriteLine(output);
+                    foreach (string line in output)
+                    {
+                        LogSingleton.Get.LogAndWriteLine(line);
+                    }
+                   
                 }
-                if (!string.IsNullOrEmpty(error))
+                if (err.Count > 0)
                 {
                     LogSingleton.Get.LogAndWriteLine("   ERREUR Sortie pour  : " + command);
-                    LogSingleton.Get.LogAndWriteLine(error);
+                    foreach (string line in err)
+                    {
+                        LogSingleton.Get.LogAndWriteLine(line);
+                    }
                 }
                 
             }
