@@ -10,6 +10,7 @@ public class Script5N6
     {
         LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter (et Android Studio plus Intellij)...");
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        Utils.RunCommand("git config --global --add safe.directory '*'");
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.LocalCache, "Sdk-Android-Flutter.7z"), 
             Path.Combine(Config.LocalTemp, "Sdk.7z") );
