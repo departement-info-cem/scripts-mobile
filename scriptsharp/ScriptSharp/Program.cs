@@ -75,15 +75,15 @@ static class Program
             "0. Nettoyage", "1. 3N5 console kotlin", "2. 3N5 Android", "3. 4N6 Android", "4. 4N6 Android + Spring", "5. 5N6 flutter", "6. 5N6 flutter + firebase",
             "7. (Bonus) 3W5, 4W6, 5W5", "8. Quitter"
         ];
-        List<string> choixProfs = ["9. Créer la cache"];
+        List<string> choixProfs = ["A. Créer la cache applicative", "B. Créer les caches .gradle et SDK"];
         List<string> choix = [];
 
         choix.AddRange(choixEtudiants);
 
-        if (Environment.MachineName.EndsWith("00"))
-        {
+        //if (Environment.MachineName.EndsWith("00"))
+        //{
             choix.AddRange(choixProfs);
-        }
+        //}
 
        
         string choixChoisi = Prompt.Select("Veuillez choisir une option", choix.ToArray());
@@ -116,8 +116,11 @@ static class Program
                 break;
             case not null when choixChoisi.Contains("8."):
                 return;
-            case not null when choixChoisi.Contains("9."):
+            case not null when choixChoisi.Contains("A."):
                 await UtilsCacheCreation.HandleCache();
+                break;
+            case not null when choixChoisi.Contains("B."):
+                await UtilsCacheCreation.HandleCacheSDKDotGradle();
                 break;
         }
     }

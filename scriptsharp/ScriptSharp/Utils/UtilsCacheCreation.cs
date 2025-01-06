@@ -35,23 +35,22 @@ public static class UtilsCacheCreation
      */
     public static async Task HandleCache()
     {
-        LogSingleton.Get.LogAndWriteLine("Creation de la cache ...");
+        LogSingleton.Get.LogAndWriteLine("Creation de la cache applications 7z ...");
         var downloadTasks = new[]
         {
             Utils.DownloadFileAsync(Config.IdeaUrl, "idea.zip"),
             Utils.DownloadFileAsync(Config.StudioUrl, "studio.zip"),
             Utils.DownloadFileAsync(Config.FlutterSdk, "flutter.zip"),
             Utils.DownloadFileAsync(Config.CorrettoUrl, "corretto.zip"),
-            Utils.DownloadFileAsync(Config.FlutterPluginUrlStudio, "plugin-flutter-android-studio.zip"),
-            Utils.DownloadFileAsync(Config.DartPluginUrlStudio, "plugin-dart-android-studio.zip"),
-            Utils.DownloadFileAsync(Config.FlutterIntlPluginUrlStudio, "plugin-flutter-intl-android-studio.zip"),
+            //Utils.DownloadFileAsync(Config.FlutterPluginUrlStudio, "plugin-flutter-android-studio.zip"),
+            //Utils.DownloadFileAsync(Config.DartPluginUrlStudio, "plugin-dart-android-studio.zip"),
+            //Utils.DownloadFileAsync(Config.FlutterIntlPluginUrlStudio, "plugin-flutter-intl-android-studio.zip"),
             Utils.DownloadFileAsync(Config.RiderUrl, "rider.zip")
         };
 
         await Task.WhenAll(downloadTasks);
 
         const string tempCache = "."; // Replace with the actual path to temp cache
-        string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         // delete "android-studio" folder if it exists
         if (Directory.Exists(Path.Combine(tempCache, "android-studio")))
         {
@@ -59,18 +58,8 @@ public static class UtilsCacheCreation
         }
         LogSingleton.Get.LogAndWriteLine("Creation du Android Studio avec plugins");
         string localTempPath = Path.Combine(tempCache, "studio.zip");
+        Console.WriteLine("Dézippage de android.zip dans " + localTempPath);
         ZipFile.ExtractToDirectory(localTempPath, Path.Combine(tempCache));
-
-        localTempPath = Path.Combine(tempCache, "plugin-dart-android-studio.zip");
-        ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempCache, "android-studio", "plugins"));
-        localTempPath = Path.Combine(tempCache, "plugin-flutter-android-studio.zip");
-        ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempCache, "android-studio", "plugins"));
-        localTempPath = Path.Combine(tempCache, "plugin-flutter-intl-android-studio.zip");
-        ZipFile.ExtractToDirectory(localTempPath,
-            Path.Combine(tempCache, "android-studio", "plugins"));
-        // create android-studio.7z from the folder with plugins
         await Utils.CompressFolderTo7ZAsync("android-studio", "android-studio.7z");
         LogSingleton.Get.LogAndWriteLine("Conversions des zip en 7z");
         var convertTasks = new[]
@@ -83,23 +72,46 @@ public static class UtilsCacheCreation
         LogSingleton.Get.LogAndWriteLine("Copie des 7z dans le cache " + Config.CachePath);
         // copy the 7z files to the cache folder
         File.Copy("idea.7z", Path.Combine(Config.CachePath, "idea.7z"), true);
-        File.Copy("idea.zip", Path.Combine(Config.CachePath, "idea.zip"), true);
+        //File.Copy("idea.zip", Path.Combine(Config.CachePath, "idea.zip"), true);
         File.Copy("jdk.7z", Path.Combine(Config.CachePath, "jdk.7z"), true);
-        File.Copy("corretto.zip", Path.Combine(Config.CachePath, "jdk.zip"), true);
+        //File.Copy("corretto.zip", Path.Combine(Config.CachePath, "jdk.zip"), true);
         File.Copy("flutter.7z", Path.Combine(Config.CachePath, "flutter.7z"), true);
-        File.Copy("flutter.zip", Path.Combine(Config.CachePath, "flutter.zip"), true);
+        //File.Copy("flutter.zip", Path.Combine(Config.CachePath, "flutter.zip"), true);
         File.Copy("android-studio.7z", Path.Combine(Config.CachePath, "android-studio.7z"), true);
+        LogSingleton.Get.LogAndWriteLine("Creation de la cache finie");
+    }
+    
+    public static async Task HandleCacheSDKDotGradle()
+    {
+        LogSingleton.Get.LogAndWriteLine("Creation de la cache  SDK et dossier .gradle ...");
+        string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         // get the size of the .gradle folder
-        long gradleSize = new DirectoryInfo(Path.Combine(home, ".gradle"))
+        string gradlePath = Path.Combine(home, ".gradle");
+        string sdkPath = Path.Combine(home, "AppData", "Local", "Android", "Sdk");
+        long gradleSize = new DirectoryInfo(gradlePath)
             .EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
         // get the size in MB of the AppData\Local\Android\Sdk folder
-        long sdkSize = new DirectoryInfo(Path.Combine(home, "AppData", "Local", "Android", "Sdk"))
+        long sdkSize = new DirectoryInfo(sdkPath)
             .EnumerateFiles("*", SearchOption.AllDirectories).Sum(f => f.Length);
         Console.WriteLine("taille de .gradle: " + gradleSize / 1024 / 1024 + " MB");
         Console.WriteLine("taille de Android SDK: " + sdkSize / 1024 / 1024 + " MB");
         Console.WriteLine(
             "Merci de partir Android Studio  creer un projet et le partir sur un emulateur pour constituer le SDK et le .gradle");
+        Console.WriteLine("1. s'assurer d'avoir une image dans le SDK en créant un émultateur");
+        Console.WriteLine("2. ouvrir un projet d'un des cours pour peupler le .gradle");
+        Console.WriteLine("3. lancer le projet sur l'émulateur pour compléter le SDK");
+        Console.WriteLine("4. quand tout est pret, taper Y pour partir la compression / archivage de SDK et .gradle");
+
         string s = Console.ReadLine();
+        if (s == "Y")
+        {
+            Console.WriteLine("archivage de .gradle");
+            await Utils.CompressFolderMonoBlocTo7ZAsync(gradlePath, ".gradle.7z");
+            Console.WriteLine("archivage de SDK");
+            await Utils.CompressFolderMonoBlocTo7ZAsync(sdkPath, "Sdk.7z");
+            File.Copy(".gradle.7z", Path.Combine(Config.CachePath, ".gradle.7z"), true);
+            File.Copy("Sdk.7z", Path.Combine(Config.CachePath, "Sdk.7z"), true);
+        }
         LogSingleton.Get.LogAndWriteLine("Creation de la cache finie");
     }
 }

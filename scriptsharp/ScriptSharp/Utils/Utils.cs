@@ -183,6 +183,33 @@ public static class Utils
             throw new Exception($"7-Zip exited with code {process.ExitCode}");
         }
     }
+    
+    
+    public static async Task CompressFolderMonoBlocTo7ZAsync(string folderPath, string output7ZFilePath)
+    {
+        string sevenZipPath = @"C:\Program Files\7-Zip\7z.exe"; // Adjust the path if necessary
+
+        ProcessStartInfo processStartInfo = new ProcessStartInfo
+        {
+            FileName = sevenZipPath,
+            Arguments = $"a \"{output7ZFilePath}\" \"{folderPath}\"",
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            WorkingDirectory = Environment.CurrentDirectory
+        };
+
+        using Process process = new Process();
+
+        process.StartInfo = processStartInfo;
+        process.Start();
+        await process.WaitForExitAsync();
+
+        if (process.ExitCode != 0)
+        {
+            throw new Exception($"7-Zip exited with code {process.ExitCode}");
+        }
+    }
 
     public static async Task Unzip7ZFileAsync(string sourceFile, string destinationFolder)
     {
