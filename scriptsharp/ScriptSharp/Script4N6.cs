@@ -35,6 +35,8 @@ public static class Script4N6
             UtilsAndroidStudio.InstallAndroidStudio(), 
             Utils.DownloadRepoKmb(),
             DownloadRepo4N6());
+        // install plugins 
+        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         // start android studio
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         
@@ -71,6 +73,8 @@ public static class Script4N6
             UtilsAndroidStudio.InstallAndroidStudio(), 
             //Program.DownloadRepoKMB(),
             DownloadRepo4N6());
+        // install plugins 
+        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         // start android studio
         await UtilsAndroidStudio.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android fini");
