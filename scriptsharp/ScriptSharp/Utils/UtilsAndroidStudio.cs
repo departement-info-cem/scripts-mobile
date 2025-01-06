@@ -20,7 +20,7 @@ public class UtilsAndroidStudio
         Utils.AddToPath(Path.Combine(desktopPath, "android-studio", "bin"));
         string destinationFolder = Path.Combine(desktopPath);
         await Utils.Unzip7ZFileAsync(Path.Combine(Config.LocalTemp, "android-studio.7z"), destinationFolder);
-        LogSingleton.Get.LogAndWriteLine("    FAIT Installation Android Studio fini");
+        LogSingleton.Get.LogAndWriteLine("    FAIT Installation AS (binaire complété) ... on attend le SDK ...");
     }
     public static Task StartAndroidStudio()
     {
