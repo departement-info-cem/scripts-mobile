@@ -85,42 +85,40 @@ static class Program
             choix.AddRange(choixProfs);
         }
 
-        while (true)
-        {
-            string choixChoisi = Prompt.Select("Veuillez choisir une option", choix.ToArray());
+       
+        string choixChoisi = Prompt.Select("Veuillez choisir une option", choix.ToArray());
 
-            switch (choixChoisi)
-            {
-                case not null when choixChoisi.Contains("0."):
-                    Utils.Reset();
-                    break;
-                case not null when choixChoisi.Contains("1."):
-                    await Script3N5.Handle3N5KotlinConsoleAsync();
-                    break;
-                case not null when choixChoisi.Contains("2."):
-                    await Script3N5.Handle3N5AndroidAsync();
-                    break;
-                case not null when choixChoisi.Contains("3."):
-                    await Script4N6.Handle4N6AndroidAsync();
-                    break;
-                case not null when choixChoisi.Contains("4."):
-                    await Script4N6.Handle4N6AndroidSpringAsync();
-                    break;
-                case not null when choixChoisi.Contains("5."):
-                    await Script5N6.Handle5N6FlutterAsync();
-                    break;
-                case not null when choixChoisi.Contains("6."):
-                    await Script5N6.Handle5N6FlutterFirebaseAsync();
-                    break;
-                case not null when choixChoisi.Contains("7."):
-                    await ScriptWeb.HandleRiderAsync();
-                    break;
-                case not null when choixChoisi.Contains("8."):
-                    return;
-                case not null when choixChoisi.Contains("9."):
-                    await UtilsCacheCreation.HandleCache();
-                    break;
-            }
+        switch (choixChoisi)
+        {
+            case not null when choixChoisi.Contains("0."):
+                Utils.Reset();
+                break;
+            case not null when choixChoisi.Contains("1."):
+                await Script3N5.Handle3N5KotlinConsoleAsync();
+                break;
+            case not null when choixChoisi.Contains("2."):
+                await Script3N5.Handle3N5AndroidAsync();
+                break;
+            case not null when choixChoisi.Contains("3."):
+                await Script4N6.Handle4N6AndroidAsync();
+                break;
+            case not null when choixChoisi.Contains("4."):
+                await Script4N6.Handle4N6AndroidSpringAsync();
+                break;
+            case not null when choixChoisi.Contains("5."):
+                await Script5N6.Handle5N6FlutterAsync();
+                break;
+            case not null when choixChoisi.Contains("6."):
+                await Script5N6.Handle5N6FlutterFirebaseAsync();
+                break;
+            case not null when choixChoisi.Contains("7."):
+                await ScriptWeb.HandleRiderAsync();
+                break;
+            case not null when choixChoisi.Contains("8."):
+                return;
+            case not null when choixChoisi.Contains("9."):
+                await UtilsCacheCreation.HandleCache();
+                break;
         }
     }
 
@@ -128,6 +126,5 @@ static class Program
     {
         UtilsFirebase.InstallFirebase();
     }
-
-
+    
 }
