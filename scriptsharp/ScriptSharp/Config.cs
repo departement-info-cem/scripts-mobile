@@ -19,18 +19,13 @@ public static class Config
     public static readonly string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "log");
     public static readonly string LogFilePath = Path.Combine(LogPath, "installation-log.txt");
 
-    public const string StudioUrl = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.2.2.13/android-studio-2024.2.2.13-windows.zip";
-
-    public const string FlutterPluginUrlStudio = "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=582965";
-
-    public const string DartPluginUrlStudio = "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=573248";
-
-    public const string FlutterIntlPluginUrlStudio = "https://plugins.jetbrains.com/plugin/download?rel=true&updateId=541419";
+    public const string StudioUrl = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.3.2.15/android-studio-2024.3.2.15-windows.zip";
 
     // Android SDK and sdkmanager
     public const string CorrettoUrl = "https://corretto.aws/downloads/latest/amazon-corretto-21-x64-windows-jdk.zip";
+
     // IntelliJ
-    public const string IdeaUrl = "https://download.jetbrains.com/idea/ideaIC-2024.3.2.win.zip";
+    public const string IdeaUrl = "https://download.jetbrains.com/idea/ideaIC-2025.1.1.1.win.zip";
 
     // Flutter
     public const string FlutterSdk = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
