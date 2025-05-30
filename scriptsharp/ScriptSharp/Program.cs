@@ -26,26 +26,9 @@ using Sharprompt;
 // Sdk de base apres install de Labybug : 5.01 Go
 // Sdk de ed5depinfo                    : 7.52 Go
 
-/** Install JetBrains 8h10 debut
- * 3 min 8h11 debut SDK
- * 7 min 8h14 debut sync gradle (on parle essentiellement de plein de tout petit telechargement)
- * 2 min 8h21 debut creation emulateur qui doit telecharger une image android 8h23
- * 2 min 8h23 premier run du projet vide 8h25
- * En tout 14 minutes depuis toolbox jusqu'au projet parti avec plusieurs manip
- *
- * Install avec appli. Sdk=on emu=off .gradle=off
- * 2 min 8h31 debut install 8h33
- * 7 min 8h33 sync gradle 8h40
- * 1 min 8h40 creation emulateur (image est deja dans le SDK) 8h41
- * 2 min build et run 8h43
- * En tout 12 minutes
- *
- * Install avec appli. Sdk=on emu=off .gradle=on
- * le gradle sync passe de 7 min a 30 sec
- * 3 minutes pour l'installation
- */
-
 // C:\Users\joris.deguet\AppData\Local\Google\AndroidStudio2024.2
+
+// TODO juste valider que l'installation de JAVA est bien à 21 et fonctionnelle
 
 namespace ScriptSharp;
 

@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace ScriptSharp;
 
+// TODO ne plus installer Intellij
+// TODO installer le plugin copilot ?
+
 public static class Script3N5
 {
     public static async Task Handle3N5AndroidAsync()
@@ -39,18 +42,7 @@ public static class Script3N5
     }
 
     /**
-     * Sans optimisation .gradle
-     * 1 min debut install 
-     * 1 min run projet
-     * 
-     * Performance
-     * 1 min  install
-     * 1 min  Intellij start
-     * 4 min  first start
-     *
-     * 9h01
-     * 9h03 cree projet
-     * 9h05 run
+     * Ne pas installer Intellij, juste installer le plugin, cloner le repo?
      *
      * C'est en fait plus rapide si je n'essaie pas de reprendre un .gradle deja existant
      */

@@ -6,6 +6,8 @@ namespace ScriptSharp;
 
 public static class Script4N6
 {
+    // TODO aller chercher Android Studio + SDK + cache gradle
+    // aller chercher une cache de .m2 repo maven?
     public static async Task Handle4N6AndroidSpringAsync()
     {
         LogSingleton.Get.LogAndWriteLine("Installation pour 4N6 Android + serveur Spring ...");
@@ -73,7 +75,7 @@ public static class Script4N6
             UtilsAndroidStudio.InstallAndroidStudio(), 
             //Program.DownloadRepoKMB(),
             DownloadRepo4N6());
-        // install plugins 
+        // install plugins copilot
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         // start android studio
         await UtilsAndroidStudio.StartAndroidStudio();
