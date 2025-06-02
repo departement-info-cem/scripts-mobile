@@ -50,7 +50,7 @@ public class Script5N6
 
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
-        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
+        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter + firebase ...");
         UtilsFirebase.InstallFirebase();
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.LocalCache, "Sdk-Android-Flutter.7z"), 

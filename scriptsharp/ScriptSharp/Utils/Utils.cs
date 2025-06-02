@@ -321,14 +321,14 @@ public static class Utils
     public static void AddToPath(string binPath)
     {
         string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-        if (currentPath == null)
+        if (string.IsNullOrWhiteSpace(currentPath))
         {
             SetEnvVariable("PATH", binPath);
         }
-        else if (!currentPath.Contains(binPath))
+        else if (!currentPath.Split(';').Contains(binPath, StringComparer.OrdinalIgnoreCase))
         {
             LogSingleton.Get.LogAndWriteLine("Ajout au Path de " + binPath);
-            string updatedPath = currentPath + ";" + binPath;
+            string updatedPath = binPath + ";" + currentPath;
             SetEnvVariable("PATH", updatedPath);
         }
     }
