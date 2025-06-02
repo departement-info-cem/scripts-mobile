@@ -17,7 +17,7 @@ public static class Script3N5
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp,".gradle.7z")),
-            UtilsJava.InstallJava(),
+            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z") )
@@ -68,7 +68,7 @@ public static class Script3N5
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
                     "idea")
                 ),
-            UtilsJava.InstallJava() );
+            UtilsJava.InstallJava("jdk") );
         LogSingleton.Get.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
         // install plugins  TODO ? one day?
         // Utils.RunCommand("idea64.exe installPlugins io.flutter");
