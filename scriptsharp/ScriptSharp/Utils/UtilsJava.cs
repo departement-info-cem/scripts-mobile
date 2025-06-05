@@ -23,6 +23,7 @@ public class UtilsJava
         string javaHome = Path.Combine(jdkPath, jdkVersion);
         Utils.AddToPath(Path.Combine(javaHome, "bin"));
         Utils.SetEnvVariable("JAVA_HOME", javaHome);
+        Utils.SetMachineEnvVariable("JAVA_HOME", javaHome); // TODO FIX TEMPORAIRE POUR E25. NE FONCTIONNERA PLUS EN A25
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
     }
 }
