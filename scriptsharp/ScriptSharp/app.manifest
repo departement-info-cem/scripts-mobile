@@ -4,7 +4,7 @@
 		<security>
 			<requestedPrivileges>
 				<!-- TODO FIX TEMPORAIRE POUR E25. NE FONCTIONNERA PLUS EN A25-->
-				<requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+				<!--<requestedExecutionLevel level="requireAdministrator" uiAccess="false" />-->
 			</requestedPrivileges>
 		</security>
 	</trustInfo>

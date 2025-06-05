@@ -10,7 +10,6 @@ public class UtilsJava
     public static async Task InstallJava(string version)
     {
         LogSingleton.Get.LogAndWriteLine("Installation de Java Dev Kit");
-        Utils.RemoveFromPath("C:\\Program Files\\Amazon Corretto\\jdk1.8.0_412\\bin", EnvironmentVariableTarget.Machine); // TODO FIX TEMPORAIRE POUR E25. NE FONCTIONNERA PLUS EN A25
         await Utils.CopyFileFromNetworkShareAsync(
             Path.Combine(Config.LocalCache, version + ".7z"),
             Path.Combine(Config.LocalTemp, version + ".7z"));
@@ -23,7 +22,6 @@ public class UtilsJava
         string javaHome = Path.Combine(jdkPath, jdkVersion);
         Utils.AddToPath(Path.Combine(javaHome, "bin"));
         Utils.SetEnvVariable("JAVA_HOME", javaHome);
-        Utils.SetMachineEnvVariable("JAVA_HOME", javaHome); // TODO FIX TEMPORAIRE POUR E25. NE FONCTIONNERA PLUS EN A25
         LogSingleton.Get.LogAndWriteLine("    FAIT Installation Java");
     }
 }
