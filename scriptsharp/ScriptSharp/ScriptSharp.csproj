@@ -9,6 +9,7 @@
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<SelfContained>true</SelfContained>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' != 'Debug'">

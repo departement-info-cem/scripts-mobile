@@ -333,9 +333,9 @@ public static class Utils
         }
     }
 
-    private static void RemoveFromPath(string pattern)
+    public static void RemoveFromPath(string pattern, EnvironmentVariableTarget target) // TODO ATTENTION : EnvironmentVariableTarget.User ne fonctionnera plus à partir de A25
     {
-        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        string currentPath = Environment.GetEnvironmentVariable("PATH", target);
 
         if (currentPath == null) return;
 
@@ -344,8 +344,14 @@ public static class Utils
         string[] currentPathArray = currentPath.Split(";");
         string[] filteredCurrentPathArray = currentPathArray.Where(path => !path.Contains(pattern)).ToArray();
         string updatedPath = string.Join(";", filteredCurrentPathArray);
-
-        SetEnvVariable("PATH", updatedPath);
+        if(target == EnvironmentVariableTarget.Machine)
+        {
+            SetMachineEnvVariable("PATH", updatedPath);
+        } else
+        {
+            SetEnvVariable("PATH", updatedPath);
+        }
+        
     }
 
     public static void StartKmb()
@@ -382,13 +388,13 @@ public static class Utils
         SetEnvVariable("ANDROID_NDK_HOME", null);
         SetEnvVariable("ANDROID_AVD_HOME", null);
         SetEnvVariable("ANDROID_SDK_HOME", null);
-        RemoveFromPath(@"Desktop\flutter\bin");
-        RemoveFromPath(@"Desktop\android-studio\bin");
-        RemoveFromPath(@"Desktop\rider\bin");
-        RemoveFromPath(@"AppData\Local\Android\Sdk\emulator");
-        RemoveFromPath(@"AppData\Local\Android\Sdk\cmdline-tools\latest\bin");
-        RemoveFromPath(@"Desktop\idea\bin");
-        RemoveFromPath(@"Desktop\jdk");
+        RemoveFromPath(@"Desktop\flutter\bin", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"Desktop\android-studio\bin", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"Desktop\rider\bin", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"AppData\Local\Android\Sdk\emulator", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"AppData\Local\Android\Sdk\cmdline-tools\latest\bin", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"Desktop\idea\bin", EnvironmentVariableTarget.User);
+        RemoveFromPath(@"Desktop\jdk", EnvironmentVariableTarget.User);
     }
 
     public static void SetEnvVariable(string name, string value)
@@ -396,6 +402,11 @@ public static class Utils
         Environment.SetEnvironmentVariable(name, value);
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.User);
         Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
+    }
+
+    public static void SetMachineEnvVariable(string name, string value)
+    {
+        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Machine);
     }
 
     private static void DeleteThis(string path)
