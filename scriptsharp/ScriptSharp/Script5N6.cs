@@ -19,7 +19,7 @@ public class Script5N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            UtilsJava.InstallJava("jdk-flutter"),
+            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "idea.7z"), 
                 Path.Combine(Config.LocalTemp, "idea.7z")),
