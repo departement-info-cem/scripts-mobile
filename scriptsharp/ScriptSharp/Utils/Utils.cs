@@ -193,7 +193,7 @@ public static class Utils
         {
             FileName = sevenZipPath,
             Arguments = $"a \"{output7ZFilePath}\" \"{folderPath}\"",
-            RedirectStandardOutput = true,
+            RedirectStandardOutput = false,
             UseShellExecute = false,
             CreateNoWindow = true,
             WorkingDirectory = Environment.CurrentDirectory

@@ -89,7 +89,8 @@ public static class UtilsCacheCreation
         Console.WriteLine("1. s'assurer d'avoir une image dans le SDK en créant un émultateur");
         Console.WriteLine("2. ouvrir un projet d'un des cours pour peupler le .gradle");
         Console.WriteLine("3. lancer le projet sur l'émulateur pour compléter le SDK");
-        Console.WriteLine("4. quand tout est pret, taper Y pour partir la compression / archivage de SDK et .gradle");
+        Console.WriteLine("4. fermer tous les IDE et autres applis avant de par");
+        Console.WriteLine("5. quand tout est pret, taper Y pour partir la compression / archivage de SDK et .gradle");
 
         string s = Console.ReadLine();
         if (s == "Y")
