@@ -320,22 +320,22 @@ public static class Utils
 
     public static void AddToPath(string binPath)
     {
-        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
-        if (currentPath == null)
+        string currentPath = Environment.GetEnvironmentVariable("PATH");
+        if (string.IsNullOrWhiteSpace(currentPath))
         {
             SetEnvVariable("PATH", binPath);
         }
-        else if (!currentPath.Contains(binPath))
+        else if (!currentPath.Split(';').Contains(binPath, StringComparer.OrdinalIgnoreCase))
         {
             LogSingleton.Get.LogAndWriteLine("Ajout au Path de " + binPath);
-            string updatedPath = currentPath + ";" + binPath;
+            string updatedPath = binPath + ";" + currentPath;
             SetEnvVariable("PATH", updatedPath);
         }
     }
 
-    private static void RemoveFromPath(string pattern)
+    public static void RemoveFromPath(string pattern)
     {
-        string currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+        string currentPath = Environment.GetEnvironmentVariable("PATH");
 
         if (currentPath == null) return;
 
@@ -344,8 +344,8 @@ public static class Utils
         string[] currentPathArray = currentPath.Split(";");
         string[] filteredCurrentPathArray = currentPathArray.Where(path => !path.Contains(pattern)).ToArray();
         string updatedPath = string.Join(";", filteredCurrentPathArray);
-
         SetEnvVariable("PATH", updatedPath);
+        
     }
 
     public static void StartKmb()
@@ -460,7 +460,7 @@ public static class Utils
     public static void CopyMachinePath()
     {
         string[] machinePaths = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Machine)!.Split(";");
-        string[] userPaths = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User)!.Split(";");
+        string[] userPaths = Environment.GetEnvironmentVariable("Path")!.Split(";");
         string[] allPaths = machinePaths.Concat(userPaths).ToArray();
         string joinedPaths = string.Join(";", allPaths);
         SetEnvVariable("Path", joinedPaths);

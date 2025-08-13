@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+	<trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+		<security>
+			<requestedPrivileges>
+				<!-- TODO FIX TEMPORAIRE POUR E25. NE FONCTIONNERA PLUS EN A25-->
+				<!--<requestedExecutionLevel level="requireAdministrator" uiAccess="false" />-->
+			</requestedPrivileges>
+		</security>
+	</trustInfo>
+</assembly>

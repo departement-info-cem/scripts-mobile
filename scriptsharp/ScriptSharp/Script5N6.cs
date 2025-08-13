@@ -19,7 +19,7 @@ public class Script5N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            UtilsJava.InstallJava(),
+            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "idea.7z"), 
                 Path.Combine(Config.LocalTemp, "idea.7z")),
@@ -37,6 +37,7 @@ public class Script5N6
             Utils.DownloadRepoKmb(),
             DownloadRepo5N6());
         
+        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins Dart");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins io.flutter");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
@@ -49,7 +50,7 @@ public class Script5N6
 
     public static async Task Handle5N6FlutterFirebaseAsync()
     {
-        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter  + firebase ...");
+        LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter + firebase ...");
         UtilsFirebase.InstallFirebase();
         await Utils.CopyFileFromNetworkShareAsync( 
             Path.Combine(Config.LocalCache, "Sdk-Android-Flutter.7z"), 
@@ -59,7 +60,7 @@ public class Script5N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle-Android-Flutter.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            UtilsJava.InstallJava(),
+            UtilsJava.InstallJava("jdk-flutter"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "idea.7z"), 
                 Path.Combine(Config.LocalTemp, "idea.7z")),
@@ -78,6 +79,7 @@ public class Script5N6
             DownloadRepo5N6());
         Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
+        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins Dart");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins io.flutter");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");

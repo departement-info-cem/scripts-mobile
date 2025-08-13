@@ -20,7 +20,7 @@ public static class Script4N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp,".gradle.7z")),
-            UtilsJava.InstallJava(),
+            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "idea.7z"), 
                 Path.Combine(Config.LocalTemp,"idea.7z")),
@@ -64,7 +64,7 @@ public static class Script4N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            UtilsJava.InstallJava(),
+            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z")));
