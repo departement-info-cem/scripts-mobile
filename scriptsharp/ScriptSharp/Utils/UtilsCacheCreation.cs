@@ -38,13 +38,9 @@ public static class UtilsCacheCreation
         LogSingleton.Get.LogAndWriteLine("Creation de la cache applications 7z ...");
         var downloadTasks = new[]
         {
-            Utils.DownloadFileAsync(Config.IdeaUrl, "idea.zip"),
+           
             Utils.DownloadFileAsync(Config.StudioUrl, "studio.zip"),
             Utils.DownloadFileAsync(Config.FlutterSdk, "flutter.zip"),
-            Utils.DownloadFileAsync(Config.CorrettoUrl, "corretto.zip"),
-            //Utils.DownloadFileAsync(Config.FlutterPluginUrlStudio, "plugin-flutter-android-studio.zip"),
-            //Utils.DownloadFileAsync(Config.DartPluginUrlStudio, "plugin-dart-android-studio.zip"),
-            //Utils.DownloadFileAsync(Config.FlutterIntlPluginUrlStudio, "plugin-flutter-intl-android-studio.zip"),
             Utils.DownloadFileAsync(Config.RiderUrl, "rider.zip")
         };
 
@@ -64,19 +60,12 @@ public static class UtilsCacheCreation
         LogSingleton.Get.LogAndWriteLine("Conversions des zip en 7z");
         var convertTasks = new[]
         {
-            Utils.ConvertZipTo7ZAsync("idea.zip", "idea.7z"),
-            Utils.ConvertZipTo7ZAsync("corretto.zip", "jdk.7z"),
             Utils.ConvertZipTo7ZAsync("flutter.zip", "flutter.7z")
         };
         await Task.WhenAll(convertTasks);
         LogSingleton.Get.LogAndWriteLine("Copie des 7z dans le cache " + Config.CachePath);
         // copy the 7z files to the cache folder
-        File.Copy("idea.7z", Path.Combine(Config.CachePath, "idea.7z"), true);
-        //File.Copy("idea.zip", Path.Combine(Config.CachePath, "idea.zip"), true);
-        File.Copy("jdk.7z", Path.Combine(Config.CachePath, "jdk.7z"), true);
-        //File.Copy("corretto.zip", Path.Combine(Config.CachePath, "jdk.zip"), true);
         File.Copy("flutter.7z", Path.Combine(Config.CachePath, "flutter.7z"), true);
-        //File.Copy("flutter.zip", Path.Combine(Config.CachePath, "flutter.zip"), true);
         File.Copy("android-studio.7z", Path.Combine(Config.CachePath, "android-studio.7z"), true);
         LogSingleton.Get.LogAndWriteLine("Creation de la cache finie");
     }
