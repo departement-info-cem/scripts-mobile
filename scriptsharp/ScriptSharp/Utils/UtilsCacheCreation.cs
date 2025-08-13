@@ -96,10 +96,11 @@ public static class UtilsCacheCreation
         {
             Console.WriteLine("archivage de .gradle");
             await Utils.CompressFolderMonoBlocTo7ZAsync(gradlePath, ".gradle.7z");
-            Console.WriteLine("archivage de SDK");
-            await Utils.CompressFolderMonoBlocTo7ZAsync(sdkPath, "Sdk.7z");
             Console.WriteLine("copie dans la cache  de .gradle");
             File.Copy(".gradle.7z", Path.Combine(Config.CachePath, ".gradle.7z"), true);
+
+            Console.WriteLine("archivage de SDK");
+            await Utils.CompressFolderMonoBlocTo7ZAsync(sdkPath, "Sdk.7z");
             Console.WriteLine("copie dans la cache  de SDK");
             File.Copy("Sdk.7z", Path.Combine(Config.CachePath, "Sdk.7z"), true);
         }
