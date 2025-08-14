@@ -28,17 +28,12 @@ public static class Script4N6
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
-            Utils.Unzip7ZFileAsync(
-                Path.Combine(Config.LocalTemp,"idea.7z"), 
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea")),
             UtilsAndroidStudio.InstallAndroidStudio(), 
             Utils.DownloadRepoKmb(),
             DownloadRepo4N6());
         // install plugins 
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
         // start android studio
-        Utils.CreateDesktopShortcut("IntelliJ", UtilsIntellij.PathToIntellij());
-        
         await UtilsAndroidStudio.StartAndroidStudio();
         // Utils.StartKmb();
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation 4N6 Android + serveur Spring ");
