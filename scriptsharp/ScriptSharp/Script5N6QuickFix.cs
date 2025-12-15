@@ -11,12 +11,12 @@ public class Script5N6QuickFix
         LogSingleton.Get.LogAndWriteLine("Installation de 5N6 flutter + firebase ...");
         UtilsFirebase.InstallFirebase();
         await Utils.CopyFileFromNetworkShareAsync( 
-            Path.Combine(Config.LocalCache, "Sdk-Android-Flutter.7z"), 
+            Path.Combine(Config.LocalCache, "Sdk-Android-Flutter-quickfix.7z"), 
             Path.Combine(Config.LocalTemp, "Sdk.7z") );
         await Task.WhenAll(
             UtilsAndroidSdk.InstallAndroidSdk(), 
             Utils.CopyFileFromNetworkShareAsync( 
-                Path.Combine(Config.LocalCache, ".gradle-Android-Flutter.7z"), 
+                Path.Combine(Config.LocalCache, ".gradle-Android-Flutter-quickfix.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
             UtilsJava.InstallJava("jdk-flutter"),
             Utils.CopyFileFromNetworkShareAsync(
