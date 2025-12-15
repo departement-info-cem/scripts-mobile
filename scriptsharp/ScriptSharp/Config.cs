@@ -23,11 +23,4 @@ public static class Config
 
     // Flutter
     public const string FlutterSdk = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
-    
-    // Rider
-    public const string RiderUrl = "https://download.jetbrains.com/rider/JetBrains.Rider-2024.3.win.zip"; // https://www.jetbrains.com/fr-fr/rider/download/other.html
-    
-    // Webstorm
-    public const string WebstormUrl = "https://download.jetbrains.com/webstorm/WebStorm-2024.3.win.zip"; // https://www.jetbrains.com/fr-fr/webstorm/download/other.html
-
 }

@@ -40,8 +40,7 @@ public static class UtilsCacheCreation
         {
            
             Utils.DownloadFileAsync(Config.StudioUrl, "studio.zip"),
-            Utils.DownloadFileAsync(Config.FlutterSdk, "flutter.zip"),
-            Utils.DownloadFileAsync(Config.RiderUrl, "rider.zip")
+            Utils.DownloadFileAsync(Config.FlutterSdk, "flutter.zip")
         };
 
         await Task.WhenAll(downloadTasks);
