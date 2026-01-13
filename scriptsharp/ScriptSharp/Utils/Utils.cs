@@ -477,6 +477,6 @@ public static class Utils
         }
 
         string pluginArg = version == null ? pluginId : $"{pluginId}:{version}";
-        RunExecutable(studioExe, "installPlugins", pluginArg);
+        RunCommand(studioExe+ " installPlugins "+ pluginArg);
     }
 }
