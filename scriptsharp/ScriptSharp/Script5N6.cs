@@ -30,10 +30,10 @@ public class Script5N6
             Utils.DownloadRepoKmb(),
             DownloadRepo5N6());
         
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins Dart");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins io.flutter");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
+        Utils.InstallASPlugin("Dart");
+        Utils.InstallASPlugin("io.flutter");
+        Utils.InstallASPlugin("com.github.copilot");
+        Utils.InstallASPlugin("com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         await UtilsAndroidStudio.StartAndroidStudio();
         LogSingleton.Get.LogAndWriteLine("    FAIT 5N6 Flutter complet");
@@ -62,10 +62,10 @@ public class Script5N6
             UtilsAndroidStudio.InstallAndroidStudio(), 
             Utils.DownloadRepoKmb(),
             DownloadRepo5N6());
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins Dart");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins io.flutter");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
+        Utils.InstallASPlugin("Dart");
+        Utils.InstallASPlugin("io.flutter");
+        Utils.InstallASPlugin("com.github.copilot");
+        Utils.InstallASPlugin("com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         //Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",

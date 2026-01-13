@@ -29,10 +29,10 @@ public class Script5N6QuickFix
             UtilsAndroidStudio.InstallAndroidStudio(), 
             Utils.DownloadRepoKmb(),
             DownloadRepo5N6());
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins Dart");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins io.flutter");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");
-        Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.localizely.flutter-intl");
+        Utils.InstallASPlugin("Dart");
+        Utils.InstallASPlugin("io.flutter");
+        Utils.InstallASPlugin("com.github.copilot");
+        Utils.InstallASPlugin("com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         //Utils.StartKMB();
         Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData",

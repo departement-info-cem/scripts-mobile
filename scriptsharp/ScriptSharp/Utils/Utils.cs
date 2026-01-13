@@ -465,4 +465,18 @@ public static class Utils
         string joinedPaths = string.Join(";", allPaths);
         SetEnvVariable("Path", joinedPaths);
     }
+
+    // New helper: install an Android Studio plugin by id, optionally specifying a version
+    public static void InstallASPlugin(string pluginId, string? version = null)
+    {
+        string studioExe = UtilsAndroidStudio.PathToAndroidStudio();
+        if (!File.Exists(studioExe))
+        {
+            LogSingleton.Get.LogAndWriteLine($"       ERREUR : Android Studio executable introuvable : {studioExe}");
+            return;
+        }
+
+        string pluginArg = version == null ? pluginId : $"{pluginId}:{version}";
+        RunExecutable(studioExe, "installPlugins", pluginArg);
+    }
 }
