@@ -56,7 +56,6 @@ public static class Script4N6
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp, ".gradle.7z")),
-            UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z")));
@@ -65,7 +64,6 @@ public static class Script4N6
                 Path.Combine(Config.LocalTemp, ".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             UtilsAndroidStudio.InstallAndroidStudio(), 
-            //Program.DownloadRepoKMB(),
             DownloadRepo4N6());
         // install plugins copilot
         Utils.RunCommand(UtilsAndroidStudio.PathToAndroidStudio() + " installPlugins com.github.copilot");

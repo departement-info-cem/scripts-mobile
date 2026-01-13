@@ -20,7 +20,6 @@ public static class Script3N5
             Utils.CopyFileFromNetworkShareAsync( 
                 Path.Combine(Config.LocalCache, ".gradle.7z"), 
                 Path.Combine(Config.LocalTemp,".gradle.7z")),
-            //UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
                 Path.Combine(Config.LocalTemp, "android-studio.7z") )
@@ -49,23 +48,6 @@ public static class Script3N5
     public static async Task Handle3N5KotlinConsoleAsync()
     {
         LogSingleton.Get.LogAndWriteLine("Installation de kotlin (console) 3N5...");
-        // Utils.AddToPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "idea", "bin"));
-        //await Utils.CopyFileFromNetworkShareAsync(
-        //        Path.Combine(Config.LocalCache, "idea.7z"), 
-        //        Path.Combine(Config.LocalTemp, "idea.7z"));
-        //await Task.WhenAll(
-        //    Utils.Unzip7ZFileAsync(
-        //        Path.Combine(Config.LocalTemp, "idea.7z"), 
-        //        Path.Combine(
-        //            Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-        //            "idea")
-        //        ),
-        //    UtilsJava.InstallJava("jdk") );
-        // LogSingleton.Get.LogAndWriteLine("Premier gradle build pour constituer le .gradle");
-        // install plugins  TODO ? one day?
-        // Utils.RunCommand("idea64.exe installPlugins io.flutter");
-        // Utils.RunCommand("idea64.exe installPlugins com.github.copilot");
-        // Utils.RunCommand("idea64.exe installPlugins com.localizely.flutter-intl");
         await Task.WhenAll(DownloadRepo3N5()
            // , UtilsIntellij.StartIntellij()
             );
