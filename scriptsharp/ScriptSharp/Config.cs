@@ -11,8 +11,8 @@ public static class Config
     public const string Url5N6 = "https://github.com/departement-info-cem/5N6-mobile-2/archive/refs/heads/main.zip";
     public const string UrlKmb = "https://github.com/departement-info-cem/KickMyB-Server/archive/refs/heads/main.zip";
     
-    public const string CachePath  = @"\\ed5depinfo\Logiciels\Android\scripts\cachecache\";
-    public const string LocalCache = @"\\ed5depinfo\Logiciels\Android\scripts\cachecache\";
+    public const string CachePath  = @"\\ed5depinfo\Logiciels\Android\cache\";
+    public const string LocalCache = @"\\ed5depinfo\Logiciels\Android\cache\";
 
     //create a temp folder on the Destkop
     public static readonly string LocalTemp = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
