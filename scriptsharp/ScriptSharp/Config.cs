@@ -20,7 +20,7 @@ public static class Config
     public static readonly string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "log");
     public static readonly string LogFilePath = Path.Combine(LogPath, "installation-log.txt");
 
-    public const string StudioUrl = "https://redirector.gvt1.com/edgedl/android/studio/install/2025.2.2.8/android-studio-2025.2.2.8-windows.exe";
+    public const string StudioUrl = "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2025.2.2.8/android-studio-2025.2.2.8-windows.zip";
     
     // Flutter
     public const string FlutterSdk = "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.24.0-stable.zip";
