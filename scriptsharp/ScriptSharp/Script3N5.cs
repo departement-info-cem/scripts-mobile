@@ -35,7 +35,7 @@ public static class Script3N5
         LogSingleton.Get.LogAndWriteLine("     FAIT Installation pour 3N5 Android complet");
     }
 
-    private static async Task DownloadRepo3N5()
+    public static async Task DownloadRepo3N5()
     {
         await Utils.DownloadRepo(Config.Url3N5, "3N5");
     }
