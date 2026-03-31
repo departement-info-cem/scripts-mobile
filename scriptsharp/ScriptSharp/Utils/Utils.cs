@@ -457,6 +457,15 @@ public static class Utils
 
     public static async Task DownloadRepoKmb() { await DownloadRepo(Config.UrlKmb, "KMB"); }
 
+    public static async Task DownloadRepoKmbAndMvnInstall()
+    {
+        await DownloadRepoKmb();
+        string kmbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "KickMyB-Server-main");
+        LogSingleton.Get.LogAndWriteLine("Lancement de mvnw install dans " + kmbPath);
+        RunCommand($"cd /d \"{kmbPath}\" && .\\mvnw install");
+        LogSingleton.Get.LogAndWriteLine("    FAIT mvnw install dans " + kmbPath);
+    }
+
     public static void CopyMachinePath()
     {
         string[] machinePaths = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Machine)!.Split(";");

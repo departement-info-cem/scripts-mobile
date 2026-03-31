@@ -23,13 +23,13 @@ public static class Script4N6
             //UtilsJava.InstallJava("jdk"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio.7z"), 
-                Path.Combine(Config.LocalTemp,"android-studio.7z")));
+                Path.Combine(Config.LocalTemp,"android-studio.7z")),
+            Utils.DownloadRepoKmbAndMvnInstall());
         await Task.WhenAll(
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp,".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             UtilsAndroidStudio.InstallAndroidStudio(), 
-            Utils.DownloadRepoKmb(),
             Script3N5.DownloadRepo3N5(),
             DownloadRepo4N6());
         // install plugins 

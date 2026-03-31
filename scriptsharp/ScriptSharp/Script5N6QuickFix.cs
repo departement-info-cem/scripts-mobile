@@ -21,13 +21,13 @@ public class Script5N6QuickFix
             UtilsJava.InstallJava("jdk-flutter"),
             Utils.CopyFileFromNetworkShareAsync(
                 Path.Combine(Config.LocalCache, "android-studio-quickfix.7z"), 
-                Path.Combine(Config.LocalTemp, "android-studio.7z")));
+                Path.Combine(Config.LocalTemp, "android-studio.7z")),
+            Utils.DownloadRepoKmbAndMvnInstall());
         await Task.WhenAll(
             Utils.Unzip7ZFileAsync(
                 Path.Combine(Config.LocalTemp, ".gradle.7z"), 
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             UtilsAndroidStudio.InstallAndroidStudio(), 
-            Utils.DownloadRepoKmb(),
             DownloadRepo5N6());
         Utils.InstallASPlugin("Dart");
         Utils.InstallASPlugin("io.flutter");
