@@ -29,10 +29,10 @@ public class Script5N6
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             UtilsAndroidStudio.InstallAndroidStudio(), 
             DownloadRepo5N6());
-        
+        Utils.InstallASPlugin("com.redhat.devtools.lsp4ij");
         Utils.InstallASPlugin("Dart");
         Utils.InstallASPlugin("io.flutter");
-        Utils.InstallASPlugin("com.github.copilot");
+        //Utils.InstallASPlugin("com.github.copilot");
         Utils.InstallASPlugin("com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         await UtilsAndroidStudio.StartAndroidStudio();
@@ -62,9 +62,10 @@ public class Script5N6
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)),
             UtilsAndroidStudio.InstallAndroidStudio(), 
             DownloadRepo5N6());
+        Utils.InstallASPlugin("com.redhat.devtools.lsp4ij");
         Utils.InstallASPlugin("Dart");
         Utils.InstallASPlugin("io.flutter");
-        Utils.InstallASPlugin("com.github.copilot");
+        //Utils.InstallASPlugin("com.github.copilot");
         Utils.InstallASPlugin("com.localizely.flutter-intl");
         await UtilsFlutter.InstallFlutter();
         //Utils.StartKMB();
